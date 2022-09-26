@@ -27,6 +27,13 @@ email varchar(50) not null,
 primary key (id)
 );
 
+create table login(
+id int(10) not null auto_increment,
+password varchar(50) not null,
+
+primary key (id)
+);
+
 
 create table regimen(
 id int(10) not null auto_increment,
@@ -55,11 +62,13 @@ primary key (id)
 create table precio_hab(
 id int(10) not null auto_increment,
 id_hab int(10) not null,
+id_hotel int(10) not null,
 fecha_inicio date not null,
 fecha_fin date not null,
 precio double not null,
 
 constraint precio_hab_fk1 foreign key (id_hab) references habitaciones(id),
+constraint precio_hab_fk2 foreign key (id_hotel) references hotel(id),
 primary key (id)
 );
 
