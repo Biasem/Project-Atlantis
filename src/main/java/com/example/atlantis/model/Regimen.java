@@ -1,6 +1,6 @@
 package com.example.atlantis.model;
 
-public class regimen {
+public class Regimen {
 
     private Integer id;
 
