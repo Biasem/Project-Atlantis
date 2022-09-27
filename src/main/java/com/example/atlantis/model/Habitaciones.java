@@ -1,6 +1,6 @@
 package com.example.atlantis.model;
 
-public class habitaciones {
+public class Habitaciones {
 
     private Integer id;
 

@@ -2,7 +2,7 @@ package com.example.atlantis.model;
 
 import java.util.Date;
 
-public class precio_hab {
+public class Precio_hab {
 
     private Integer id;
 
