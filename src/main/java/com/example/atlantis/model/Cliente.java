@@ -35,6 +35,7 @@ public class Cliente {
     private String telefono;
 
     @JoinColumn(name = "email")
-    private String email;
+    @ManyToOne
+    private Login email;
 
 }
