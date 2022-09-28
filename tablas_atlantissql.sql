@@ -28,10 +28,10 @@ primary key (id)
 );
 
 create table login(
-id int(10) not null auto_increment,
+email varchar(50) not null auto_increment,
 password varchar(50) not null,
-
-primary key (id)
+es_cliente int(1) not null, -- bool para busqueda en tabla cliente o Hotel
+primary key (email)
 );
 
 
