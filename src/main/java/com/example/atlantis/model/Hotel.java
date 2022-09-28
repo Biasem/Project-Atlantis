@@ -1,8 +1,6 @@
 package com.example.atlantis.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Hotel {
 
     @Id

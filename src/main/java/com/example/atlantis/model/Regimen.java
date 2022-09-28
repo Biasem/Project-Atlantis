@@ -1,9 +1,7 @@
 package com.example.atlantis.model;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @Table(name="Regimen")
 @Getter @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Regimen {
 
 
@@ -20,7 +20,8 @@ public class Regimen {
     private Integer id;
 
     @JoinColumn(name = "id_hotel")
-    private Integer id_hotel;
+    @OneToOne
+    private Hotel id_hotel;
 
     @JoinColumn(name = "categoria")
     private Integer categoria;
