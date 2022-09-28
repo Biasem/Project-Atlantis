@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @EqualsAndHashCode
 public class Reserva {
+    //Hola
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
