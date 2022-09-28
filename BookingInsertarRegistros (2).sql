@@ -1,17 +1,15 @@
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values ('Felipe', 'Martinez Romero', '88008630G', 921864215,'femarro@gmail.com', 'Spain');
-insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Macarena', 'MaÒas RodrÌguez', '89900216R',746649411,'macare189@gmail.com', 'Spain');
+insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Macarena', 'Ma√±as Rodr√≠guez', '89900216R',746649411,'macare189@gmail.com', 'Spain');
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Enric', 'Mayoral Iglesias','26694110B', 680965067, 'emiglesias1@outlook.com', 'Spain');
-insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Eloy', 'Saavedra PÈrez', '72901566F',792963375, 'eloysaavedra@gmail.com', 'Spain');
+insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Eloy', 'Saavedra P√©rez', '72901566F',792963375, 'eloysaavedra@gmail.com', 'Spain');
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Sara', 'Segura Moreno', '14160838Z', 603860605, 'sarita18sm@outlook.com', 'Spain');
 
 
-
-
-insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Silken Al-Andalus Palace', 'Spain', 'Sevilla', 'Paran·, Bellavista - Palmera','12*07*22', '11*07*23', 4, 1, 954230600, ' ven1.al-andalus@hoteles-silken.com');
+insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Silken Al-Andalus Palace', 'Spain', 'Sevilla', 'Paran√°, Bellavista - Palmera','12*07*22', '11*07*23', 4, 1, 954230600, 'ven1.al-andalus@hoteles-silken.com');
 insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Exe Sevilla Macarena', 'Spain', 'Sevilla', 'San Juan de Ribera, 2, Macarena', '01*09*22', '20*6*23', 4, 2, 954375800,'reservas@exesevillamacarena.com');
-insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Letoh Letoh Gran VÌa', 'Spain', 'Madrid', '41 Calle de Leganitos, Centro de Madrid','01*03*22','30*01*23', 3, 3, 913933333, 'reserva@letohgv.com');
+insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Letoh Letoh Gran V√≠a', 'Spain', 'Madrid', '41 Calle de Leganitos, Centro de Madrid','01*03*22','30*01*23', 3, 3, 913933333, 'reserva@letohgv.com');
 insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Hotel Mirador Puerta del Sol','Spain', 'Madrid', 'Montera, 6, Centro de Madrid', '01*09*22', '01/08/23', 2, 4, 910325364,'hmreservas@gmail.com');
-insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Las Arenas Balneario Resort','Spain', 'Valencia', 'Eugenia ViÒes, 22', '01*09*22', '01/08/23', 5, 1, 963120600, 'reservas.lasarenas@hsantos.es');
+insert into hotel(nombre,pais, localidad, direccion, fecha_apertura, fecha_cierre, num_estrellas, tipo_hotel, telefono, email) values('Las Arenas Balneario Resort','Spain', 'Valencia', 'Eugenia Vi√±es, 22', '01*09*22', '01/08/23', 5, 1, 963120600, 'reservas.lasarenas@hsantos.es');
 
 
 insert into habitaciones(id_hotel, tipo_hab,num_hab,hab_ocupadas,max_cliente) values(1, 2, 100, 0, 3);
@@ -64,3 +62,13 @@ insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(3,8,5);
 insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(4,13,8);
 
  
+insert into login (email, password, es_cliente) values('femarro@gmail.com','Ls261hg&',1);
+insert into login (email, password, es_cliente) values('macare189@gmail.com','7aP$S#22',1);
+insert into login (email, password, es_cliente) values('emiglesias1@outlook.com','1#4Kj8h@',1);
+insert into login (email, password, es_cliente) values('eloysaavedra@gmail.com','Ut83S!L2',1);
+insert into login (email, password, es_cliente) values('sarita18sm@outlook.com','j300$iQf',1);
+insert into login (email, password, es_cliente) values('ven1.al-andalus@hoteles-silken.com','6o&#72D6',0);
+insert into login (email, password, es_cliente) values('reservas@exesevillamacarena.com','98V@4Zgx',0);
+insert into login (email, password, es_cliente) values('reserva@letohgv.com','47fF2n*F', 0);
+insert into login (email, password, es_cliente) values('hmreservas@gmail.com', '*f#MI598', 0);
+insert into login (email, password, es_cliente) values('reservas.lasarenas@hsantos.es', '@2iAog48',0);
