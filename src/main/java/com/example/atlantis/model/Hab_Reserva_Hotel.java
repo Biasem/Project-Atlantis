@@ -19,17 +19,17 @@ public class Hab_Reserva_Hotel {
     @Column(name = "id")
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "id_reserva")
+    private Reserva reserva;
 
-    @Column(name = "id_reserva")
-    private Integer id_reserva;
+    @ManyToOne
+    @JoinColumn(name = "id_regimen")
+    private Regimen id_regimen;
 
-
-    @Column(name = "id_regimen")
-    private Integer id_regimen;
-
-
-    @Column(name = "id_hab")
-    private Integer id_hab;
+    @ManyToOne
+    @JoinColumn(name = "id_hab")
+    private Habitaciones id_hab;
 
 
 

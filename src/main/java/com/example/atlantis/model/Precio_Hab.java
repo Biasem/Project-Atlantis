@@ -19,12 +19,14 @@ public class Precio_Hab {
     private Integer id;
 
 
-    @Column(name = "id_hab")
-    private Integer id_hab;
+    @ManyToOne
+    @JoinColumn(name = "id_hab")
+    private Habitaciones id_hab;
 
 
-    @Column(name = "id_hotel")
-    private Integer id_hotel;
+    @ManyToOne
+    @JoinColumn(name = "id_hotel")
+    private Hotel id_hotel;
 
     @Column(name = "fecha_inicio")
     private Date fecha_inicio;
