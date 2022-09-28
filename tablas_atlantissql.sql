@@ -6,7 +6,7 @@ dni varchar(9) not null,
 pais varchar(50) not null,
 telefono varchar(20) not null,
 email varchar(50) not null,
-
+constraint cliente_fk1 foreign key (email) references login(email),
 primary key (id)
 );
 
@@ -23,12 +23,12 @@ num_estrellas int(1) not null,
 tipo_hotel int(1) not null, -- apartahotel, hotel, rural...etc
 telefono varchar(20) not null,
 email varchar(50) not null,
-
+constraint hotel_fk1 foreign key (email) references login(email),
 primary key (id)
 );
 
 create table login(
-email varchar(50) not null auto_increment,
+email varchar(50) not null,
 password varchar(50) not null,
 es_cliente int(1) not null, -- bool para busqueda en tabla cliente o Hotel
 primary key (email)
