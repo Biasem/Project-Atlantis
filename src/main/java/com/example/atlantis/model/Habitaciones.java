@@ -1,10 +1,7 @@
 package com.example.atlantis.model;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,8 @@ import javax.persistence.*;
 @Table(name="habitaciones")
 @Getter @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class Habitaciones {
 
@@ -21,7 +20,8 @@ public class Habitaciones {
     private Integer id;
 
     @JoinColumn(name = "id_hotel")
-    private Integer id_hotel;
+    @ManyToOne
+    private Hotel id_hotel;
 
     @JoinColumn(name = "tipo_hab")
     private Integer tipo_hab;

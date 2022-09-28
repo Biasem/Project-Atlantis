@@ -1,8 +1,6 @@
 package com.example.atlantis.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,8 +10,9 @@ import java.util.Date;
 @Getter
 @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Reserva {
-    //Hola
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +21,18 @@ public class Reserva {
 
 
     @JoinColumn(name = "id_hotel")
-    private Integer id_hotel;
+    @OneToOne
+    private Hotel id_hotel;
 
 
     @JoinColumn(name = "id_cliente")
-    private Integer id_cliente;
+    @ManyToOne
+    private Cliente id_cliente;
 
 
     @JoinColumn(name = "id_regimen")
-    private Integer id_regimen;
+    @ManyToOne
+    private Regimen id_regimen;
 
     @JoinColumn(name = "num_clientes")
     private Integer num_clientes;
