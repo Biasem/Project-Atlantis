@@ -1,3 +1,15 @@
+insert into login (email, password, es_cliente) values('femarro@gmail.com','Ls261hg&',1);
+insert into login (email, password, es_cliente) values('macare189@gmail.com','7aP$S#22',1);
+insert into login (email, password, es_cliente) values('emiglesias1@outlook.com','1#4Kj8h@',1);
+insert into login (email, password, es_cliente) values('eloysaavedra@gmail.com','Ut83S!L2',1);
+insert into login (email, password, es_cliente) values('sarita18sm@outlook.com','j300$iQf',1);
+insert into login (email, password, es_cliente) values('ven1.al-andalus@hoteles-silken.com','6o&#72D6',0);
+insert into login (email, password, es_cliente) values('reservas@exesevillamacarena.com','98V@4Zgx',0);
+insert into login (email, password, es_cliente) values('reserva@letohgv.com','47fF2n*F', 0);
+insert into login (email, password, es_cliente) values('hmreservas@gmail.com', '*f#MI598', 0);
+insert into login (email, password, es_cliente) values('reservas.lasarenas@hsantos.es', '@2iAog48',0);
+
+
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values ('Felipe', 'Martinez Romero', '88008630G', 921864215,'femarro@gmail.com', 'Spain');
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Macarena', 'Mañas Rodríguez', '89900216R',746649411,'macare189@gmail.com', 'Spain');
 insert into cliente (nombre, apellidos,dni,telefono,email,pais) values('Enric', 'Mayoral Iglesias','26694110B', 680965067, 'emiglesias1@outlook.com', 'Spain');
@@ -56,19 +68,11 @@ insert into reserva(id_hotel, id_cliente, id_regimen, num_clientes, fecha_entrad
 insert into reserva(id_hotel, id_cliente, id_regimen, num_clientes, fecha_entrada, fecha_salida, precio_total) values(3, 3, 8, 2,'21*11*22', '25*11*22', 160);
 insert into reserva(id_hotel, id_cliente, id_regimen, num_clientes, fecha_entrada, fecha_salida, precio_total) values (4, 4, 13, 1, '16*09*22', '20*09*22', 180);
 
+
 insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(1,1,1);
 insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(2,4,3);
 insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(3,8,5);
 insert into hab_reserva_regimen(id_reserva,id_regimen,id_hab) values(4,13,8);
 
- 
-insert into login (email, password, es_cliente) values('femarro@gmail.com','Ls261hg&',1);
-insert into login (email, password, es_cliente) values('macare189@gmail.com','7aP$S#22',1);
-insert into login (email, password, es_cliente) values('emiglesias1@outlook.com','1#4Kj8h@',1);
-insert into login (email, password, es_cliente) values('eloysaavedra@gmail.com','Ut83S!L2',1);
-insert into login (email, password, es_cliente) values('sarita18sm@outlook.com','j300$iQf',1);
-insert into login (email, password, es_cliente) values('ven1.al-andalus@hoteles-silken.com','6o&#72D6',0);
-insert into login (email, password, es_cliente) values('reservas@exesevillamacarena.com','98V@4Zgx',0);
-insert into login (email, password, es_cliente) values('reserva@letohgv.com','47fF2n*F', 0);
-insert into login (email, password, es_cliente) values('hmreservas@gmail.com', '*f#MI598', 0);
-insert into login (email, password, es_cliente) values('reservas.lasarenas@hsantos.es', '@2iAog48',0);
+
+
