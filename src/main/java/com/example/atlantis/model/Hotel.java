@@ -26,7 +26,7 @@ public class Hotel {
     @JoinColumn(name = "pais")
     private String pais;
 
-    @JoinColumn(name = "locaclidad")
+    @JoinColumn(name = "localidad")
     private String localidad;
 
     @JoinColumn(name = "direccion")

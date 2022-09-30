@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es-us">
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -47,16 +47,16 @@
     <div class="container py-4 py-xl-5" style="margin-top: 29px;padding-top: 0px;">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
-                <h2><span style="color: rgb(0, 0, 0);">Heading</span></h2>
-                <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Curae hendrerit donec commodo hendrerit egestas tempus, turpis facilisis nostra nunc. Vestibulum dui eget ultrices.</span></p>
+                <h2><span style="color: rgb(0, 0, 0);">Hoteles</span></h2>
+                <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Descubre cual será tu próxima gran aventura gracias a nuestros destinos al azar.</span></p>
             </div>
         </div>
-        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+        <div th:each="h: ${listaHotel}" class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
             <div class="col">
                 <div class="card"><img class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
                     <div class="card-body p-4">
-                        <p class="text-primary card-text mb-0">Article</p>
-                        <h4 class="card-title">Lorem libero donec</h4>
+                        <p class="text-primary card-text mb-0">Hotel</p>
+                        <h4 th:text="${h.nombre}" class="card-title"></h4>
                         <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
                         <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
                             <div>
@@ -67,7 +67,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     <footer class="text-center bg-dark">
         <div class="container text-white py-4 py-lg-5" style="margin-top: 15px;padding-bottom: 115px;padding-right: 0px;">
