@@ -1,0 +1,31 @@
+@media (min-width: 1200px) {
+  input {
+    padding-left: 0px;
+    margin-bottom: 0px;
+    margin-top: 90px;
+    margin-left: 39px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .btn {
+    float: right;
+    display: flex;
+    padding: 10px 20px;
+    margin: 20px;
+  }
+}
+
+.icon {
+  margin: 5px;
+}
+
+@media (min-width: 1200px) {
+  strong {
+    padding: 10px 19px;
+    margin: 15px;
+    font-size: 30px;
+    float: left;
+  }
+}
+
