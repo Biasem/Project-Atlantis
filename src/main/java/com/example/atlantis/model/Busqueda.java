@@ -15,8 +15,8 @@ import java.util.Date;
 public class Busqueda {
 
     private String hotelBuscar;
-    private Date fechaInicial;
-    private Date fechaFinal;
+    private String fechaInicial;
+    private String fechaFinal;
     private Integer numHuespedes;
 
 }

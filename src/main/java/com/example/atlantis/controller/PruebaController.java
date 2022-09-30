@@ -1,4 +1,6 @@
 package com.example.atlantis.controller;
+import com.example.atlantis.model.Hotel;
+import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,23 +20,22 @@ public class PruebaController{
         @Autowired
         private ClienteService clienteService;
 
+        @Autowired
+        private HotelService hotelService;
+
         @RequestMapping("/clientes")
-        public List<Cliente> getCliente(){
-            return clienteService.getAll() ;
+        public List<Hotel> getCliente(){
+            return hotelService.getAll() ;
         }
-        @RequestMapping("/listaClientes")
+        @RequestMapping("/greeting")
         public ModelAndView listClientes(){
             List<Cliente> listClientes= clienteService.getAll();
-            ModelAndView model = new ModelAndView("listClientes");
+            ModelAndView model = new ModelAndView("greeting");
             model.addObject("listClientes", listClientes);
             return model ;
         }
 
-        @PostMapping("/clientes/save")
-        public void guardarCliente(@RequestBody Cliente humano){
-            Cliente clientefinal = clienteService.getById(humano.getId());
 
-        }
     }
 
 }

@@ -46,6 +46,4 @@ public class Reserva {
     @JoinColumn(name = "precio_total")
     private Double precio_total;
 
-
-
 }
