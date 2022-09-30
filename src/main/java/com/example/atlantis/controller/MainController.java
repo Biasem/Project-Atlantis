@@ -25,25 +25,9 @@ public class MainController{
         return "sesion";
     }
 
-    @Autowired
-    private ClienteService clienteService;
-
-    @RequestMapping("/clientes")
-    public List<Cliente> getCliente(){
-        return clienteService.getAll() ;
+    @GetMapping("/greeting")
+    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+        model.addAttribute("name", name);
+        return "greeting";
     }
-    @RequestMapping("/listaClientes")
-    public ModelAndView listclientes(){
-        List<Cliente> listClientes= clienteService.getAll();
-        ModelAndView model = new ModelAndView("greeting");
-        model.addObject("greeting", listClientes);
-        return model ;
-    }
-
-    @PostMapping("/clientes/save")
-    public void guardarCliente(@RequestBody Cliente humano){
-        Cliente clientefinal = clienteService.getById(humano.getId());
-
-    }
-
 }
