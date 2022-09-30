@@ -39,7 +39,7 @@ public class Hotel {
     private Date fecha_cierre;
 
     @JoinColumn(name = "num_estrellas")
-    private int num_estrella;
+    private int num_estrellas;
 
     @JoinColumn(name = "tipo_hotel")
     private Integer tipo_hotel;
