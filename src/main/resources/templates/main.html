@@ -51,9 +51,9 @@
                 <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Descubre cual será tu próxima gran aventura gracias a nuestros destinos al azar.</span></p>
             </div>
         </div>
-        <div th:each="h: ${listaHotel}" class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            <div class="col">
-                <div class="card"><img class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+            <div th:each="h: ${listaHotel}" class="col">
+                <div class="card"><img class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;" src="https://media.istockphoto.com/photos/spain-square-seville-spain-picture-id576913134?b=1&k=20&m=576913134&s=170667a&w=0&h=VV6teMG5K7n_qlpU9GXNJG-R6IRQMQto3kLxzcaZrUA=">
                     <div class="card-body p-4">
                         <p class="text-primary card-text mb-0">Hotel</p>
                         <h4 th:text="${h.nombre}" class="card-title"></h4>
@@ -67,6 +67,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     <footer class="text-center bg-dark">
         <div class="container text-white py-4 py-lg-5" style="margin-top: 15px;padding-bottom: 115px;padding-right: 0px;">
