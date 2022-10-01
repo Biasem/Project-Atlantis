@@ -20,7 +20,9 @@ public class MainController{
 
     @RequestMapping("/main")
     public ModelAndView listaHotel(){
-        List<Hotel> listaHotel= hotelService.getAll();
+        Integer numero = new Integer(1);
+        List<Hotel> listaprimera= hotelService.getAll();
+        List<Hotel> listaHotel = listaprimera.subList(0, 2);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         return model ;
