@@ -39,7 +39,7 @@ public class Hotel {
     private Date fecha_cierre;
 
     @JoinColumn(name = "num_estrellas")
-    private int num_estrella;
+    private int num_estrellas;
 
     @JoinColumn(name = "tipo_hotel")
     private Integer tipo_hotel;
@@ -50,5 +50,11 @@ public class Hotel {
     @JoinColumn(name = "email")
     @ManyToOne
     private Login email;
+
+    @JoinColumn(name = "url_icono")
+    private String url_icono;
+
+    @JoinColumn(name = "url_imagen_general")
+    private String url_imagen_general;
 
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:each="h: ${listaHotel}" class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+  <div class="col">
+    <div class="card"><img class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+      <div class="card-body p-4">
+        <p class="text-primary card-text mb-0">Hotel</p>
+        <h4 th:text="${h.nombre}" class="card-title"></h4>
+        <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
+        <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+          <div>
+            <p class="fw-bold mb-0">John Smith</p>
+            <p class="text-muted mb-0">Erat netus</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
