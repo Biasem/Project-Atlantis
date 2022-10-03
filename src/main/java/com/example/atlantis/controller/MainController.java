@@ -22,7 +22,6 @@ public class MainController{
 
     @RequestMapping("/main")
     public ModelAndView listaHotel(){
-        Integer numero = new Integer(1);
         List<Hotel> listaprimera= hotelService.getAll();
         Collections.shuffle(listaprimera);
         List<Hotel> listaHotel = listaprimera.subList(0, 2);

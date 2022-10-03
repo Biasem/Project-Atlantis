@@ -51,4 +51,10 @@ public class Hotel {
     @ManyToOne
     private Login email;
 
+    @JoinColumn(name = "url_icono")
+    private String url_icono;
+
+    @JoinColumn(name = "url_imagen_general")
+    private String url_imagen_general;
+
 }

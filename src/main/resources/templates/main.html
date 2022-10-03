@@ -53,12 +53,12 @@
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
             <div th:each="h: ${listaHotel}" class="col">
-                <div class="card"><img class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;" src="https://media.istockphoto.com/photos/spain-square-seville-spain-picture-id576913134?b=1&k=20&m=576913134&s=170667a&w=0&h=VV6teMG5K7n_qlpU9GXNJG-R6IRQMQto3kLxzcaZrUA=">
+                <div class="card"><img th:src="${h.url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
                     <div class="card-body p-4">
                         <p class="text-primary card-text mb-0">Hotel</p>
                         <h4 th:text="${h.nombre}" class="card-title"></h4>
-                        <p class="card-text"> Este hotel, ubicado en <b th:text="${h.localidad}"></b> está perfe</p>
-                        <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50" src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
+                        <p class="card-text"> Este hotel, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
+                        <div class="d-flex"><img th:src="${h.url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
                             <div>
                                 <p th:text="${h.direccion}" class="fw-bold mb-0"></p>
                                 <p class="text-muted mb-0">Número de estrellas: <b th:text="${h.num_estrellas}"></b> </p>
