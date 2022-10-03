@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "hotel")
+@Table(name = "reserva")
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -19,11 +19,9 @@ public class Reserva {
     @JoinColumn(name = "id")
     private Integer id;
 
-
     @JoinColumn(name = "id_hotel")
     @OneToOne
     private Hotel id_hotel;
-
 
     @JoinColumn(name = "id_cliente")
     @ManyToOne

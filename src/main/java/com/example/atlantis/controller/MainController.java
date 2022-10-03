@@ -1,4 +1,5 @@
 package com.example.atlantis.controller;
+import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import com.example.atlantis.model.Cliente;
 import com.example.atlantis.service.ClienteService;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class MainController{
@@ -21,12 +19,23 @@ public class MainController{
     private HotelService hotelService;
 
     @RequestMapping("/main")
-    public ModelAndView listaHotel(){
+    public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda){
         List<Hotel> listaprimera= hotelService.getAll();
         Collections.shuffle(listaprimera);
-        List<Hotel> listaHotel = listaprimera.subList(0, 2);
+        List<Hotel> listaHotel = listaprimera.subList(0, 3);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
+
+        model.addObject("busqueda", new Busqueda());
+        model.addObject("busqueda", busqueda);
+        System.out.println(busqueda.getHotelBuscar());
+        System.out.println(busqueda.getFechaInicial());
+        System.out.println(busqueda.getFechaFinal());
+        System.out.println(busqueda.getNumHuespedes());
+        System.out.println(listaprimera.size());
+
+
+
         return model ;
     }
 
