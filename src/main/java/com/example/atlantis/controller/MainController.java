@@ -27,11 +27,11 @@ public class MainController{
         model.addObject("busqueda", new Busqueda());
         model.addObject("busqueda", busqueda);
 
-        System.out.println(busqueda.getHotelBuscar());
-        System.out.println(busqueda.getFechaInicial());
-        System.out.println(busqueda.getFechaFinal());
-        System.out.println(busqueda.getNumHuespedes());
-        System.out.println(listaprimera.size());
+        //System.out.println(busqueda.getHotelBuscar());
+        //System.out.println(busqueda.getFechaInicial());
+        //System.out.println(busqueda.getFechaFinal());
+        //System.out.println(busqueda.getNumHuespedes());
+
 
 
 
