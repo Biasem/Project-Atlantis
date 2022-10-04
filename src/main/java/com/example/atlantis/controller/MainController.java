@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.atlantis.model.Cliente;
-import com.example.atlantis.service.ClienteService;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
@@ -28,6 +26,7 @@ public class MainController{
 
         model.addObject("busqueda", new Busqueda());
         model.addObject("busqueda", busqueda);
+
         System.out.println(busqueda.getHotelBuscar());
         System.out.println(busqueda.getFechaInicial());
         System.out.println(busqueda.getFechaFinal());
