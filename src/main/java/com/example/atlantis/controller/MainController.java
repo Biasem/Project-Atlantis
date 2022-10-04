@@ -24,7 +24,7 @@ public class MainController{
     public ModelAndView listaHotel(){
         List<Hotel> listaprimera= hotelService.getAll();
         Collections.shuffle(listaprimera);
-        List<Hotel> listaHotel = listaprimera.subList(0, 2);
+        List<Hotel> listaHotel = listaprimera.subList(0, 3);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         return model ;
