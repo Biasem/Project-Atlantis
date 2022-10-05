@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "hotel")
+@Table(name = "reserva")
 @Getter
 @Setter
 @EqualsAndHashCode
