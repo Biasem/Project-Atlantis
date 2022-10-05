@@ -20,26 +20,6 @@ public class MainController{
     @Autowired
     private BusquedaService busquedaService;
 
-//    @RequestMapping("/main")
-//    public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda){
-//        List<Hotel> listaprimera= hotelService.getAll();
-//        Collections.shuffle(listaprimera);
-//        List<Hotel> listaHotel = listaprimera.subList(0, 3);
-//        ModelAndView model = new ModelAndView("main");
-//        model.addObject("listaHotel", listaHotel);
-//
-//
-//        model.addObject("busqueda", busqueda);
-//
-//        busquedaService.AccionBuscar(busqueda.getHotelBuscar());
-//
-//        //System.out.println(busqueda.getFechaInicial());
-//        //System.out.println(busqueda.getFechaFinal());
-//        //System.out.println(busqueda.getNumHuespedes());
-//
-//        return model ;
-//    }
-
     @GetMapping("/main")
     public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda) {
         List<Hotel> listaprimera = hotelService.getAll();
@@ -55,7 +35,7 @@ public class MainController{
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("main");
         model.addObject("busqueda", busqueda);
-        busquedaService.AccionBuscar(busqueda.getHotelBuscar(),listaHoteles);
+        busquedaService.AccionBuscar(busqueda,listaHoteles);
         return model ;
     }
 
