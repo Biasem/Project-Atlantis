@@ -35,7 +35,7 @@ public class MainController{
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("main");
         model.addObject("busqueda", busqueda);
-        busquedaService.AccionBuscar(busqueda,listaHoteles);
+        busquedaService.AccionBuscar(busqueda,listaHoteles); //devuelve lista de hoteles buscados
         return model ;
     }
 
