@@ -20,7 +20,7 @@ public class MainController{
     public ModelAndView listaHotel(){
         List<Hotel> listaprimera= hotelService.getAll();
         Collections.shuffle(listaprimera);
-        List<Hotel> listaHotel = listaprimera.subList(0, 3);
+        List<Hotel> listaHotel = listaprimera.subList(0, 4);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         return model;
@@ -31,4 +31,12 @@ public class MainController{
         model.addAttribute("name", name);
         return "sesion";
     }
+
+    @GetMapping("/error")
+    public ModelAndView paginaError(){
+        ModelAndView model = new ModelAndView("error");
+        return model;
+    }
+
+
 }
