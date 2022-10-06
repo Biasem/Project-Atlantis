@@ -1,5 +1,7 @@
 package com.example.atlantis.controller;
+import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Hotel;
+import com.example.atlantis.service.BusquedaService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
