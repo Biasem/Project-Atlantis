@@ -34,11 +34,8 @@ public class BusquedaService {
                 (obtenerMes(hotel.getFecha_cierre())>obtenerMes(busqueda.getFechaFinal()))){
             return true;
         }else if(obtenerMes(hotel.getFecha_apertura())==obtenerMes(busqueda.getFechaInicial())){
-            return true;
+            if(obtenerDia(hotel.getFecha_apertura())<=obtenerDia(busqueda.getFechaInicial())) return true;
         }
-
-
-
         return false;
     }
     private int obtenerMes(Date fecha){
