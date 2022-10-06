@@ -30,11 +30,10 @@ public class BusquedaService {
         return coincidencias;
     }
     private boolean estaAbierto(Hotel hotel, Busqueda busqueda ){
-        if((obtenerMes(hotel.getFecha_apertura())<obtenerMes(busqueda.getFechaInicial()))&&
-                (obtenerMes(hotel.getFecha_cierre())>obtenerMes(busqueda.getFechaFinal()))){
+        if(obtenerMes(hotel.getFecha_apertura())<obtenerMes(busqueda.getFechaInicial())){
             return true;
-        }else if(obtenerMes(hotel.getFecha_apertura())==obtenerMes(busqueda.getFechaInicial())){
-            if(obtenerDia(hotel.getFecha_apertura())<=obtenerDia(busqueda.getFechaInicial())) return true;
+        } else if () {
+
         }
         return false;
     }
