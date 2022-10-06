@@ -9,9 +9,8 @@ import java.util.List;
 
 public interface LoginRepository extends JpaRepository<Login, Integer> {
 
-    @Query(value = "select l from login where login l where l.username = username", nativeQuery = true)
-    Login ObtenerLogin();
-
+    @Query(value = "select email, password, es_cliente from login ", nativeQuery = true)
+    List<Cliente> obtenerCliente();
 
 
 }

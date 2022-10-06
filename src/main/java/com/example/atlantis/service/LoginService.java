@@ -5,20 +5,31 @@ import com.example.atlantis.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoginService {
 
     @Autowired
     private LoginRepository loginRepository;
 
-
-    public Login buscarPorUsername(String username){
-
-        return loginRepository.findAll().indexOf(username).orElse(null);
+    public List<Login> getAll(){
+        return loginRepository.findAll();
     }
 
-    public void UsuarioLogin(String username)
 
+    public boolean Buscar(Login login){
+        List<Login> todos = getAll();
+        boolean registrado = false;
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).equals(login)){
+                registrado = true;
+                break;
+            }
+        }
+    return registrado;
+    }
 
 
 }
