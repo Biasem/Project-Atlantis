@@ -4,6 +4,7 @@ import com.example.atlantis.model.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,30 +26,29 @@ public class BusquedaService {
                 coincidencias.add(hotel);
             }
         }
-        System.out.println(coincidencias.size());
+
        coincidencias.forEach(hotel -> System.out.println(estaAbierto(hotel,busqueda)));
         return coincidencias;
     }
     private boolean estaAbierto(Hotel hotel, Busqueda busqueda ){
-        if(obtenerMes(hotel.getFecha_apertura())<obtenerMes(busqueda.getFechaInicial())){
+        if((hotel.getFecha_apertura().isBefore(LocalDate.parse(busqueda.getFechaInicial()))&&
+                (hotel.getFecha_cierre().isAfter(LocalDate.parse(busqueda.getFechaFinal()))))){
             return true;
-        } else if () {
-
         }
+
         return false;
     }
-    private int obtenerMes(Date fecha){
-
-        return Integer.valueOf(fecha.toString().substring(5,7));}
-    private int obtenerMes(String fecha){
-
-        return Integer.valueOf(fecha.toString().substring(5,7));}
-    private int obtenerDia(Date fecha){
-
-        return Integer.valueOf(fecha.toString().substring(8,10));}
-    private int obtenerDia(String fecha){
-
-        return Integer.valueOf(fecha.toString().substring(8,10));}
-
+//    private int obtenerMes(Date fecha){
+//
+//        return Integer.valueOf(fecha.toString().substring(5,7));}
+//    private int obtenerMes(String fecha){
+//
+//        return Integer.valueOf(fecha.toString().substring(5,7));}
+//    private int obtenerDia(Date fecha){
+//
+//        return Integer.valueOf(fecha.toString().substring(8,10));}
+//    private int obtenerDia(String fecha){
+//
+//        return Integer.valueOf(fecha.toString().substring(8,10));}
 
 }
