@@ -30,7 +30,7 @@
     </header>
     <br>
     <br>
-    <div class="container rounded shadow-sm"> <form action="" th:action="@{/main}" th:object="${busqueda}" method="post" >
+    <div class="container rounded shadow-sm"> <form action="" th:action="@{/main}" th:object="${busqueda}"  method="post" >
         <div class="row">
             <div class="col-md-6 col-12 mb-4">
                 <div class="form-control d-flex flex-column">
@@ -45,10 +45,10 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-12 mb-4">
-                <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}">
+                <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}" th:min="${fechamin}" >
                 </div>
             </div>
-            <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}">
+            <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}" th:min="${fechamin}">
             </div>
             </div>
         </div>

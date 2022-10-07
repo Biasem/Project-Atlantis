@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class MainController{
         List<Hotel> listaHotel = listaprimera.subList(0, 3);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
+        model.addObject("fechamin", LocalDate.now());
         return model;
     }
 
