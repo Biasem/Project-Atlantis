@@ -30,6 +30,7 @@ public class MainController{
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         model.addObject("fechamin", LocalDate.now());
+
         return model;
     }
 
@@ -38,7 +39,8 @@ public class MainController{
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("main");
         model.addObject("busqueda", busqueda);
+        model.addObject("fechamin", LocalDate.now());
         busquedaService.AccionBuscar(busqueda,listaHoteles); //devuelve lista de hoteles buscados
-        return model ;
+        return model;
     }
 }

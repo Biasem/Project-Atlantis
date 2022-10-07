@@ -45,10 +45,10 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-12 mb-4">
-                <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}" th:min="${fechamin}" >
+                <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}" th:min="${fechamin}" required>
                 </div>
             </div>
-            <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}" th:min="${fechamin}">
+            <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}" th:min="${fechamin}" required>
             </div>
             </div>
         </div>

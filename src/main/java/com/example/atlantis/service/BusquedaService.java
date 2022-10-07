@@ -17,7 +17,6 @@ public class BusquedaService {
         String strBusqueda;
         List<Hotel> coincidencias = new ArrayList<>();
         strBusqueda = busqueda.getHotelBuscar().toLowerCase();
-
         for( Hotel hotel:listaHoteles){             //buscar en la lista de hoteles
             if(estaAbierto(hotel,busqueda)){        //si el hotel esta abierto
                 if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))|| //igualamos a minusculas los string
