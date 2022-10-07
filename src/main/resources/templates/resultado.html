@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Main</title>
+
+  <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/best-carousel-slide.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Carousel-Hero.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Footer-Dark-icons.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Hero-Carousel-images.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Pretty-Search-Form-.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-Responsive-with-Icon.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+</head>
+
+<body class="bg-white">
+<nav th:include="navMenu.html"></nav>
+
+<br>
+<br>
+<br>
+<div class="container rounded shadow-sm"> <form action="" th:action="@{/main}" th:object="${busqueda}" method="post" >
+  <div class="row">
+    <div class="col-md-6 col-12 mb-4">
+      <div class="form-control d-flex flex-column">
+        <p class="h-blue">Destino:</p> <input class="inputbox" placeholder="¡El lugar de tus sueños!" type="text" th:field="*{hotelBuscar}">
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="form-control d-flex flex-column">
+        <p class="h-blue">Viajeros:</p> <input class="inputbox" placeholder="Escribe el número" type="number" th:field="*{numHuespedes}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-12 mb-4">
+      <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}">
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}">
+    </div>
+    </div>
+  </div>
+  <div class="row">
+
+  </div>
+  <input class="btn btn-primary form-control text-center" type="submit" value="Resultados"></input> </form>
+</div>
+<div class="container py-4 py-xl-5" style="margin-top: 29px;padding-top: 0px;">
+  <div class="row mb-5">
+    <div class="col-md-8 col-xl-6 text-center mx-auto">
+      <h2><span style="color: rgb(0, 0, 0);">Resultados</span></h2>
+      <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Estos son los hoteles que mejor se adaptan a tus criterios.</span></p>
+    </div>
+  </div>
+  <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+    <div th:each="h: ${filtro}" class="col">
+      <div class="card"><img th:src="${h.url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
+        <div class="card-body p-4">
+          <p class="text-primary card-text mb-0">Hotel</p>
+          <h4 th:text="${h.nombre}" class="card-title"></h4>
+          <p class="card-text"> Este hotel, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
+          <div class="d-flex"><img th:src="${h.url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
+            <div>
+              <p th:text="${h.direccion}" class="fw-bold mb-0"></p>
+              <p class="text-muted mb-0">Número de estrellas: <b th:text="${h.num_estrellas}"></b> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:include="footer.html"></footer>
+<script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
