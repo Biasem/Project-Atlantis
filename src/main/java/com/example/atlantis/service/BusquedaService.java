@@ -13,46 +13,28 @@ import java.util.List;
 
 @Service
 public class BusquedaService {
-
-
-
     public List<Hotel> AccionBuscar(Busqueda busqueda, List<Hotel> listaHoteles){
         String strBusqueda;
         List<Hotel> coincidencias = new ArrayList<>();
         strBusqueda = busqueda.getHotelBuscar().toLowerCase();
 
-        for( Hotel hotel:listaHoteles){
-            if(estaAbierto(hotel,busqueda)){
-                if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))||
-                        (hotel.getNombre().toLowerCase().contains(strBusqueda))){
+        for( Hotel hotel:listaHoteles){             //buscar en la lista de hoteles
+            if(estaAbierto(hotel,busqueda)){        //si el hotel esta abierto
+                if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))|| //igualamos a minusculas los string
+                        (hotel.getNombre().toLowerCase().contains(strBusqueda))){ //y añadimos las coincidencias
                     coincidencias.add(hotel);
                 }
             }
-
         }
-
-
-       coincidencias.forEach(hotel -> System.out.println(estaAbierto(hotel,busqueda)));
         return coincidencias;
     }
-    private boolean estaAbierto(Hotel hotel, Busqueda busqueda ){
+    private boolean estaAbierto(Hotel hotel, Busqueda busqueda ){ //el hotel esta abierto si la fecha de busqueda está
+        //entre las fechas de apertura del hotel
         if((hotel.getFecha_apertura().isBefore(LocalDate.parse(busqueda.getFechaInicial()))&&
                 (hotel.getFecha_cierre().isAfter(LocalDate.parse(busqueda.getFechaFinal()))))){
             return true;
         }
         return false;
     }
-//    private int obtenerMes(Date fecha){
-//
-//        return Integer.valueOf(fecha.toString().substring(5,7));}
-//    private int obtenerMes(String fecha){
-//
-//        return Integer.valueOf(fecha.toString().substring(5,7));}
-//    private int obtenerDia(Date fecha){
-//
-//        return Integer.valueOf(fecha.toString().substring(8,10));}
-//    private int obtenerDia(String fecha){
-//
-//        return Integer.valueOf(fecha.toString().substring(8,10));}
 
 }
