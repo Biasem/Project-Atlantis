@@ -23,4 +23,10 @@ public class ClienteService {
 
     }
 
+
+    public void guardarCliente(Cliente cliente){
+        clienteRepository.save(cliente);
+    }
+
+
 }

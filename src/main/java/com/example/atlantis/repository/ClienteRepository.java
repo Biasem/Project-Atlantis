@@ -14,6 +14,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
     List<Cliente> obtenerCliente();
 
 
-    @Query(value = "insert into cliente (nombre, apellidos, dni, pais, telefono, email) values (?,?,?,?,?,?)"
-
 }

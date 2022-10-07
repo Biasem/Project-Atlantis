@@ -1,32 +1,33 @@
 package com.example.atlantis.controller;
 
+import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.Login;
+import com.example.atlantis.service.ClienteService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+@RestController
+@RequestMapping("/login")
 public class RegisterController {
 
-//    public class MainController {
-//
-//        @GetMapping("/register")
-//        public String showForm(Model model) {
-//            User user = new User();
-//            model.addAttribute("user", user);
-//
-//            List<String> listProfession = Arrays.asList("Developer", "Tester", "Architect");
-//            model.addAttribute("listProfession", listProfession);
-//
-//            return "register_form";
-//        }
-//
-//    }
+
+    private ClienteService clienteService;
 
 
-//    @PostMapping("/register")
-//    public String submitForm(@ModelAttribute("user") User user) {
-//
-//        return "main";
-//    }
+    @GetMapping("/register")
+    public ModelAndView submitForm(@ModelAttribute Cliente cliente) {
+        ModelAndView model = new ModelAndView("sesion");
+        model.addObject("cliente", cliente);
+
+        return model;
+    }
+
+    @PostMapping("/guardar")
+    public String guardarIngrediente(@RequestBody Cliente cliente){
+        clienteService.guardarCliente(cliente);
+        return "Datos guardados correctamente";
+    }
 
 
 }

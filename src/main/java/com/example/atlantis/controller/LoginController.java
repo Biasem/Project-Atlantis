@@ -1,6 +1,7 @@
 package com.example.atlantis.controller;
 
 
+import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,17 @@ public class LoginController {
 
     }
     @PostMapping("/login")
-    public ModelAndView submitForm1(@ModelAttribute Login login) {
+    public ModelAndView submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
         //List<Login> listaprimera = loginService.getAll();
         ModelAndView model = new ModelAndView("sesion");
         model.addObject("login", login);
         ModelAndView model1 = new ModelAndView("main");
         model1.addObject("login", login);
         boolean cierto = loginService.Buscar(login);
-        if(cierto != true){
-            return model;
-        }else {
+        if(cierto){
             return model1;
-
+        }else {
+            return model;
         }
     }
 
