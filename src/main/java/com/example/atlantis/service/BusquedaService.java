@@ -2,6 +2,7 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,11 +22,15 @@ public class BusquedaService {
         strBusqueda = busqueda.getHotelBuscar().toLowerCase();
 
         for( Hotel hotel:listaHoteles){
-            if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))||
-                    (hotel.getNombre().toLowerCase().contains(strBusqueda))){
-                coincidencias.add(hotel);
+            if(estaAbierto(hotel,busqueda)){
+                if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))||
+                        (hotel.getNombre().toLowerCase().contains(strBusqueda))){
+                    coincidencias.add(hotel);
+                }
             }
+
         }
+
 
        coincidencias.forEach(hotel -> System.out.println(estaAbierto(hotel,busqueda)));
         return coincidencias;
@@ -35,7 +40,6 @@ public class BusquedaService {
                 (hotel.getFecha_cierre().isAfter(LocalDate.parse(busqueda.getFechaFinal()))))){
             return true;
         }
-
         return false;
     }
 //    private int obtenerMes(Date fecha){
