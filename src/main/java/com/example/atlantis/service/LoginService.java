@@ -19,9 +19,11 @@ public class LoginService {
 
 
     public boolean Buscar(Login login){
+        //Lista con todos los registros de login
         List<Login> todos = getAll();
         boolean registrado = false;
 
+        //Validación de si existe el email y el password en un determinado registro, devolviendo un boolean
         for(int i = 0; i < todos.size(); i++ ){
             if(todos.get(i).getEmail().equals(login.getEmail()) && todos.get(i).getPassword().equals(login.getPassword())){
                 registrado = true;

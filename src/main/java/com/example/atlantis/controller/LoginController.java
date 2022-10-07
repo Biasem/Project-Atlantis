@@ -29,15 +29,18 @@ public class LoginController {
 
     }
     @PostMapping("/login")
-    public ModelAndView submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
-        //List<Login> listaprimera = loginService.getAll();
+    public Object submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
+        //Lleva según si es cierto true o false, a la pantalla sesion (false) o main (true)
         ModelAndView model = new ModelAndView("sesion");
         model.addObject("login", login);
         ModelAndView model1 = new ModelAndView("main");
         model1.addObject("login", login);
+        //Metodo que devuelve un true o un false a partir del email y password dado por el usuario
         boolean cierto = loginService.Buscar(login);
+
         if(cierto){
             return model1;
+            //return "redirect: /main";
         }else {
             return model;
         }
