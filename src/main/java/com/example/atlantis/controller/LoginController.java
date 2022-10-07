@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 public class LoginController {
-
+@Autowired
     private LoginService loginService;
 
 //    @GetMapping("/login")
@@ -27,18 +27,29 @@ public class LoginController {
 //    }
 
 
-    @PostMapping("/login")
-    public String submitForm(@ModelAttribute("login") Login login) {
+    @GetMapping("/login")
+    public ModelAndView submitForm(@ModelAttribute Login login) {
         List<Login> listaprimera = loginService.getAll();
-        ModelAndView model = new ModelAndView("main");
+        ModelAndView model = new ModelAndView("sesion");
+        model.addObject("login", login);
+        return model;
+
+    }
+    @PostMapping("/login")
+    public ModelAndView submitForm1(@ModelAttribute Login login) {
+        List<Login> listaprimera = loginService.getAll();
+        ModelAndView model = new ModelAndView("sesion");
+        model.addObject("login", login);
+        ModelAndView model1 = new ModelAndView("main");
         model.addObject("login", login);
         boolean cierto = loginService.Buscar(login);
-        if(cierto = true){
-            return "Bienvenido";
+        if(cierto != true){
+            return model;
         }else {
-            return "login";
+            return model1;
 
         }
     }
+
 
 }

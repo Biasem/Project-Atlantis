@@ -23,11 +23,15 @@ public class LoginService {
         boolean registrado = false;
 
         for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).equals(login)){
+            if(todos.get(i).getEmail().equals(login.getEmail()) && todos.get(i).getPassword().equals(login.getPassword())){
                 registrado = true;
                 break;
             }
+            else {
+                registrado = false;
+            }
         }
+
     return registrado;
     }
 
