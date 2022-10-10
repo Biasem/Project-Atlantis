@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("/login")
 public class RegisterController {
@@ -19,14 +22,6 @@ public class RegisterController {
     private LoginService loginService;
 
 
-    @GetMapping("/register")
-    public ModelAndView submitForm(@ModelAttribute Cliente cliente, Login login) {
-
-        ModelAndView model = new ModelAndView("sesion");
-        model.addObject("cliente", cliente);
-        model.addObject("login", login);
-        return model;
-    }
 
     @PostMapping("/guardar")
     public String guardarCliente(@RequestBody Cliente cliente, Login login){

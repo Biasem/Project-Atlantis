@@ -14,17 +14,17 @@ import java.util.Collections;
 import java.util.List;
 
 
-@Controller
-public class SesionController{
-    @Autowired
-    private HotelService hotelService;
-
-    @Autowired
-    private BusquedaService busquedaService;
-
-    @GetMapping("/login")
-    public ModelAndView listaHotel() {
-        ModelAndView model = new ModelAndView("sesion");
-        return model;
-    }
-}
+//@Controller
+//public class SesionController{
+//    @Autowired
+//    private HotelService hotelService;
+//
+//    @Autowired
+//    private BusquedaService busquedaService;
+//
+//    @GetMapping("/login")
+//    public ModelAndView listaHotel() {
+//        ModelAndView model = new ModelAndView("sesion");
+//        return model;
+//    }
+//}
