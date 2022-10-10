@@ -29,7 +29,7 @@ public class LoginController {
 
     }
     @PostMapping("/login")
-    public Object submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
+    public String submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
         //Lleva según si es cierto true o false, a la pantalla sesion (false) o main (true)
         ModelAndView model = new ModelAndView("sesion");
         model.addObject("login", login);
@@ -39,10 +39,10 @@ public class LoginController {
         boolean cierto = loginService.Buscar(login);
 
         if(cierto){
-            return model1;
+            return "redirect:/main";
             //return "redirect: /main";
         }else {
-            return model;
+            return "sesion";
         }
     }
 
