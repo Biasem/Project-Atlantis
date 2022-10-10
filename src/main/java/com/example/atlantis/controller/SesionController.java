@@ -26,5 +26,7 @@ public class SesionController{
     public ModelAndView listaHotel() {
         ModelAndView model = new ModelAndView("sesion");
         return model;
+
+
     }
 }
