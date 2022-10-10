@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
-public class MainController{
+public class ResultadoController{
 
     @Autowired
     private HotelService hotelService;
@@ -21,22 +21,22 @@ public class MainController{
     @Autowired
     private BusquedaService busquedaService;
 
-    @GetMapping("/main")
+    @GetMapping("/resultado")
     public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda) {
         List<Hotel> listaprimera = hotelService.getAll();
         Collections.shuffle(listaprimera);
         List<Hotel> listaHotel = listaprimera.subList(0, 3);
-        ModelAndView model = new ModelAndView("main");
+        ModelAndView model = new ModelAndView("resultado");
         model.addObject("listaHotel", listaHotel);
         return model;
     }
 
-    @PostMapping("/main")
-    public ModelAndView listaHoteles(@ModelAttribute Busqueda busqueda) {
+    @PostMapping("/resultado")
+    public ModelAndView listaHotelPost(@ModelAttribute Busqueda busqueda) {
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("resultado");
-        List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
-        model.addObject("filtro", filtro);
+        model.addObject("busqueda", busqueda);
+        busquedaService.AccionBuscar(busqueda,listaHoteles);
         return model ;
     }
 }
