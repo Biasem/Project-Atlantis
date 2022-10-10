@@ -26,23 +26,16 @@
     <label>Telefono:</label>
     <input type="text" th:field="*{telefono}" /><br/>
 
-<!--    <label>E-mail:</label>-->
-<!--    <input type="text" th:field="*{email}" /><br/>-->
-
-
-  </form>
-
-  <form action="#" th:action="@{/registerprueba}" method="post" th:object="${login}">
 
     <label>E-mail:</label>
-    <input type="text" th:field="*{email}" /><br/>
+    <input type="text" th:field="*{email.email}"/><br/>
 
 
     <label>Password:</label>
-    <input type="password" th:field="*{password}" /><br/>
-
+    <input type="password" th:field="*{email.password}" /><br/>
+    <button type="submit">Register</button>
   </form>
-  <button type="submit">Register</button>
+
 </div>
 </body>
 </html>

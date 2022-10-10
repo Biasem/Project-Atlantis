@@ -24,9 +24,9 @@ public class RegisterController {
 
 
     @PostMapping("/guardar")
-    public String guardarCliente(@RequestBody Cliente cliente, Login login){
+    public String guardarCliente(@RequestBody Cliente cliente){
         clienteService.guardarCliente(cliente);
-        loginService.guardarLogin(login);
+        loginService.guardarLogin(cliente.getEmail());
         return "Datos guardados correctamente";
     }
 
