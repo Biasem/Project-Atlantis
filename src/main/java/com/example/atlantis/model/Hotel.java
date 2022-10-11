@@ -58,4 +58,5 @@ public class Hotel {
     @JoinColumn(name = "url_imagen_general")
     private String url_imagen_general;
 
+
 }

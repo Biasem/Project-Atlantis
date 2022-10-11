@@ -26,7 +26,7 @@
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
       <div class="container px-4 text-center">
         <h1 class="fw-bolder">Hotel <b th:text="${h.getNombre()}"></b> </h1>
-        <p class="lead"><text th:text="${h.getLocalidad()}"/>,<text th:text="${h.getDireccion()}"/> </p>
+        <p class="lead"><text th:text="${h.getLocalidad()}"/> <text th:text="${h.getDireccion()}"/> </p>
       </div>
     </header>
     <div class="container mt-5">
@@ -38,48 +38,20 @@
           <table class="table bg-white rounded border table-striped table-dark">
             <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Gender</th>
+              <th scope="col">Opción</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Huéspedes</th>
+              <th scope="col">Disponibles</th>
+              <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>9898894003</td>
-              <td>Male</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>9898894309</td>
-              <td>Male</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>Bird</td>
-              <td>9898894309</td>
-              <td>Male</td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>9898894003</td>
-              <td>Male</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>Bird</td>
-              <td>9898894309</td>
-              <td>Male</td>
+            <tr th:each="a:${listaHabitaciones}">
+              <th scope="row" th:text="${a.getId()}"></th>
+              <td th:text="${a.getTipo_hab()}"></td>
+              <td th:text="${a.getMax_cliente()}"></td>
+              <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+              <td><button class="btn btn-primary form-control text-center">Reservar</button></td>
             </tr>
             </tbody>
           </table>
