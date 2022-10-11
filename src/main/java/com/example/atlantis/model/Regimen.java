@@ -24,7 +24,7 @@ public class Regimen {
     private Hotel id_hotel;
 
     @JoinColumn(name = "categoria")
-    private Integer categoria;
+    private TipoRegimen categoria;
 
     @JoinColumn(name = "precio")
     private Double precio;
