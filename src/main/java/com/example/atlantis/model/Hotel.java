@@ -43,7 +43,7 @@ public class Hotel {
     private int num_estrellas;
 
     @JoinColumn(name = "tipo_hotel")
-    private Integer tipo_hotel;
+    private TipoHotel tipo_hotel;
 
     @JoinColumn(name = "telefono")
     private String telefono;
