@@ -24,4 +24,8 @@ public class HotelService {
 
     }
 
+    public void guardarHotel(Hotel hotel){
+        hotelRepository.save(hotel);
+    }
+
 }
