@@ -65,11 +65,11 @@
             </div>
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            <div th:each="h: ${listaHotel}" class="col">
+            <div th:each="h: ${listaHotel}" class="col" th:id="${h.id}" th:object="${numero}">
                 <div class="card"><img th:src="${h.url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
                     <div class="card-body p-4">
                         <p class="text-primary card-text mb-0">Hotel</p>
-                        <h4 th:text="${h.nombre}" class="card-title"></h4>
+                        <h4><a th:text="${h.nombre}" class="card-title" style="color: #1c1f23;text-decoration: none;" th:href="@{/hoteles/item?id={id}(id=${h.getId()})}"></a></h4>
                         <p class="card-text"> Este hotel, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
                         <div class="d-flex"><img th:src="${h.url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
                             <div>
