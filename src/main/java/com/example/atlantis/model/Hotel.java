@@ -3,6 +3,7 @@ package com.example.atlantis.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -33,16 +34,16 @@ public class Hotel {
     private String direccion;
 
     @JoinColumn(name = "fecha_apertura")
-    private Date fecha_apertura;
+    private LocalDate fecha_apertura;
 
     @JoinColumn(name = "fecha_cierre")
-    private Date fecha_cierre;
+    private LocalDate fecha_cierre;
 
     @JoinColumn(name = "num_estrellas")
     private int num_estrellas;
 
     @JoinColumn(name = "tipo_hotel")
-    private Integer tipo_hotel;
+    private TipoHotel tipo_hotel;
 
     @JoinColumn(name = "telefono")
     private String telefono;

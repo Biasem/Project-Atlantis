@@ -9,13 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-
 @Controller
 public class MainController{
+
     @Autowired
     private HotelService hotelService;
 
@@ -29,6 +29,8 @@ public class MainController{
         List<Hotel> listaHotel = listaprimera.subList(0, 3);
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
+        model.addObject("fechamin", LocalDate.now());
+
         return model;
     }
 
@@ -37,6 +39,7 @@ public class MainController{
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("resultado");
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
+        model.addObject("fechamin", LocalDate.now());
         model.addObject("filtro", filtro);
         return model ;
     }

@@ -3,6 +3,7 @@ package com.example.atlantis.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,10 +30,10 @@ public class Precio_Hab {
     private Hotel id_hotel;
 
     @Column(name = "fecha_inicio")
-    private Date fecha_inicio;
+    private LocalDate fecha_inicio;
 
     @Column(name = "fecha_fin")
-    private Date fecha_fin;
+    private LocalDate fecha_fin;
 
     @Column(name = "precio")
     private Double precio;

@@ -1,4 +1,5 @@
 package com.example.atlantis.controller;
+import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,18 @@ import java.util.List;
 @Controller
 public class PruebaController{
 
-    @RestController
-    public class HamburguesaController {
         @Autowired
         private ClienteService clienteService;
 
         @Autowired
         private HotelService hotelService;
 
-        @RequestMapping("/clientes")
-        public List<Hotel> getCliente(){
-            return hotelService.getAll() ;
+        @GetMapping("/busqueda")
+        public ModelAndView getBusqueda(@ModelAttribute List<Hotel> listaHoteles){
+            ModelAndView model = new ModelAndView("codigosucio");
+            model.addObject("listaHotel", listaHoteles);
+            return model;
+
         }
         @RequestMapping("/greeting")
         public ModelAndView listClientes(){
@@ -34,8 +36,5 @@ public class PruebaController{
             model.addObject("listClientes", listClientes);
             return model ;
         }
-
-
-    }
 
 }

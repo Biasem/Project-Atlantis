@@ -24,7 +24,7 @@ public class Habitaciones {
     private Hotel id_hotel;
 
     @JoinColumn(name = "tipo_hab")
-    private Integer tipo_hab;
+    private TipoHab tipo_hab;
 
     @JoinColumn(name = "num_hab")
     private Integer num_hab;
