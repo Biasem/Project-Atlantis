@@ -26,7 +26,7 @@ public class HabitacionesService {
         return habitacionesRepository.findById(id).orElse(null);
     }
 
-    public List<Habitaciones> conseguir(BuscadorID numero, List<Habitaciones> lista){
+    public List<Habitaciones> conseguir(Integer numero, List<Habitaciones> lista){
         List<Habitaciones> habitauwu = new ArrayList<>();
         for (Habitaciones x: lista){
             if (x.getId_hotel().getId().equals(numero)){

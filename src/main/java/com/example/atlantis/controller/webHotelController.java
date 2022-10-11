@@ -36,11 +36,11 @@ public class webHotelController {
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
         BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
-        List<Habitaciones> habitacionesfinal = habitacionesService.conseguir(numero,listaHabitaciones);
         hotelfinal.add(definitivo);
         ModelAndView model = new ModelAndView("hotelWeb");
         model.addObject("hotelfinal", hotelfinal);
-        model.addObject("listaHabitaciones", listaHabitaciones);
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
+
         return model;
     }
 }
