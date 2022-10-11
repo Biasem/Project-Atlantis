@@ -30,7 +30,7 @@ public class MainController{
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         model.addObject("fechamin", LocalDate.now());
-
+        model.addObject("busqueda", busqueda);
         return model;
     }
 
