@@ -43,4 +43,9 @@ public class MainController{
         model.addObject("filtro", filtro);
         return model ;
     }
+
+    @GetMapping("/")
+    public String irAMain() {
+        return "main";
+    }
 }
