@@ -35,7 +35,15 @@ public class Cliente {
     private String telefono;
 
     @JoinColumn(name = "email")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Login email;
 
+    public Cliente(String nombre, String apellidos, String dni, String pais, String telefono, Login email) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.pais = pais;
+        this.telefono = telefono;
+        this.email = email;
+    }
 }

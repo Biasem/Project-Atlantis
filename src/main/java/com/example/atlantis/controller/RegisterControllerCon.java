@@ -41,11 +41,17 @@ public class RegisterControllerCon {
 
     @PostMapping("/register")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
-        clienteService.guardarCliente(cliente);
-        loginService.guardarLogin(cliente.getEmail());
-        System.out.println(cliente);
+//        if(cliente.getNombre() != null && cliente.getApellidos() != null && cliente.getEmail().getEmail() != null &&
+//        cliente.getEmail().getPassword() != null && cliente.getDni() != null && clienteService.validarDNI(cliente.getDni()) != false) {
 
-        return "registerfinal";
-    }
+            clienteService.guardarCliente(cliente);
+            System.out.println(cliente);
+
+            return "registerfinal";
+
+//        }else{
+//            return "Datos incorrectos";
+//        }
+   }
 
 }

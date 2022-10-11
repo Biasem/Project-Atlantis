@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
+
 @Service
 public class ClienteService {
 
@@ -24,10 +26,12 @@ public class ClienteService {
     }
 
 
-    public void guardarCliente(Cliente cliente){
 
+
+    public void guardarCliente(Cliente cliente){
         clienteRepository.save(cliente);
     }
+
 
 
 
