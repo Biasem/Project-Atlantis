@@ -21,8 +21,15 @@
 </head>
 
 <body class="bg-white">
-<nav th:include="navMenu.html"></nav>
-
+  <nav th:include="navMenu.html"></nav>
+  <div th:each="h: ${hotelfinal}">
+    <header class="bg-primary bg-gradient text-white" style="background-image: url("th:url="${h.url_imagen_general}"")">
+      <div class="container px-4 text-center">
+        <h1 class="fw-bolder">Hotel <b th:text="${h.getNombre()}"></b> </h1>
+        <p class="lead"><text th:text="${h.getLocalidad()}"></text> </p>
+      </div>
+    </header>
+  </div>
 <br>
 <br>
 <br>

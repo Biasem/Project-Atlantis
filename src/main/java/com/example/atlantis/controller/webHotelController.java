@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.example.atlantis.service.BuscadorIDService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,13 +23,16 @@ public class webHotelController {
     @Autowired
     private BuscadorIDService buscadorService;
 
-    @RequestMapping(value="hoteles", method = RequestMethod.GET)
-    public @ResponseBody ModelAndView resultadoHotel(@RequestParam("item") String itemid) {
+    @RequestMapping("/hoteles/{item}")
+    public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
+                                                     @RequestParam(value = "id") Integer id) {
         List<Hotel> listaHoteles = hotelService.getAll();
-        BuscadorID numero = new BuscadorID(Integer.valueOf(itemid));
+        List<Hotel> hotelfinal = new ArrayList<>();
+        BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
+        hotelfinal.add(definitivo);
         ModelAndView model = new ModelAndView("hotelWeb");
-        model.addObject("definitivo", definitivo);
+        model.addObject("hotelfinal", hotelfinal);
         return model;
     }
 }
