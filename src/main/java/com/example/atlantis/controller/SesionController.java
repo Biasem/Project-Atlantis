@@ -27,4 +27,10 @@ public class SesionController{
         ModelAndView model = new ModelAndView("sesion");
         return model;
     }
+
+    @GetMapping("/registro")
+    public ModelAndView registro() {
+        ModelAndView model = new ModelAndView("registrousuario");
+        return model;
+    }
 }

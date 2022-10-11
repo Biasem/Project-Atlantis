@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import com.example.atlantis.service.BuscadorIDService;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,23 +20,15 @@ public class webHotelController {
     private HotelService hotelService;
 
     @Autowired
-    private BusquedaService busquedaService;
+    private BuscadorIDService buscadorService;
 
-    @GetMapping("/hotel")
-    public ModelAndView resultadoHotel(@ModelAttribute BuscadorID numero) {
-        Hotel resultado = new Hotel();
-        resultado = hotelService.getById(numero.getNumID());
-        ModelAndView model = new ModelAndView("webHotel");
-        model.addObject("resultado", resultado);
-        return model;
-    }
-
-    @PostMapping("/resultado")
-    public ModelAndView listaHotelPost(@ModelAttribute Busqueda busqueda) {
+    @RequestMapping(value="hoteles", method = RequestMethod.GET)
+    public @ResponseBody ModelAndView resultadoHotel(@RequestParam("item") String itemid) {
         List<Hotel> listaHoteles = hotelService.getAll();
-        ModelAndView model = new ModelAndView("resultado");
-        model.addObject("busqueda", busqueda);
-        busquedaService.AccionBuscar(busqueda,listaHoteles);
-        return model ;
+        BuscadorID numero = new BuscadorID(Integer.valueOf(itemid));
+        Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
+        ModelAndView model = new ModelAndView("hotelWeb");
+        model.addObject("definitivo", definitivo);
+        return model;
     }
 }
