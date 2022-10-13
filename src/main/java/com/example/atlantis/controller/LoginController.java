@@ -22,7 +22,6 @@ public class LoginController {
 
     @GetMapping("/login")
     public ModelAndView submitForm(@ModelAttribute Login login) {
-        List<Login> listaprimera = loginService.getAll();
         ModelAndView model = new ModelAndView("sesion");
         model.addObject("login", login);
         return model;

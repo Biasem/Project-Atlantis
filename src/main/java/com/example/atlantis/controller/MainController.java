@@ -30,7 +30,7 @@ public class MainController{
         ModelAndView model = new ModelAndView("main");
         model.addObject("listaHotel", listaHotel);
         model.addObject("fechamin", LocalDate.now());
-
+        model.addObject("busqueda", busqueda);
         return model;
     }
 
@@ -39,8 +39,18 @@ public class MainController{
         List<Hotel> listaHoteles = hotelService.getAll();
         ModelAndView model = new ModelAndView("resultado");
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
+        if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
+        {
+            return new ModelAndView("redirect:main");
+        }
         model.addObject("fechamin", LocalDate.now());
         model.addObject("filtro", filtro);
+        System.out.println(busqueda.getHotelBuscar());
         return model ;
+    }
+
+    @GetMapping("/")
+    public String irAMain() {
+        return "main";
     }
 }

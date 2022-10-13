@@ -19,12 +19,12 @@ public class Habitaciones {
     @JoinColumn(name = "id")
     private Integer id;
 
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_hotel")
-    @ManyToOne
     private Hotel id_hotel;
 
     @JoinColumn(name = "tipo_hab")
-    private Integer tipo_hab;
+    private TipoHab tipo_hab;
 
     @JoinColumn(name = "num_hab")
     private Integer num_hab;
