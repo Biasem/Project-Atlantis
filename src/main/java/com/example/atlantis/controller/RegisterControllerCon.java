@@ -47,17 +47,17 @@ public class RegisterControllerCon {
 
     @PostMapping("/register")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
-//        if(cliente.getNombre() != null && cliente.getApellidos() != null && cliente.getEmail().getEmail() != null &&
-//        cliente.getEmail().getPassword() != null && cliente.getDni() != null && clienteService.validarDNI(cliente.getDni()) != false) {
+        if(cliente.getNombre() != null && cliente.getApellidos() != null && cliente.getEmail().getEmail() != null &&
+        cliente.getEmail().getPassword() != null && cliente.getDni() != null && clienteService.validarDNI(cliente.getDni()) != false) {
 
             clienteService.guardarCliente(cliente);
             System.out.println(cliente);
 
             return "registerfinal";
 
-//        }else{
-//            return "Datos incorrectos";
-//        }
+        }else{
+            return "Datos incorrectos";
+        }
    }
 
 
@@ -69,6 +69,15 @@ public class RegisterControllerCon {
 
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
+
+        List<String> listlocalidad = Arrays.asList("Sevilla", "Madrid", "Granada");
+        model.addAttribute("listlocalidad", listlocalidad);
+
+        List<String> listestrellas = Arrays.asList("1", "2", "3", "4", "5");
+        model.addAttribute("listestrellas", listestrellas);
+
+        List<String> listtiphotel = Arrays.asList("HOSTAL", "HOTEL", "APARTAHOTEL", "APARTAMENTO");
+        model.addAttribute("listtiphotel", listtiphotel);
 
         return "registerprueba";
     }
