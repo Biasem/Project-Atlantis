@@ -29,32 +29,50 @@
         <p class="lead"><text th:text="${h.getLocalidad()}"/> <text th:text="${h.getDireccion()}"/> </p>
       </div>
     </header>
-    <div class="container mt-5">
+    <div class="container mt-5" th:action="" th:object="${}">
 
       <div class="row">
 
         <div class="col-md-8 mx-auto">
 
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Entrada</th>
+                <th scope="col">Salida</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input class="inputbox textmuted" type="date"></td>
+                <td><input class="inputbox textmuted " type="date"></td>
+              </tr>
+            </tbody>
+          </table>
+
           <table class="table bg-white rounded border table-striped table-dark">
             <thead>
             <tr>
-              <th scope="col">Opción</th>
               <th scope="col">Tipo</th>
               <th scope="col">Huéspedes</th>
               <th scope="col">Disponibles</th>
-              <th scope="col"></th>
+              <th scope="col">Nº Habitaciones</th>
+              <th scope="col">Régimen</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="a:${listaHabitaciones}">
-              <th scope="row" th:text="${a.getId()}"></th>
               <td th:text="${a.getTipo_hab()}"></td>
               <td th:text="${a.getMax_cliente()}"></td>
               <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
-              <td><button class="btn btn-primary form-control text-center">Reservar</button></td>
+              <td> <input type="number"></td>
+              <td><select>
+                <option th:each="x: ${regimen}"><b th:text="${x.name()}"></b></option>
+              </select></td>
             </tr>
             </tbody>
           </table>
+          <button class="btn btn-primary form-control text-center">Reservar</button>
 
         </div>
 
