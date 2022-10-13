@@ -38,9 +38,11 @@ public class webHotelController {
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = hotelService.todoregimen();
         ModelAndView model = new ModelAndView("hotelWeb");
+        Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
         model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
+        model.addObject("estrellas",estrellas);
         return model;
     }
 
