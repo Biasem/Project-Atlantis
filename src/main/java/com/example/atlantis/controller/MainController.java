@@ -5,7 +5,6 @@ import com.example.atlantis.service.BusquedaService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,7 +35,7 @@ public class MainController{
 
     @GetMapping("/hoteleditar")
     public ModelAndView registrarHotel() {
-        ModelAndView model = new ModelAndView("adminHotel");
+        ModelAndView model = new ModelAndView("registroHotel");
         return model;
     }
 
