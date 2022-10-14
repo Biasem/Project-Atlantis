@@ -1,9 +1,7 @@
 package com.example.atlantis.service;
 
 
-import com.example.atlantis.model.BuscadorID;
-import com.example.atlantis.model.Habitaciones;
-import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HabitacionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,19 @@ public class HabitacionesService {
             }
         }
         return habitauwu;
+    }
+
+    public List<TipoHab> todoHab(){
+        List<TipoHab> hab = new ArrayList<>();
+        hab.add(TipoHab.SIMPLE);
+        hab.add(TipoHab.DOBLE);
+        hab.add(TipoHab.TRIPLE);
+        hab.add(TipoHab.SUITE);
+        return hab;
+    }
+
+    public void guardarHabitacion(Habitaciones habitacion){
+        habitacionesRepository.save(habitacion);
     }
 
 }
