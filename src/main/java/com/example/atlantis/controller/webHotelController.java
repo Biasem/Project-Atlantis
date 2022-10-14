@@ -1,18 +1,16 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
-import com.example.atlantis.service.BusquedaService;
-import com.example.atlantis.service.HabitacionesService;
-import com.example.atlantis.service.HotelService;
+import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.example.atlantis.service.BuscadorIDService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class webHotelController {
@@ -26,6 +24,9 @@ public class webHotelController {
     @Autowired
     private HabitacionesService habitacionesService;
 
+    @Autowired
+    private RegimenService regimenService;
+
 
     @RequestMapping("/hoteles/{item}")
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
@@ -36,7 +37,7 @@ public class webHotelController {
         BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
         hotelfinal.add(definitivo);
-        List<TipoRegimen> regimen = hotelService.todoregimen();
+        List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
         ModelAndView model = new ModelAndView("hotelWeb");
         Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("hotelfinal", hotelfinal);
