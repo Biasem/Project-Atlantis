@@ -1,8 +1,10 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.service.ClienteService;
+import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ public class RegisterController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private HotelService hotelService;
 
 
     @PostMapping("/guardar")
@@ -30,5 +34,11 @@ public class RegisterController {
         return "Datos guardados correctamente";
     }
 
+    @PostMapping("/guardarhotel")
+    public String guardarHotel(@RequestBody Hotel hotel){
+        hotelService.guardarHotel(hotel);
+        loginService.guardarLogin(hotel.getEmail());
+        return "Datos guardados correctamente";
+    }
 
 }

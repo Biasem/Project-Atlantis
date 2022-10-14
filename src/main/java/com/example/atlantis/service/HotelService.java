@@ -36,4 +36,8 @@ public class HotelService {
         return regimen;
     }
 
+    public void guardarHotel(Hotel hotel){
+        hotelRepository.save(hotel);
+    }
+
 }

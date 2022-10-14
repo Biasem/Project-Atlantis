@@ -34,10 +34,9 @@ public class RegisterControllerCon {
     public String registerForm(Model model, @ModelAttribute Cliente cliente) {
 
         Cliente cliente1 = cliente;
-//        Login login1 = login;
+
 
         model.addAttribute("cliente", cliente1);
-//        model.addAttribute("login", login1);
 
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
@@ -79,17 +78,17 @@ public class RegisterControllerCon {
         List<String> listtiphotel = Arrays.asList("HOSTAL", "HOTEL", "APARTAHOTEL", "APARTAMENTO");
         model.addAttribute("listtiphotel", listtiphotel);
 
-        return "registerprueba";
+        return "registerHotel";
     }
 
 
     @PostMapping("/registerhotel")
-    public String registerForm(@ModelAttribute("hotel") Hotel hotel) {
+    public String registerhotelForm(@ModelAttribute("hotel") Hotel hotel) {
 
         hotelService.guardarHotel(hotel);
         System.out.println(hotel);
 
-        return "registerfinal";
+        return "registerHotelfinal";
 
     }
 
