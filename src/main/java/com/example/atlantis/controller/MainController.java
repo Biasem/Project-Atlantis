@@ -35,7 +35,7 @@ public class MainController{
 
     @GetMapping("/hoteleditar")
     public ModelAndView registrarHotel() {
-        ModelAndView model = new ModelAndView("registroHotel");
+        ModelAndView model = new ModelAndView("registrohotel");
         return model;
     }
 

@@ -27,7 +27,7 @@
 <br>
 <br>
 <br>
-<form>
+<form action="#" th:action="@{/registrohotel}" method="post" th:object="${hotel}" class="container px-4" >
   <div class="form-group row">
     <label for="nombre" class="col-4 col-form-label">Nombre:</label>
     <div class="col-8">
@@ -37,12 +37,12 @@
             <i class="fa fa-align-center"></i>
           </div>
         </div>
-        <input id="nombre" name="nombre" placeholder="Nombre" type="text" class="form-control">
+        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control">
       </div>
     </div>
   </div>
   <div class="form-group row">
-    <label for="pais" class="col-4 col-form-label">País:</label>
+    <label  class="col-4 col-form-label">País:</label>
     <div class="col-8">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -50,12 +50,14 @@
             <i class="fa fa-globe"></i>
           </div>
         </div>
-        <input id="pais" name="pais" placeholder="País" type="text" class="form-control">
+        <select th:field="*{pais}">
+          <option th:each="p : ${listpais}" th:value="${p}" th:text="${p}" />
+        </select>
       </div>
     </div>
   </div>
   <div class="form-group row">
-    <label for="localidad" class="col-4 col-form-label">Localidad:</label>
+    <label class="col-4 col-form-label">Localidad:</label>
     <div class="col-8">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -63,7 +65,9 @@
             <i class="fa fa-resistance"></i>
           </div>
         </div>
-        <input id="localidad" name="localidad" placeholder="Localidad" type="text" class="form-control">
+        <select th:field="*{localidad}">
+          <option th:each="p : ${listlocalidad}" th:value="${p}" th:text="${p}"  />
+        </select>
       </div>
     </div>
   </div>
@@ -76,32 +80,64 @@
             <i class="fa fa-map-pin"></i>
           </div>
         </div>
-        <input id="direccion" name="direccion" placeholder="Dirección" type="text" class="form-control">
+        <input id="direccion" name="direccion" placeholder="Dirección" type="text" th:field="*{direccion}" class="form-control">
       </div>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-4">Estrellas</label>
+    <label for="direccion" class="col-4 col-form-label">Fecha Apertura:</label>
     <div class="col-8">
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="estrellas" id="estrellas_0" type="radio" class="custom-control-input" value="uno">
-        <label for="estrellas_0" class="custom-control-label">1 ★</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="far fa-building"></i>
+          </div>
+        </div>
+<input class="inputbox textmuted" type="date">
+  </div>
+  </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="direccion" class="col-4 col-form-label">Fecha Cierre:</label>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fas fa-building"></i>
+          </div>
+        </div>
+        <input class="inputbox textmuted" type="date" >
       </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="estrellas" id="estrellas_1" type="radio" class="custom-control-input" value="dos">
-        <label for="estrellas_1" class="custom-control-label">2 ★★</label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label  class="col-4 col-form-label">Estrellas:</label>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fas fa-trophy"></i>
+          </div>
+        </div>
+        <select th:field="*{num_estrellas}">
+          <option th:each="p : ${listestrellas}" th:value="${p}" th:text="${p}" />
+        </select>
       </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="estrellas" id="estrellas_2" type="radio" class="custom-control-input" value="tres">
-        <label for="estrellas_2" class="custom-control-label">3 ★★★</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="estrellas" id="estrellas_3" type="radio" class="custom-control-input" value="cuatro">
-        <label for="estrellas_3" class="custom-control-label">4 ★★★★</label>
-      </div>
-      <div class="custom-control custom-radio custom-control-inline">
-        <input name="estrellas" id="estrellas_4" type="radio" class="custom-control-input" value="cinco">
-        <label for="estrellas_4" class="custom-control-label">5 ★★★★★</label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label  class="col-4 col-form-label">Tipo Hotel:</label>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-globe"></i>
+          </div>
+        </div>
+        <select th:field="*{tipo_hotel}">
+          <option th:each="p : ${listtiphotel}" th:value="${p}" th:text="${p}" />
+        </select>
       </div>
     </div>
   </div>
@@ -114,7 +150,7 @@
             <i class="fa fa-phone"></i>
           </div>
         </div>
-        <input id="telefono" name="telefono" placeholder="Teléfono" type="text" class="form-control">
+        <input id="telefono" name="telefono" placeholder="Teléfono" type="text" th:field="*{telefono}" class="form-control">
       </div>
     </div>
   </div>
@@ -127,10 +163,24 @@
             <i class="fa fa-envelope"></i>
           </div>
         </div>
-        <input id="email" name="email" placeholder="Email" type="text" class="form-control">
+        <input id="email" name="email" placeholder="Email" type="text" th:field="*{email.email}" class="form-control">
       </div>
     </div>
   </div>
+  <div class="form-group row">
+    <label for="email" class="col-4 col-form-label">Email</label>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-envelope"></i>
+          </div>
+        </div>
+        <input id="password" name="password" placeholder="password" type="password" th:field="*{email.password}" class="form-control">
+      </div>
+    </div>
+  </div>
+
   <div class="form-group row">
     <label for="icono" class="col-4 col-form-label">Icono</label>
     <div class="col-8">
@@ -140,7 +190,7 @@
             <i class="fa fa-file-image-o"></i>
           </div>
         </div>
-        <input id="icono" name="icono" placeholder="URL Icono" type="text" class="form-control">
+        <input id="icono" name="icono" placeholder="URL Icono" type="text" th:field="*{url_icono}"class="form-control">
       </div>
     </div>
   </div>
@@ -153,7 +203,7 @@
             <i class="fa fa-image"></i>
           </div>
         </div>
-        <input id="banner" name="banner" placeholder="URL Banner" type="text" class="form-control">
+        <input id="banner" name="banner" placeholder="URL Banner" type="text" th:field="*{url_imagen_general}" class="form-control">
       </div>
     </div>
   </div>

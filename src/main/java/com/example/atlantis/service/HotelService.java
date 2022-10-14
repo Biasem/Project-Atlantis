@@ -26,6 +26,10 @@ public class HotelService {
 
     }
 
+    public void guardarHotel(Hotel hotel){
+        hotelRepository.save(hotel);
+    }
+
     public List<TipoRegimen> todoregimen(){
         List<TipoRegimen> regimen = new ArrayList<>();
         regimen.add(TipoRegimen.DESAYUNO);
@@ -36,8 +40,5 @@ public class HotelService {
         return regimen;
     }
 
-    public void guardarHotel(Hotel hotel){
-        hotelRepository.save(hotel);
-    }
 
 }
