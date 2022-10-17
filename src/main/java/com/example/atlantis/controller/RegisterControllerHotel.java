@@ -46,9 +46,10 @@ public class RegisterControllerHotel {
 
     @PostMapping("/registrohotel")
     public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
-        if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null && hotel.getLocalidad() != null
-                && hotel.getFecha_apertura() != null && hotel.getFecha_cierre() != null
-                && hotel.getTipo_hotel() != null
+        if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
+                && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
+                && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
+                && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
 
             hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
@@ -59,7 +60,6 @@ public class RegisterControllerHotel {
 
             return "redirect:/registrohotel";
         }
-
 
     }
 }
