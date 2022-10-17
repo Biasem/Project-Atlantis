@@ -34,10 +34,10 @@ public class RegisterControllerCon {
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
 
-        return "registerprueba";
+        return "registrocliente";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registrocliente")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
         if(cliente.getNombre() != null && cliente.getApellidos() != null
                 && cliente.getEmail().getEmail() != null &&
