@@ -1,6 +1,7 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.RegisHotFech;
 import com.example.atlantis.model.Rol;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -37,23 +40,21 @@ public class RegisterControllerHotel {
         List<String> listestrellas = Arrays.asList("1", "2", "3", "4", "5");
         model.addAttribute("listestrellas", listestrellas);
 
-
         return "registrohotel";
     }
 
 
     @PostMapping("/registrohotel")
-    public String registerhotelForm(@ModelAttribute("hotel") Hotel hotel) {
+    public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
         if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null && hotel.getLocalidad() != null
-                //&& hotel.getFecha_apertura() != null && hotel.getFecha_cierre() != null
+                && hotel.getFecha_apertura() != null && hotel.getFecha_cierre() != null
                 && hotel.getTipo_hotel() != null
                 && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
 
-            hotel.getEmail().setRol(Rol.HOTEL);
-            hotelService.guardarHotel(hotel);
-            System.out.println(hotel);
+            hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
+            System.out.println(hotelService.convertirAHotel(hotel));
 
-            return "registerhotelfinal";
+            return "redirect:/main";
         } else {
 
             return "redirect:/registrohotel";

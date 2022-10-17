@@ -29,7 +29,6 @@ public class RegisterControllerCon {
 
         Cliente cliente1 = cliente;
 
-
         model.addAttribute("cliente", cliente1);
 
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
@@ -40,14 +39,16 @@ public class RegisterControllerCon {
 
     @PostMapping("/register")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
-        if(cliente.getNombre() != null && cliente.getApellidos() != null && cliente.getEmail().getEmail() != null &&
-        cliente.getEmail().getPassword() != null && cliente.getDni() != null && clienteService.validarDNI(cliente.getDni()) != false) {
+        if(cliente.getNombre() != null && cliente.getApellidos() != null
+                && cliente.getEmail().getEmail() != null &&
+        cliente.getEmail().getPassword() != null && cliente.getDni() != null
+                && clienteService.validarDNI(cliente.getDni()) != false) {
 
             cliente.getEmail().setRol(Rol.CLIENTE);
             clienteService.guardarCliente(cliente);
             System.out.println(cliente);
 
-            return "registerfinal";
+            return "redirect:/main";
 
         }else{
 

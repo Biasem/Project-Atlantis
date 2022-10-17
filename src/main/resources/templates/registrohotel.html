@@ -93,7 +93,7 @@
             <i class="far fa-building"></i>
           </div>
         </div>
-<input class="inputbox textmuted" type="date">
+<input class="inputbox textmuted" type="date" th:field="*{fecha_apertura}" th:min="${fechamin}">
   </div>
   </div>
   </div>
@@ -107,7 +107,7 @@
             <i class="fas fa-building"></i>
           </div>
         </div>
-        <input class="inputbox textmuted" type="date" >
+        <input class="inputbox textmuted" type="date" th:field="*{fecha_cierre}" th:min="${fechamin}">
       </div>
     </div>
   </div>

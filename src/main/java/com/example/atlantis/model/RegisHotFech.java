@@ -3,10 +3,9 @@ package com.example.atlantis.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,8 +14,34 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RegisHotFech {
 
-    private String fechaapertura;
 
-    private String fechacierre;
+    private Integer id;
+
+    private String nombre;
+
+    private String pais;
+
+    private String localidad;
+
+    private String direccion;
+
+    private String fecha_apertura;
+
+    private String fecha_cierre;
+
+    private int num_estrellas;
+
+    private TipoHotel tipo_hotel;
+
+    private String telefono;
+
+    @JoinColumn(name = "email")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Login email;
+
+    private String url_icono;
+
+    private String url_imagen_general;
+
 
 }
