@@ -3,6 +3,7 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.RegisHotFech;
 import com.example.atlantis.model.Rol;
+import com.example.atlantis.model.TipoHotel;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class RegisterControllerHotel {
         List<String> listtiphotel = Arrays.asList("HOSTAL", "HOTEL", "APARTAHOTEL", "APARTAMENTO");
         model.addAttribute("listtiphotel", listtiphotel);
 
-        List<String> listestrellas = Arrays.asList("1", "2", "3", "4", "5");
+        List<String> listestrellas = Arrays.asList("0","1", "2", "3", "4", "5");
         model.addAttribute("listestrellas", listestrellas);
 
         return "registrohotel";
@@ -51,6 +52,10 @@ public class RegisterControllerHotel {
                 && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
+
+            if(hotelService.siEsApartaHotel(hotel) != true){
+                hotel.setNum_estrellas(0);
+            }
 
             hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
             System.out.println(hotelService.convertirAHotel(hotel));

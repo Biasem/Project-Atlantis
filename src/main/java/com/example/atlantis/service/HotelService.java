@@ -47,6 +47,19 @@ public class HotelService {
         return hotel1;
     }
 
+    public boolean siEsApartaHotel(RegisHotFech hotel){
+
+        boolean i = false;
+
+        if(hotel.getTipo_hotel().equals(TipoHotel.APARTAMENTO)){
+            i = false;
+        }else{
+            i = true;
+        }
+        return i;
+    }
+
+
     public void guardarHotel(Hotel hotel){
         hotelRepository.save(hotel);
     }
