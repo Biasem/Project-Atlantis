@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +50,36 @@ public class AdminController{
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
         ModelAndView model = new ModelAndView("adminHabitaciones");
         model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
+        return model;
+    }
+
+    @RequestMapping("/admin/habitaciones/borrar/{item}")
+    public @ResponseBody ModelAndView borrarHabitacion(@PathVariable(value="item") String numerito,
+                                                     @RequestParam(value = "id") Integer id) {
+        habitacionesService.borrarHabitacion(id);
+        ModelAndView model = new ModelAndView("adminHecho");
+        return model;
+    }
+
+    @RequestMapping("/admin/habitaciones/editar/{item}")
+    public @ResponseBody ModelAndView editarHabitacion(@PathVariable(value="item") String numerito,
+                                                       @RequestParam(value = "id") Integer id) {
+        List<Habitaciones> habitacion = new ArrayList<>();
+        habitacion.add(habitacionesService.getById(id));
+        List<TipoHab> tipohab = habitacionesService.todoHab();
+        ModelAndView model = new ModelAndView("adminHabitacionEditar");
+        model.addObject("tipohab", tipohab);
+        model.addObject("habitacion", habitacion);
+        model.addObject("habitaciones", new Habitaciones());
+        return model;
+    }
+
+    @RequestMapping("/admin/habitaciones/editar/hecho/{item}")
+    public @ResponseBody ModelAndView editarHabitacionhecho(@PathVariable(value="item") String numerito,
+                                                       @RequestParam(value = "id") Integer id,
+                                                       @ModelAttribute Habitaciones habitaciones) {
+        habitacionesService.editarHabitacion(id, habitaciones);
+        ModelAndView model = new ModelAndView("adminHecho");
         return model;
     }
 

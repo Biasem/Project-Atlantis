@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -49,5 +50,18 @@ public class HabitacionesService {
     public void guardarHabitacion(Habitaciones habitacion){
         habitacionesRepository.save(habitacion);
     }
+    public void borrarHabitacion(Integer id){
+        habitacionesRepository.deleteAllById(Collections.singleton(id));
+    }
 
+    public void editarHabitacion(Integer id, Habitaciones habitacion){
+       List<Habitaciones> lista = habitacionesRepository.getHabitacionesById(id);
+       for (Habitaciones x: lista){
+           x.setNum_hab(habitacion.getNum_hab());
+           x.setTipo_hab(habitacion.getTipo_hab());
+           x.setHab_ocupadas(habitacion.getHab_ocupadas());
+           x.setMax_cliente(habitacion.getMax_cliente());
+           habitacionesRepository.save(x);
+       }
+    }
 }
