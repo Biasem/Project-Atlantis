@@ -23,7 +23,7 @@ public class Login {
     @JoinColumn(name = "password")
     private String password;
 
-    @JoinColumn(name = "es_cliente")
-    private boolean es_cliente;
+    @JoinColumn(name = "rol")
+    private Rol rol;
 
 }

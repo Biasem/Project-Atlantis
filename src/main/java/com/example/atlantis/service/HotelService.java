@@ -1,12 +1,11 @@
 package com.example.atlantis.service;
 
-import com.example.atlantis.model.Cliente;
-import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.TipoRegimen;
+import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,45 @@ public class HotelService {
 
     }
 
+    public Hotel convertirAHotel(RegisHotFech hotel){
+
+        hotel.getEmail().setRol(Rol.HOTEL);
+
+        Hotel hotel1 = new Hotel();
+
+        hotel1.setNombre(hotel.getNombre());
+        hotel1.setPais(hotel.getPais());
+        hotel1.setLocalidad(hotel.getLocalidad());
+        hotel1.setDireccion(hotel.getDireccion());
+        hotel1.setFecha_apertura(LocalDate.parse(hotel.getFecha_apertura()));
+        hotel1.setFecha_cierre(LocalDate.parse(hotel.getFecha_cierre()));
+        hotel1.setNum_estrellas(hotel.getNum_estrellas());
+        hotel1.setTelefono(hotel.getTelefono());
+        hotel1.setTipo_hotel(hotel.getTipo_hotel());
+        hotel1.setUrl_icono(hotel.getUrl_icono());
+        hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
+        hotel1.setEmail(hotel.getEmail());
+
+        return hotel1;
+    }
+
+    public boolean siEsApartaHotel(RegisHotFech hotel){
+
+        boolean i = false;
+
+        if(hotel.getTipo_hotel().equals(TipoHotel.APARTAMENTO)){
+            i = false;
+        }else{
+            i = true;
+        }
+        return i;
+    }
+
+
+    public void guardarHotel(Hotel hotel){
+        hotelRepository.save(hotel);
+    }
+
     public List<TipoRegimen> todoregimen(){
         List<TipoRegimen> regimen = new ArrayList<>();
         regimen.add(TipoRegimen.DESAYUNO);
@@ -35,5 +73,6 @@ public class HotelService {
         regimen.add(TipoRegimen.TODO_INCLUIDO);
         return regimen;
     }
+
 
 }

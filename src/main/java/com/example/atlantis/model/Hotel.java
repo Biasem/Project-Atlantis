@@ -49,7 +49,7 @@ public class Hotel {
     private String telefono;
 
     @JoinColumn(name = "email")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Login email;
 
     @JoinColumn(name = "url_icono")
