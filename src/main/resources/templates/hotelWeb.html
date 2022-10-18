@@ -69,8 +69,8 @@
               <td th:text="${a.getMax_cliente()}"></td>
               <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
               <td> <input type="number" th:field="*{num}"></td>
-              <td><select>
-                <option th:each="x: ${regimen}"><b th:text="${x.name()}"></b></option>
+              <td><select th:field="*{id_regimen}">
+                <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}" ></option>
               </select></td>
             </tr>
             </tbody>

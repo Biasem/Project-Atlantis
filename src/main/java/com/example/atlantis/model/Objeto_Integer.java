@@ -10,4 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 public class Objeto_Integer {
     private List<Integer> num;
+    private List<String> id_regimen;
 }

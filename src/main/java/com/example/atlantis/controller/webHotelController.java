@@ -55,6 +55,7 @@ public class webHotelController {
     public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Integer objetoInteger){
 
         System.out.println(objetoInteger.getNum());
+        System.out.println(objetoInteger.getId_regimen());
 
         return "redirect:/main";
     }
