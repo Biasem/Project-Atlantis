@@ -29,6 +29,7 @@ public class RegisterControllerHotel {
         Hotel hotel1 = hotel;
         model.addAttribute("hotel", hotel1);
 
+        //Listas para insertar en html las opciones que queramos
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
 
@@ -47,16 +48,20 @@ public class RegisterControllerHotel {
 
     @PostMapping("/registrohotel")
     public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
+
+        //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
                 && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
 
+            //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
             if(hotelService.siEsApartaHotel(hotel) != true){
                 hotel.setNum_estrellas(0);
             }
 
+            //Funcion que guarda hotel
             hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
             System.out.println(hotelService.convertirAHotel(hotel));
 

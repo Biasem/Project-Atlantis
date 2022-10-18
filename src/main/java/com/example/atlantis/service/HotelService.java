@@ -25,12 +25,16 @@ public class HotelService {
 
     }
 
+
+    //Convertir el Hotel de un modelo de obtención de datos  al modelo real para meter en bbdd
     public Hotel convertirAHotel(RegisHotFech hotel){
 
+        //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(Rol.HOTEL);
 
         Hotel hotel1 = new Hotel();
 
+        //Introducción  de datos en el modelo real para insertar en bbdd
         hotel1.setNombre(hotel.getNombre());
         hotel1.setPais(hotel.getPais());
         hotel1.setLocalidad(hotel.getLocalidad());
@@ -47,6 +51,8 @@ public class HotelService {
         return hotel1;
     }
 
+
+    //Función para verificar si el Hotel es Apartamento o no, devuelve un boolean según sea
     public boolean siEsApartaHotel(RegisHotFech hotel){
 
         boolean i = false;
