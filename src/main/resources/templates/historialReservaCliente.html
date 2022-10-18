@@ -27,9 +27,9 @@
 <br>
 <br>
 <br>
-<form action="#" th:action="@{/registrocliente}" method="post" th:object="${cliente}" class="container px-4" >
+<form action="#" th:action="@{/historialReservaCliente}" method="post" th:object="${cliente}" class="container px-4" >
   <div class="form-group row">
-    <label for="email" class="col-4 col-form-label">Email</label>
+    <label for="id" class="col-4 col-form-label">Id</label>
     <div class="col-8">
       <div class="input-group">
         <div class="input-group-prepend">
@@ -37,10 +37,21 @@
             <i class="fa fa-envelope"></i>
           </div>
         </div>
-        <input id="email" name="email" placeholder="Email" type="text" th:field="*{email.email}" class="form-control">
+        <input id="id" name="id" placeholder="id" type="number" th:field="*{id}" class="form-control">
       </div>
     </div>
   </div>
+  <div th:each="h: ${todas}">
+    <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
+      <div class="container px-4 text-center">
+        <p class="lead"><text th:text="${h.getNum_clientes()}"/></p>
+        <p class="lead"><text th:text="${h.getFecha_entrada()}"/></p>
+        <p class="lead"><text th:text="${h.getFecha_salida()}"/></p>
+        <p class="lead"><text th:text="${h.getPrecio_total()}"/></p>
+      </div>
+    </header>
+  </div>
+
 </form>
 
 
