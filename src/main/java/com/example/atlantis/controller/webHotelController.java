@@ -44,8 +44,22 @@ public class webHotelController {
         model.addObject("regimen", regimen);
         model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
         model.addObject("estrellas",estrellas);
+
+
+        Objeto_Integer objetoInteger = new Objeto_Integer();
+        model.addObject("objeto_integer",objetoInteger);
+
         return model;
     }
+    @PostMapping("/reservar")
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Integer objetoInteger){
+
+        System.out.println(objetoInteger.getNum());
+
+        return "redirect:/main";
+    }
+
+
 
 
 }

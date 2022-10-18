@@ -37,7 +37,7 @@
       <div class="row">
 
         <div class="col-md-8 mx-auto">
-
+        <form action="/reservar" method="post" th:object="${objeto_integer}">
           <table>
             <thead>
               <tr>
@@ -68,7 +68,7 @@
               <td th:text="${a.getTipo_hab()}"></td>
               <td th:text="${a.getMax_cliente()}"></td>
               <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
-              <td> <input type="number"></td>
+              <td> <input type="number" th:field="*{num}"></td>
               <td><select>
                 <option th:each="x: ${regimen}"><b th:text="${x.name()}"></b></option>
               </select></td>
@@ -76,12 +76,9 @@
             </tbody>
           </table>
           <button class="btn btn-primary form-control text-center">Reservar</button>
-
+        </form>
         </div>
-
       </div>
-
-
     </div>
   </div>
 <br>

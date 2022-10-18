@@ -55,7 +55,7 @@ public class MainController{
     }
 
     @GetMapping("/")
-    public String irAMain() {
+    public String irAMain(@ModelAttribute Busqueda busqueda) {
         return "main";
     }
 }
