@@ -44,10 +44,10 @@
   <div th:each="h: ${todas}">
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
       <div class="container px-4 text-center">
-        <p class="lead"><text th:text="${h.getNum_clientes()}"/></p>
-        <p class="lead"><text th:text="${h.getFecha_entrada()}"/></p>
-        <p class="lead"><text th:text="${h.getFecha_salida()}"/></p>
-        <p class="lead"><text th:text="${h.getPrecio_total()}"/></p>
+        <p class="lead"><text th:text="${h.getnum_clientes()}"/></p>
+        <p class="lead"><text th:text="${h.getfecha_entrada()}"/></p>
+        <p class="lead"><text th:text="${h.getfecha_salida()}"/></p>
+        <p class="lead"><text th:text="${h.getprecio_total()}"/></p>
       </div>
     </header>
   </div>
