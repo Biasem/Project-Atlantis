@@ -35,9 +35,10 @@ public class MainController{
 
     @GetMapping("/hoteleditar")
     public ModelAndView registrarHotel() {
-        ModelAndView model = new ModelAndView("registrohotel");
+        ModelAndView model = new ModelAndView("registroHotel");
         return model;
     }
+
 
     @PostMapping("/main")
     public ModelAndView listaHoteles(@ModelAttribute Busqueda busqueda) {
