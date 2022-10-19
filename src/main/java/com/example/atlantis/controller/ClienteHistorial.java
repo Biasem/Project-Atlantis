@@ -37,7 +37,6 @@ public class ClienteHistorial {
         model.addObject("todas", todas);
         System.out.println(todas);
 
-
         return model;
     }
 

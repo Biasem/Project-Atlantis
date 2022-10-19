@@ -81,4 +81,28 @@ public class HotelService {
     }
 
 
+    public void borrarHotel(Hotel hotel){
+       List<Hotel> todos = hotelRepository.findAll();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().equals(hotel.getEmail())){
+
+                hotelRepository.delete(hotel);
+            }
+        }
+    }
+
+    public Hotel copiartodohotel(Hotel hotel){
+        List<Hotel> todos = hotelRepository.findAll();
+        Hotel hotel1 = new Hotel();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(hotel.getEmail().getEmail())){
+                hotel1 = todos.get(i);
+            }
+        }
+        return hotel1;
+    }
+
+
 }
