@@ -26,33 +26,37 @@
 <br>
 <br>
 <br>
-<div class="container rounded shadow-sm"> <form action="" th:action="@{/main}" th:object="${busqueda}" method="post" >
-  <div class="row">
-    <div class="col-md-6 col-12 mb-4">
-      <div class="form-control d-flex flex-column">
-        <p class="h-blue">Destino:</p> <input class="inputbox" placeholder="¡El lugar de tus sueños!" type="text" th:field="*{hotelBuscar}">
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="form-control d-flex flex-column">
-        <p class="h-blue">Viajeros:</p> <input class="inputbox" placeholder="Escribe el número" type="number" th:field="*{numHuespedes}">
+<section class="booking-details p-0">
+  <div class="container availability-form">
+    <div class="row">
+      <div class="col-lg-20 bg-white shadow p-4 rounded">
+        <form th:action="@{/main}" th:object="${busqueda}" method="post">
+          <div class="row align-items-end">
+            <div class="col-lg-3 mb-3">
+              <label class="form-label" style="font-weight: 500;">Introduce destino</label>
+              <input type="text" class="form-control shadow-none" placeholder="Introduce destino" th:field="*{hotelBuscar}">
+            </div>
+            <div class="col-lg-3 mb-3">
+              <label class="form-label" style="font-weight: 500;">Fecha Entrada</label>
+              <input type="date" class="form-control shadow-none" th:field="*{fechaInicial}" th:min="${fechamin}">
+            </div>
+            <div class="col-lg-3 mb-3">
+              <label class="form-label" style="font-weight: 500;">Fecha Salida</label>
+              <input type="date" class="form-control shadow-none"  th:field="*{fechaFinal}" th:min="${fechamin}">
+            </div>
+            <div class="col-lg-2 mb-3">
+              <label class="form-label" style="font-weight: 500;">Nº Huespedes</label>
+              <input type="number" class="form-control shadow-none" th:field="*{numHuespedes}" >
+            </div>
+            <div class="col-lg-1 mb-lg-3 mt-2">
+              <input class="btn btn-primary form-control text-center" type="submit" value="Buscar">
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6 col-12 mb-4">
-      <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha entrada:</p> <input class="inputbox textmuted" type="date" th:field="*{fechaInicial}">
-      </div>
-    </div>
-    <div class="col-md-6 col-12 mb-4"> <div class="form-control d-flex flex-column"> <p class="h-blue">Fecha salida:</p> <input class="inputbox textmuted " type="date" th:field="*{fechaFinal}">
-    </div>
-    </div>
-  </div>
-  <div class="row">
-
-  </div>
-  <input class="btn btn-primary form-control text-center" type="submit" value="Resultados"></input> </form>
-</div>
+</section>
 <div class="container py-4 py-xl-5" style="margin-top: 29px;padding-top: 0px;">
   <div class="row mb-5">
     <div class="col-md-8 col-xl-6 text-center mx-auto">
@@ -63,10 +67,10 @@
   <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
     <div th:each="h: ${filtro}" class="col">
       <div class="card"><img th:src="${h.url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
-        <div class="card-body p-4">
-          <p class="text-primary card-text mb-0">Hotel</p>
+        <div class="card-body p-3">
+          <p class="text-primary card-text mb-0" th:text="${h.getTipo_hotel()}"></p>
           <h4><a th:text="${h.nombre}" class="card-title" style="color: #1c1f23;text-decoration: none;" th:href="@{/hoteles/item?id={id}(id=${h.getId()})}"></a></h4>
-          <p class="card-text"> Este hotel, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
+          <p class="card-text"> Este <b th:text="${h.getTipo_hotel()}"></b>, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
           <div class="d-flex"><img th:src="${h.url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
             <div>
               <p th:text="${h.direccion}" class="fw-bold mb-0"></p>

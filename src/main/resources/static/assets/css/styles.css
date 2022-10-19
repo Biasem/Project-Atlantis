@@ -7795,7 +7795,8 @@
 
   .bg-primary {
     --bs-bg-opacity: 1;
-    background-image: url(https://image.lexica.art/md/0dc4dd8c-e767-480d-9a47-a259d096368b);
+    color: whitesmoke;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important; rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
 
   .bg-secondary {
@@ -7829,6 +7830,10 @@
   }
 
   .bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+  .bg-darkk {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
@@ -11289,7 +11294,8 @@
     padding-bottom: 9rem;
   }
 
-
+ .inline {
+    float:left; }
 
 
 
