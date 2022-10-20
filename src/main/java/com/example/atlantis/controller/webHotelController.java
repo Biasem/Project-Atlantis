@@ -52,10 +52,14 @@ public class webHotelController {
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Integer objetoInteger){
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Integer objetoInteger,
+                               @RequestParam("idhotel") Integer id){
 
         System.out.println(objetoInteger.getNum());
         System.out.println(objetoInteger.getId_regimen());
+        System.out.println(id);
+        //System.out.println(regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).get(1).getPrecio());
+
 
         return "redirect:/main";
     }
