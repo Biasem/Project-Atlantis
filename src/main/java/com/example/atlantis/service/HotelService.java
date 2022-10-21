@@ -105,4 +105,14 @@ public class HotelService {
     }
 
 
+    public void editarHotel(Hotel hotel){
+
+        hotelRepository.editarHotel(hotel.getNombre(), hotel.getPais(), hotel.getLocalidad(),
+        hotel.getDireccion(), hotel.getFecha_apertura(), hotel.getFecha_cierre(),
+                hotel.getNum_estrellas(), hotel.getTipo_hotel(), hotel.getTelefono(), hotel.getUrl_icono(),
+                hotel.getUrl_imagen_general(), hotel.getEmail().getEmail());
+
+    }
+
+
 }
