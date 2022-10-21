@@ -1,6 +1,7 @@
 package com.example.atlantis.service;
 
 import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.Login;
 import com.example.atlantis.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,20 @@ public class ClienteService {
             return true;
         }
 
+    }
+
+    public Integer conseguirId(Login usuario){
+        List<Cliente> clientes = clienteRepository.findAll();
+        Integer id = 0;
+        for (Cliente x: clientes){
+            if (x.getEmail().getEmail().equals(usuario.getEmail())){
+                id = x.getId();
+            }
+            else {
+
+            }
+        }
+        return id;
     }
 
     public void guardarCliente(Cliente cliente){

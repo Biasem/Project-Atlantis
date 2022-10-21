@@ -2,6 +2,7 @@ package com.example.atlantis.controller;
 
 
 import com.example.atlantis.model.Busqueda;
+import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +34,7 @@ public class LoginController {
 
     }
     @PostMapping("/login")
-    public String submitForm1(@ModelAttribute Login login, Busqueda busqueda) {
+    public String submitForm1(@ModelAttribute Login login, Busqueda busqueda, HttpSession session, RedirectAttributes redirectAttributes) {
         //Lleva según si es cierto true o false, a la pantalla sesion (false) o main (true)
         ModelAndView model = new ModelAndView("sesion");
         model.addObject("login", login);
@@ -38,6 +44,8 @@ public class LoginController {
         boolean cierto = loginService.Buscar(login);
 
         if(cierto){
+            redirectAttributes.addAttribute("login", login);
+            session.setAttribute("user", login);
             return "redirect:/main";
             //return "redirect: /main";
         }else {
