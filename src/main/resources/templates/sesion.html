@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <button href="/main" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button" style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
+    <button onclick="location.href = '/main';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
     <section class="position-relative py-4 py-xl-5"></section>
     <section class="position-relative py-4 py-xl-5">
         <div class="container">
@@ -40,6 +40,7 @@
                                 <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" th:field="*{email}" style="margin-top: -1px;margin-left: 0px;"></div>
                                 <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Contraseña" th:field="*{password}" style="margin-top: 15px;margin-left: 0px;"></div>
                                 <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit"  style="margin-left: 1px;margin-right: 0px;">Entrar</button></div>
+                                <a class="nav-link" href="/register">¿No tienes cuenta?</a>
                                 <p class="text-muted">¿Olvidaste la contraseña?</p>
                             </form>
                         </div>
