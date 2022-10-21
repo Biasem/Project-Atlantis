@@ -1985,9 +1985,11 @@
 
   .table-bordered > :not(caption) > * {
     border-width: 1px 0;
+    border-radius: 10px;
   }
   .table-bordered > :not(caption) > * > * {
     border-width: 0 1px;
+    border-radius: 10px;
   }
 
   .table-borderless > :not(caption) > * > * {
@@ -7795,7 +7797,8 @@
 
   .bg-primary {
     --bs-bg-opacity: 1;
-    background-image: url(https://image.lexica.art/md/0dc4dd8c-e767-480d-9a47-a259d096368b);
+    color: whitesmoke;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important; rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
 
   .bg-secondary {
@@ -7829,6 +7832,10 @@
   }
 
   .bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+  .bg-darkk {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
@@ -11289,8 +11296,14 @@
     padding-bottom: 9rem;
   }
 
+ .inline {
+    float:left; }
 
 
-
-
+  .icon {
+    padding-left: 25px;
+    background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat center;
+    background-size: 20px;
+    fill: white;
+  }
 
