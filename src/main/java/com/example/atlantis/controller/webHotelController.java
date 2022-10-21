@@ -6,9 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,23 +41,34 @@ public class webHotelController {
         Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().sorted(Comparator.comparing(Habitaciones::getTipo_hab)).collect(Collectors.toList()));
         model.addObject("estrellas",estrellas);
 
 
-        Objeto_Integer objetoInteger = new Objeto_Integer();
+        Objeto_Aux_Reserva objetoInteger = new Objeto_Aux_Reserva();
         model.addObject("objeto_integer",objetoInteger);
 
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Integer objetoInteger,
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva objeto_aux_reserva,
                                @RequestParam("idhotel") Integer id){
 
-        System.out.println(objetoInteger.getNum());
-        System.out.println(objetoInteger.getId_regimen());
-        System.out.println(id);
-        //System.out.println(regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).get(1).getPrecio());
+
+        System.out.println("num habitaciones");
+        System.out.println(objeto_aux_reserva.getNum());
+        System.out.println("tipo regimen");
+        System.out.println(objeto_aux_reserva.getId_regimen());
+        System.out.println("id hotel" + id);
+
+        List<Regimen> regimenList =regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        List<Double> sumaPreciosRegimenHab = new ArrayList<>();
+        List<Double> sumaPreciosFechaHab = new ArrayList<>();
+        for (int i=0;i<objeto_aux_reserva.getNum().size();i++){
+            sumaPreciosRegimenHab.add(regimenList.get(i).getPrecio()*objeto_aux_reserva.getNum().get(i));
+        }
+        System.out.println("suma precios regimen con num habitaciones");
+        System.out.println(sumaPreciosRegimenHab);
 
 
         return "redirect:/main";

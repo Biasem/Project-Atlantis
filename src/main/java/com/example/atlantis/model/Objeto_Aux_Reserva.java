@@ -8,7 +8,7 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Objeto_Integer {
+public class Objeto_Aux_Reserva {
     private List<Integer> num;
     private List<String> id_regimen;
 }
