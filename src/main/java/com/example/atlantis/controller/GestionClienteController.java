@@ -46,21 +46,30 @@ public class GestionClienteController {
 
         model.addAttribute("cliente", cliente);
 
+        //Listas para introducir en el html los paises que queremos que salgan
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
-
         return "editarcliente";
     }
 
 
     @PostMapping("/editarcliente")
     public String editarCliente2(@ModelAttribute Cliente cliente) {
+        //If para verificar que los datos introducidos sean tal cual se necesite
+        if(cliente.getNombre() != null && cliente.getApellidos() != null
+                && cliente.getEmail().getEmail() != null &&
+                cliente.getEmail().getPassword() != null && cliente.getDni() != null
+                && clienteService.validarDNI(cliente.getDni()) != false) {
 
+            //Introduccion de datos a Service para meter en ddbb
         clienteService.editarCliente(cliente);
+            return "redirect:/main";
 
-        return "redirect:/main";
+        }else{
+
+            return "redirect:/editarcliente";
+        }
     }
-
 
 
 }

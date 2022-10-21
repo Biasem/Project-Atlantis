@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 @Controller
@@ -63,10 +64,20 @@ public class GestionHotelController {
 
     @PostMapping("/editarhotel")
     public String editarhotel2(@ModelAttribute RegisHotFech hotel) {
+        //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
+        if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
+                && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
+                && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
+                && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
+                && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
 
-        hotelService.editarHotel(hotelService.convertirAHotel(hotel));
+        //Método para meter el hotel ya convertido en el modelo para ddbb
+            hotelService.editarHotel(hotelService.convertirAHotel(hotel));
+            return "redirect:/main";
+        } else {
 
-        return "redirect:/main";
+            return "redirect:/editarhotel";
+        }
     }
 
 
