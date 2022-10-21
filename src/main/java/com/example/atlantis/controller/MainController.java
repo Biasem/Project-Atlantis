@@ -17,10 +17,6 @@ import java.util.stream.Collectors;
 
 @Controller
 public class MainController{
-    //borrar al acabar
-    @Autowired
-    private RegimenService regimenService;
-/////////////////////////////////////////////////
     @Autowired
     private HotelService hotelService;
 

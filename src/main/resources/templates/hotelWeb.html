@@ -49,8 +49,8 @@
             </thead>
             <tbody>
               <tr>
-                <td><input class="inputbox textmuted" type="date"></td>
-                <td><input class="inputbox textmuted " type="date"></td>
+                <td><input class="inputbox textmuted" type="date" th:field="*{fechainicio}" th:min="${fechamin}" required></td>
+                <td><input class="inputbox textmuted " type="date" th:field="*{fechafin}" th:min="${fechamin}" required></td>
               </tr>
             </tbody>
           </table>
