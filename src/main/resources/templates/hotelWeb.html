@@ -94,17 +94,25 @@
           <div class="p-3">
             <h6><b>Comentarios</b></h6>
           </div>
-          <div class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:each="z : ${hotelfinal}">
+
+          <div th:if="${idCliente >0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:each="z : ${hotelfinal}">
             <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
-            <form th:if="${idCliente >0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:action="@{/hoteles/comentario}" th:object="${texto}">
-              <input th:if="${idCliente > 0}" th:field="${comentario}" type="text" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
-              <p th:if="${idCliente > 0}" style="margin-left: 20px;" > Puntuación:</p>
-              <input th:if="${idCliente > 0}" type="number" min="1" max="5" style="margin-left: 20px;" th:field="${puntuacion}">
-              <input style="margin-left: 20px;" th:if="${idCliente > 0}" type="submit" class="btn btn-primary form-control text-center" value="Enviar">
+            <form th:action="@{/comentario}" th:object="${texto}">
+              <input th:field="*{comentario}" type="text" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
+              <p  style="margin-left: 20px;" > Puntuación:</p>
+              <input type="number" min="1" max="5" style="margin-left: 20px;" th:field="*{puntuacion}">
+              <input style="margin-left: 20px;" type="submit" class="btn btn-primary form-control text-center" value="Enviar">
+              <input type="hidden" th:field="*{id_hotel}" th:value="${z.getId()}">
+              <input type="hidden" th:field="*{id_cliente}" th:value="${idCliente}">
             </form>
-            <b style="margin-left: 20px;" th:if="${idCliente == 0}">Inicia sesión para crear un comentario.</b>
-            <a th:if="${idCliente == 0}" href="/login"><input style="margin-left: 20px;" th:if="${idCliente == 0}" type="button" class="btn btn-primary form-control text-center" value="Inicia sesión"></a>
           </div>
+
+          <div th:if="${idCliente == 0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color">
+            <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
+            <b style="margin-left: 20px;" >Inicia sesión para crear un comentario.</b>
+            <a  href="/login"><input style="margin-left: 20px;" th:if="${idCliente == 0}" type="button" class="btn btn-primary form-control text-center" value="Inicia sesión"></a>
+          </div>
+
           <div class="mt-2">
             <div th:each="c : ${comentarios}" class="d-flex flex-row p-3">
               <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="40" height="40" class="rounded-circle mr-3">

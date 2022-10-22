@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Comentario publicado</title>
+
+  <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/best-carousel-slide.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Carousel-Hero.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Footer-Dark-icons.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Hero-Carousel-images.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Pretty-Search-Form-.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-Responsive-with-Icon.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+</head>
+
+<body class="bg-white">
+<nav th:include="navMenu.html"></nav>
+<div>
+  <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
+    <div class="container px-4 text-center">
+      <h1 class="fw-bolder"> <p>Comentario publicado</p></h1>
+    </div>
+  </header>
+  <br>
+  <br>
+  <div class="row">
+
+    <div class="col-md-8 mx-auto">
+      <h1>Acción realizada con éxito.</h1>
+      <br>
+      <button class="btn btn-primary form-control text-center"> <a style="color: white;text-decoration: none;" href="/main">Hecho</a></button>
+    </div>
+  </div>
+</div>
+
+<footer th:include="footer.html"></footer>
+<script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

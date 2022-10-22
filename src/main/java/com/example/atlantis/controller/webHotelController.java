@@ -31,7 +31,7 @@ public class webHotelController {
     private ClienteService clienteService;
 
 
-    @RequestMapping("/hoteles/{item}")
+    @GetMapping( "/hoteles/{item}")
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
                                                      @RequestParam(value = "id") Integer id, HttpSession session) {
         List<Hotel> listaHoteles = hotelService.getAll();
@@ -61,11 +61,12 @@ public class webHotelController {
         return model;
     }
 
-    @RequestMapping(value = "/hoteles/comentario", method = RequestMethod.POST)
+    @PostMapping("/comentario")
     public @ResponseBody ModelAndView comentarioHotel(HttpSession session,
                                                       @ModelAttribute Comentario comentario) {
-
-        ModelAndView model = new ModelAndView("hotelWeb");
+        comentario.setFecha(LocalDate.now());
+        comentarioService.guardarComentario(comentario);
+        ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
     }
 

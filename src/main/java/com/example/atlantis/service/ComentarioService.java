@@ -8,6 +8,8 @@ import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,4 +33,6 @@ public class ComentarioService {
     public void guardarComentario (Comentario comentario){
         comentarioRepository.save(comentario);
     }
+
+
 }
