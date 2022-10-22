@@ -28,11 +28,6 @@ public class Reserva {
     @ManyToOne
     private Cliente id_cliente;
 
-
-    @JoinColumn(name = "id_regimen")
-    @ManyToOne
-    private Regimen id_regimen;
-
     @JoinColumn(name = "num_clientes")
     private Integer num_clientes;
 

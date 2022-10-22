@@ -1,8 +1,10 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.Busqueda;
 import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.Regimen;
 import com.example.atlantis.service.BusquedaService;
 import com.example.atlantis.service.HotelService;
+import com.example.atlantis.service.RegimenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController{
-
     @Autowired
     private HotelService hotelService;
 
@@ -51,12 +53,11 @@ public class MainController{
         }
         model.addObject("fechamin", LocalDate.now());
         model.addObject("filtro", filtro);
-        System.out.println(busqueda.getHotelBuscar());
         return model ;
     }
 
     @GetMapping("/")
-    public String irAMain() {
+    public String irAMain(@ModelAttribute Busqueda busqueda) {
         return "main";
     }
 }
