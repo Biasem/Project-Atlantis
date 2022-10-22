@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,10 +28,16 @@ public class webHotelController {
     @Autowired
     private RegimenService regimenService;
 
+    @Autowired
+    private ComentarioService comentarioService;
+    @Autowired
+    private ClienteService clienteService;
 
-    @RequestMapping("/hoteles/{item}")
+
+    @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
-                                                     @RequestParam(value = "id") Integer id) {
+                                                     @RequestParam(value = "id") Integer id,
+                                                     HttpSession session) {
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
@@ -43,6 +50,10 @@ public class webHotelController {
         usuario = (Login) session.getAttribute("user");
         Integer idCliente = 0;
         ModelAndView model = new ModelAndView("hotelWeb");
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
         Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("idCliente", idCliente);
         model.addObject("texto", new Comentario());

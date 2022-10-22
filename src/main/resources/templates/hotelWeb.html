@@ -37,45 +37,47 @@
       <div class="row">
 
         <div class="col-md-8 mx-auto">
+          <form action="/reservar" method="post" th:object="${objeto_integer}">
+            <input type="hidden" name="idhotel" th:value="${h.getId()}"/>
+            <table class="table table-bordered table-striped rounded">
+              <thead>
+                <tr>
+                  <th scope="col">Entrada</th>
+                  <th scope="col">Salida</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input class="inputbox textmuted" type="date"></td>
+                  <td><input class="inputbox textmuted " type="date"></td>
+                </tr>
+              </tbody>
+            </table>
 
-          <table class="table table-bordered table-striped rounded">
-            <thead>
+            <table class="table bg-white rounded border table-striped table-dark">
+              <thead>
               <tr>
-                <th scope="col">Entrada</th>
-                <th scope="col">Salida</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Huéspedes</th>
+                <th scope="col">Disponibles</th>
+                <th scope="col">Nº Habitaciones</th>
+                <th scope="col">Régimen</th>
               </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input class="inputbox textmuted" type="date"></td>
-                <td><input class="inputbox textmuted " type="date"></td>
+              </thead>
+              <tbody>
+              <tr th:each="a:${listaHabitaciones}">
+                <td th:text="${a.getTipo_hab()}"></td>
+                <td th:text="${a.getMax_cliente()}"></td>
+                <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+                <td> <input type="number" th:field="*{num}"></td>
+                <td><select th:field="*{id_regimen}">
+                  <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
+                </select></td>
               </tr>
-            </tbody>
-          </table>
-
-          <table class="table bg-white rounded border table-striped table-dark">
-            <thead>
-            <tr>
-              <th scope="col">Tipo</th>
-              <th scope="col">Huéspedes</th>
-              <th scope="col">Disponibles</th>
-              <th scope="col">Nº Habitaciones</th>
-              <th scope="col">Régimen</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="a:${listaHabitaciones}">
-              <td th:text="${a.getTipo_hab()}"></td>
-              <td th:text="${a.getMax_cliente()}"></td>
-              <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
-              <td> <input type="number" th:field="*{num}"></td>
-              <td><select th:field="*{id_regimen}">
-                <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
-              </select></td>
-            </tr>
-            </tbody>
-          </table>
-          <button class="btn btn-primary form-control text-center">Reservar</button>
+              </tbody>
+            </table>
+            <button class="btn btn-primary form-control text-center">Reservar</button>
+          </form>
         </form>
         </div>
       </div>
@@ -94,7 +96,7 @@
 
           <div th:if="${idCliente >0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:each="z : ${hotelfinal}">
             <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
-            <form th:action="@{/comentario}" th:object="${texto}">
+            <form action="/hastalapolla" th:object="${texto}">
               <input th:field="*{comentario}" type="text" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
               <p  style="margin-left: 20px;" > Puntuación:</p>
               <input type="number" min="1" max="5" style="margin-left: 20px;" th:field="*{puntuacion}">
