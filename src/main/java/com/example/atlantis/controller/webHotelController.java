@@ -44,17 +44,28 @@ public class webHotelController {
         Login usuario = new Login();
         usuario = (Login) session.getAttribute("user");
         Integer idCliente = 0;
-        idCliente = clienteService.conseguirId(usuario);
-        System.out.println(idCliente);
-        List<TipoRegimen> regimen = hotelService.todoregimen();
         ModelAndView model = new ModelAndView("hotelWeb");
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
+        List<TipoRegimen> regimen = hotelService.todoregimen();
         Integer estrellas = definitivo.getNum_estrellas();
+        model.addObject("idCliente", idCliente);
+        model.addObject("texto", new Comentario());
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
         model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
         model.addObject("estrellas",estrellas);
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
-        model.addObject("idCliente", idCliente);
+        return model;
+    }
+
+    @RequestMapping(value = "/hoteles/comentario", method = RequestMethod.POST)
+    public @ResponseBody ModelAndView comentarioHotel(HttpSession session,
+                                                      @ModelAttribute Comentario comentario) {
+
+        ModelAndView model = new ModelAndView("hotelWeb");
         return model;
     }
 

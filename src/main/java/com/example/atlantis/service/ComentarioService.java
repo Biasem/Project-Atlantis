@@ -27,4 +27,8 @@ public class ComentarioService {
         }
         return fin;
     }
+
+    public void guardarComentario (Comentario comentario){
+        comentarioRepository.save(comentario);
+    }
 }
