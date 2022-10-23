@@ -72,8 +72,16 @@ public class webHotelController {
 
     @PostMapping("/comentario")
     public @ResponseBody ModelAndView comentarioHotel(HttpSession session,
-                                                      @ModelAttribute Comentario comentario) {
+                                                      @ModelAttribute Comentario comentario,
+                                                      @RequestParam("idhotel") Integer idhotel,
+                                                      @RequestParam("idcliente") Integer idcliente,
+                                                      @RequestParam("texto") String texto){
         comentario.setFecha(LocalDate.now());
+        comentario.setSentencia(texto);
+        comentario.setPuntuacion(comentario.getPuntuacion());
+        comentario.setSentencia(comentario.getSentencia());
+        comentarioService.comentarioID(idhotel,idcliente,comentario);
+        System.out.println(comentario);
         comentarioService.guardarComentario(comentario);
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
