@@ -21,7 +21,7 @@ public class Comentario {
     private Integer id;
 
     @JoinColumn(name = "comentario")
-    private String comentario;
+    private String sentencia;
 
     @JoinColumn(name = "fecha")
     private LocalDate fecha;

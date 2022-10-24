@@ -1,32 +1,54 @@
 package com.example.atlantis.controller;
-import com.example.atlantis.model.Busqueda;
-import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.*;
 import com.example.atlantis.service.BusquedaService;
+import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
+import com.example.atlantis.service.RegimenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController{
-
     @Autowired
     private HotelService hotelService;
 
     @Autowired
     private BusquedaService busquedaService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     @GetMapping("/main")
-    public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda) {
+    public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda, HttpSession session) {
+        ModelAndView model = new ModelAndView("main");
+
+        // Gestión sesión
+        Login usuario = new Login();
+        usuario = (Login) session.getAttribute("user");
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            idHotel = hotelService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        model.addObject("usuario", usuario);
+        // Gestión sesión
+
         List<Hotel> listaprimera = hotelService.getAll();
         Collections.shuffle(listaprimera);
         List<Hotel> listaHotel = listaprimera.subList(0, 3);
-        ModelAndView model = new ModelAndView("main");
+
         model.addObject("listaHotel", listaHotel);
         model.addObject("fechamin", LocalDate.now());
         model.addObject("busqueda", busqueda);
@@ -41,9 +63,25 @@ public class MainController{
 
 
     @PostMapping("/main")
-    public ModelAndView listaHoteles(@ModelAttribute Busqueda busqueda) {
-        List<Hotel> listaHoteles = hotelService.getAll();
+    public ModelAndView listaHoteles(@ModelAttribute Busqueda busqueda, HttpSession session) {
         ModelAndView model = new ModelAndView("resultado");
+
+        // Gestión sesión
+        Login usuario = new Login();
+        usuario = (Login) session.getAttribute("user");
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            idHotel = hotelService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        model.addObject("usuario", usuario);
+        // Gestión sesión
+
+        List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
         if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
         {
@@ -51,12 +89,11 @@ public class MainController{
         }
         model.addObject("fechamin", LocalDate.now());
         model.addObject("filtro", filtro);
-        System.out.println(busqueda.getHotelBuscar());
         return model ;
     }
 
     @GetMapping("/")
-    public String irAMain() {
+    public String irAMain(@ModelAttribute Busqueda busqueda) {
         return "main";
     }
 }
