@@ -3,6 +3,7 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HabitacionesRepository;
+import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class HabitacionesService {
 
     @Autowired
     private HabitacionesRepository habitacionesRepository;
+    @Autowired
+    private HotelRepository hotelRepository;
 
     public List<Habitaciones> getAll(){
         return habitacionesRepository.findAll();
@@ -63,5 +66,18 @@ public class HabitacionesService {
            x.setMax_cliente(habitacion.getMax_cliente());
            habitacionesRepository.save(x);
        }
+    }
+
+    public Habitaciones conseguirIDHotel (Integer idhotel, Habitaciones habitacion){
+        List<Hotel> hoteles = hotelRepository.findAll();
+        Hotel hotel = new Hotel();
+        for (Hotel x: hoteles){
+            if(x.getId()==idhotel){
+                hotel = x;
+            }
+        }
+        habitacion.setId_hotel(hotel);
+
+        return habitacion;
     }
 }

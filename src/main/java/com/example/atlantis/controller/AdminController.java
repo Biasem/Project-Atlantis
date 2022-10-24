@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController{
@@ -62,6 +63,8 @@ public class AdminController{
             List<TipoHab> tipohab = habitacionesService.todoHab();
             model.addObject("tipohab",tipohab);
             model.addObject("habitaciones", new Habitaciones());
+            List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
+            model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
             return model;
         }
         // Gestión sesión
@@ -69,18 +72,12 @@ public class AdminController{
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
-    public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones) {
+    public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones,
+                                     @RequestParam("idhotel") Integer idhotel) {
         habitaciones.setHab_ocupadas(0);
+        habitacionesService.conseguirIDHotel(idhotel,habitaciones);
         habitacionesService.guardarHabitacion(habitaciones);
         ModelAndView model = new ModelAndView("adminHecho");
-        return model;
-    }
-
-    @RequestMapping(value = "/admin/habitaciones", method = RequestMethod.POST)
-    public ModelAndView hotel(@RequestParam(value = "numero") Integer id) {
-        List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-        ModelAndView model = new ModelAndView("adminHabitaciones");
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
         return model;
     }
 

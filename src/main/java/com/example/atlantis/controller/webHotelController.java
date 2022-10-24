@@ -38,6 +38,23 @@ public class webHotelController {
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
                                                      @RequestParam(value = "id") Integer id,
                                                      HttpSession session) {
+
+        ModelAndView model = new ModelAndView("hotelWeb");
+        // Gestión sesión
+        Login usuario = new Login();
+        usuario = (Login) session.getAttribute("user");
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            idHotel = hotelService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        model.addObject("usuario", usuario);
+        // Gestión sesión
+
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
@@ -46,14 +63,7 @@ public class webHotelController {
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
-        Integer idCliente = 0;
-        ModelAndView model = new ModelAndView("hotelWeb");
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            System.out.println(idCliente);
-        }
+
         Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("idCliente", idCliente);
         model.addObject("texto", new Comentario());

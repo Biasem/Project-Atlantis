@@ -26,8 +26,22 @@ public class PruebaController{
         private ComentarioService comentarioService;
 
         @RequestMapping("/equipo")
-        public ModelAndView equipo(){
+        public ModelAndView equipo(HttpSession session){
             ModelAndView model = new ModelAndView("equipo");
+            // Gestión sesión
+            Login usuario = new Login();
+            usuario = (Login) session.getAttribute("user");
+            Integer idCliente = 0;
+            Integer idHotel = 0;
+            if (usuario != null){
+                idCliente = clienteService.conseguirId(usuario);
+                idHotel = hotelService.conseguirId(usuario);
+                System.out.println(idCliente);
+            }
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            model.addObject("usuario", usuario);
+            // Gestión sesión
             return model ;
         }
         @GetMapping("/prueba")
@@ -35,19 +49,6 @@ public class PruebaController{
             ModelAndView model = new ModelAndView("greeting");
             model.addObject("texto", new Comentario());
             return model ;
-        }
-        @PostMapping( "/hastalapolla")
-        public ModelAndView sadge(@ModelAttribute Comentario comentario){
-            Cliente dolor = new Cliente();
-            Hotel sufrir = new Hotel();
-            dolor.setId(2);
-            sufrir.setId(2);
-            comentario.setFecha(LocalDate.now());
-            comentario.setId_cliente(dolor);
-            comentario.setId_hotel(sufrir);
-            comentarioService.guardarComentario(comentario);
-            ModelAndView model = new ModelAndView("comentarioHecho");
-            return model;
         }
 
 }

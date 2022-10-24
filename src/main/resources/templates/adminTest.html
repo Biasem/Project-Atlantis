@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-white">
-<nav th:include="navMenu.html"></nav>
+<nav th:include="navMenuHotel"></nav>
 <div>
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
         <div class="container px-4 text-center">
@@ -37,12 +37,12 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID Hotel</th>
+                        <th>Crear habitación</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <th><input id="idhotel" type="number" th:field="*{id_hotel}"/></th>
+                        <th><input type="hidden" name="idhotel" th:value="${idHotel}"/></th>
                     </tr>
                     </tbody>
                 </table>
@@ -51,7 +51,7 @@
                     <thead>
                     <tr>
                         <th scope="col"></th>
-                        <th scope="col">Crear Habitación</th>
+                        <th scope="col">Atributos</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -80,29 +80,45 @@
                 <input type="submit" class="btn btn-primary form-control text-center">
             </form>
         </div>
+    </div>
+</div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
 
-        <div class="col-md-8 mx-auto">
-            <br>
-            <br>
-            <form action="#" th:action="@{/admin/habitaciones}" method="post">
                 <table>
                     <thead>
                     <tr>
-                        <th>Introduce el ID Hotel para ver las habitaciones</th>
+                        <th>Crear habitación</th>
+                    </tr>
+                    </thead>
+                </table>
+                <br>
+                <table class="table bg-white rounded border table-striped table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Huéspedes</th>
+                        <th scope="col">Disponibles</th>
+                        <th scope="col">Nº Habitaciones</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th><input type="number" th:name="numero"/></th>
+                    <tr th:each="a:${listaHabitaciones}">
+                        <td th:text="${a.getTipo_hab()}"></td>
+                        <td th:text="${a.getMax_cliente()}"></td>
+                        <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+                        <td th:text="${a.getNum_hab()}" > </td>
+                        <td> <a th:text="Editar" class="btn btn-primary form-control text-center" style="background-color: #FFBD44; border-color: #FFBD44" th:href="@{/admin/habitaciones/editar/item?id={id}(id=${a.getId()})}"></a></td>
+                        <td> <a th:text="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40" th:href="@{/admin/habitaciones/borrar/item?id={id}(id=${a.getId()})}"></a></td>
                     </tr>
                     </tbody>
                 </table>
-                <input type="submit" class="btn btn-primary form-control text-center" href="/admin/habitaciones">
-            </form>
+            </div>
         </div>
-    </div>
-</div>
-<br>
 <br>
 <br>
 
