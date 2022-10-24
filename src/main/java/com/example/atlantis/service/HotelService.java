@@ -74,5 +74,19 @@ public class HotelService {
         return regimen;
     }
 
+    public Integer conseguirId(Login usuario){
+        List<Hotel> hoteles = hotelRepository.findAll();
+        Integer id = 0;
+        for (Hotel x: hoteles){
+            if (x.getEmail().getEmail().equals(usuario.getEmail())){
+                id = x.getId();
+            }
+            else {
+
+            }
+        }
+        return id;
+    }
+
 
 }

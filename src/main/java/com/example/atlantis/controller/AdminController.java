@@ -1,9 +1,7 @@
 package com.example.atlantis.controller;
-import com.example.atlantis.model.Busqueda;
-import com.example.atlantis.model.Habitaciones;
-import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.TipoHab;
+import com.example.atlantis.model.*;
 import com.example.atlantis.service.BusquedaService;
+import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HabitacionesService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,13 +27,45 @@ public class AdminController{
     @Autowired
     private HabitacionesService habitacionesService;
 
+    @Autowired
+    private ClienteService clienteService;
+
     @GetMapping("/admin")
-    public ModelAndView admin() {
-        List<TipoHab> tipohab = habitacionesService.todoHab();
-        ModelAndView model = new ModelAndView("adminTest");
-        model.addObject("tipohab",tipohab);
-        model.addObject("habitaciones", new Habitaciones());
-        return model;
+    public ModelAndView admin(HttpSession session) {
+        // Gestión sesión
+        Login usuario = new Login();
+        usuario = (Login) session.getAttribute("user");
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (usuario != null){
+            idCliente = clienteService.conseguirId(usuario);
+            idHotel = hotelService.conseguirId(usuario);
+            System.out.println(idCliente);
+        }
+
+        if(idHotel==0){
+            if (idCliente>0){
+                ModelAndView no = new ModelAndView("noDeberias");
+                return no;
+            }
+            else{
+                ModelAndView inicia = new ModelAndView("iniciaSesion");
+                return inicia;
+            }
+        }
+
+        if (idHotel>0){
+            ModelAndView model = new ModelAndView("adminTest");
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            model.addObject("usuario", usuario);
+            List<TipoHab> tipohab = habitacionesService.todoHab();
+            model.addObject("tipohab",tipohab);
+            model.addObject("habitaciones", new Habitaciones());
+            return model;
+        }
+        // Gestión sesión
+        return new ModelAndView("redirect:/main");
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
