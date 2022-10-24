@@ -2,6 +2,7 @@ package com.example.atlantis.controller;
 
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.Login;
 import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,14 +43,22 @@ public class GestionClienteController {
 
 
     @GetMapping("/editarcliente")
-    public String editarCliente(Model model,@ModelAttribute Cliente cliente) {
+    public String editarCliente(Model model, HttpSession session, @ModelAttribute Cliente cliente) {
 
 
         model.addAttribute("cliente", cliente);
+        Login usuario = (Login) session.getAttribute("user");
+
+         Cliente cliente1 = clienteService.obtenerCliDeSesion(usuario);
+
+
+         model.addAttribute("cliente1", cliente1);
 
         //Listas para introducir en el html los paises que queremos que salgan
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
+
+
         return "editarcliente";
     }
 

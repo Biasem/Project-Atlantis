@@ -25,4 +25,12 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
                                    @Param("dni") String dni, @Param("pais") String pais,
                                    @Param("telefono") String telefono, @Param("email") String email);
 
-}
+
+    @Query("select c from Cliente c where c.email.email = :email")
+    Cliente buscarConSession(
+            @Param("email") String email);
+    };
+
+
+
+

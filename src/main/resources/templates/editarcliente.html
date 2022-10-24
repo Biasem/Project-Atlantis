@@ -37,7 +37,7 @@
             <i class="fa fa-align-center"></i>
           </div>
         </div>
-        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control">
+        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" th:each="p : ${cliente1}" th:placeholder="${p.getNombre()}" class="form-control">
       </div>
     </div>
   </div>
