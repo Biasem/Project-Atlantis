@@ -22,18 +22,9 @@ public class PruebaController{
         @Autowired
         private HotelService hotelService;
 
-        @GetMapping("/busqueda")
-        public ModelAndView getBusqueda(@ModelAttribute List<Hotel> listaHoteles){
-            ModelAndView model = new ModelAndView("codigosucio");
-            model.addObject("listaHotel", listaHoteles);
-            return model;
-
-        }
-        @RequestMapping("/greeting")
-        public ModelAndView listClientes(){
-            List<Cliente> listClientes= clienteService.getAll();
-            ModelAndView model = new ModelAndView("greeting");
-            model.addObject("listClientes", listClientes);
+        @RequestMapping("/equipo")
+        public ModelAndView equipo(){
+            ModelAndView model = new ModelAndView("equipo");
             return model ;
         }
 
