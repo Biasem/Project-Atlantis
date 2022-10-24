@@ -55,6 +55,10 @@ public class webHotelController {
     public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva objeto_aux_reserva,
                                @RequestParam("idhotel") Integer id){
 
+        if(LocalDate.parse(objeto_aux_reserva.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reserva.getFechafin())))
+        {
+            return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
+        }
         List<Regimen> regimenList =regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList());
         List<Regimen> regimenAux = new ArrayList<>();
         List<Double> sumaPreciosRegimenHab = new ArrayList<>();
@@ -77,9 +81,6 @@ public class webHotelController {
         System.out.println("suma precios habitaciones por fechas");
         System.out.println(objeto_aux_reserva.getFechainicio());
         System.out.println(objeto_aux_reserva.getFechafin());
-
-
-
 
         return "redirect:/main";
     }
