@@ -7,6 +7,7 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,10 @@ import java.util.List;
 
 @Controller
 public class RegisterControllerCon {
+
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Autowired
@@ -51,6 +56,8 @@ public class RegisterControllerCon {
 
             //Selección de Rol Cliente para el nuevo cliente
             cliente.getEmail().setRol(Rol.CLIENTE);
+            cliente.getEmail().setPassword(bCryptPasswordEncoder.encode(cliente.getEmail().getPassword()));
+
 
             //Guardado del cliente en base de datos
             clienteService.guardarCliente(cliente);
