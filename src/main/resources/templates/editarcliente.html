@@ -27,10 +27,7 @@
 <br>
 <br>
 <br>
-<br>
-
-
-<form action="#" th:action="@{/registrocliente}" method="post" th:object="${cliente}" class="container px-4" >
+<form action="#" th:action="@{/editarcliente}" method="post" th:object="${cliente}" class="container px-4" >
   <div class="form-group row">
     <label for="nombre" class="col-4 col-form-label">Nombre:</label>
     <div class="col-8">
@@ -40,7 +37,7 @@
             <i class="fa fa-align-center"></i>
           </div>
         </div>
-        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control">
+        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" th:each="p : ${cliente1}" th:placeholder="${p.getNombre()}" class="form-control">
       </div>
     </div>
   </div>
@@ -134,10 +131,10 @@
     </div>
   </div>
 </form>
-<br>
 
 <footer th:include="footer.html"></footer>
 <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>
+

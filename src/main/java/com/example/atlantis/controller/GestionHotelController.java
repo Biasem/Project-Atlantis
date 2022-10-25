@@ -1,33 +1,49 @@
 package com.example.atlantis.controller;
 
-import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.RegisHotFech;
-import com.example.atlantis.model.Rol;
-import com.example.atlantis.model.TipoHotel;
+import com.example.atlantis.model.*;
 import com.example.atlantis.service.HotelService;
+import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-
 @Controller
-public class RegisterControllerHotel {
+public class GestionHotelController {
+
 
     @Autowired
     private HotelService hotelService;
 
-    @GetMapping("/registrohotel")
-    public String registerhotelForm(Model model, @ModelAttribute Hotel hotel) {
 
-        Hotel hotel1 = hotel;
-        model.addAttribute("hotel", hotel1);
+    @GetMapping("/borrarhotel")
+    public String deleteHotel(@ModelAttribute Hotel hotel) {
+        ModelAndView model = new ModelAndView("delete");
+        model.addObject("hotel", hotel);
+        return "borrarhotel";
+    }
+
+    @PostMapping("/borrarhotel")
+    public String deleteHotel2(@ModelAttribute Hotel hotel) {
+
+        Hotel hotel1 = hotelService.copiartodohotel(hotel);
+        hotelService.borrarHotel(hotel1);
+
+        return "redirect:/main";
+    }
+
+
+    @GetMapping("/editarhotel")
+        public String editarHotel(Model model, @ModelAttribute Hotel hotel) {
+
+
+        model.addAttribute("hotel", hotel);
 
         //Listas para insertar en html las opciones que queramos
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
@@ -42,13 +58,12 @@ public class RegisterControllerHotel {
         List<String> listestrellas = Arrays.asList("0","1", "2", "3", "4", "5");
         model.addAttribute("listestrellas", listestrellas);
 
-        return "registrohotel";
+        return "editarhotel";
     }
 
 
-    @PostMapping("/registrohotel")
-    public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
-
+    @PostMapping("/editarhotel")
+    public String editarhotel2(@ModelAttribute RegisHotFech hotel) {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
@@ -56,20 +71,15 @@ public class RegisterControllerHotel {
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
 
-            //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
-            if(hotelService.siEsApartaHotel(hotel) != true){
-                hotel.setNum_estrellas(0);
-            }
-
-            //Funcion que guarda hotel
-            hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
-            System.out.println(hotelService.convertirAHotel(hotel));
-
+        //Método para meter el hotel ya convertido en el modelo para ddbb
+            hotelService.editarHotel(hotelService.convertirAHotel(hotel));
             return "redirect:/main";
         } else {
 
-            return "redirect:/registrohotel";
+            return "redirect:/editarhotel";
         }
-
     }
+
+
+
 }
