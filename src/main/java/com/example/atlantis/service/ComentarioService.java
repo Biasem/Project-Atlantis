@@ -35,6 +35,16 @@ public class ComentarioService {
         }
         return fin;
     }
+    public List<Comentario> conseguirComentariosCliente (Integer id){
+        List<Comentario> lista = comentarioRepository.findAll();
+        List<Comentario> fin = new ArrayList<>();
+        for (Comentario x: lista){
+            if (x.getId_cliente().getId() == id){
+                fin.add(x);
+            }
+        }
+        return fin;
+    }
 
     public void guardarComentario (Comentario comentario){
         comentarioRepository.save(comentario);
