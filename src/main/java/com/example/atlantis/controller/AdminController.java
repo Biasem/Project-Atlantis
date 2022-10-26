@@ -43,32 +43,17 @@ public class AdminController{
             idHotel = hotelService.conseguirId(usuario);
             System.out.println(idCliente);
         }
+        ModelAndView model = new ModelAndView("adminTest");
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        model.addObject("usuario", usuario);
+        List<TipoHab> tipohab = habitacionesService.todoHab();
+        model.addObject("tipohab",tipohab);
+        model.addObject("habitaciones", new Habitaciones());
+        List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
+        return model;
 
-        if(idHotel==0){
-            if (idCliente>0){
-                ModelAndView no = new ModelAndView("noDeberias");
-                return no;
-            }
-            else{
-                ModelAndView inicia = new ModelAndView("iniciaSesion");
-                return inicia;
-            }
-        }
-
-        if (idHotel>0){
-            ModelAndView model = new ModelAndView("adminTest");
-            model.addObject("idHotel", idHotel);
-            model.addObject("idCliente", idCliente);
-            model.addObject("usuario", usuario);
-            List<TipoHab> tipohab = habitacionesService.todoHab();
-            model.addObject("tipohab",tipohab);
-            model.addObject("habitaciones", new Habitaciones());
-            List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-            model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
-            return model;
-        }
-        // Gestión sesión
-        return new ModelAndView("redirect:/main");
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
