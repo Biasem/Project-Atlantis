@@ -47,12 +47,12 @@ public class GestionClienteController {
 
 
         model.addAttribute("cliente", cliente);
-        Login usuario = (Login) session.getAttribute("user");
+        //Login usuario = (Login) session.getAttribute("user");
 
-         Cliente cliente1 = clienteService.obtenerCliDeSesion(usuario);
+        // Cliente cliente1 = clienteService.obtenerCliDeSesion(usuario);
 
 
-         model.addAttribute("cliente1", cliente1);
+        // model.addAttribute("cliente1", cliente1);
 
         //Listas para introducir en el html los paises que queremos que salgan
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
