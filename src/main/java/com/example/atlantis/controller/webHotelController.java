@@ -2,11 +2,15 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,18 +45,17 @@ public class webHotelController {
 
         ModelAndView model = new ModelAndView("hotelWeb");
         // Gestión sesión
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            idHotel = hotelService.conseguirId(usuario);
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
-        model.addObject("usuario", usuario);
         // Gestión sesión
 
         List<Hotel> listaHoteles = hotelService.getAll();

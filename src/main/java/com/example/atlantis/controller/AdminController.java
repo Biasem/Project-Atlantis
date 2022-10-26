@@ -5,6 +5,8 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HabitacionesService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,20 +35,22 @@ public class AdminController{
 
     @GetMapping("/admin")
     public ModelAndView admin(HttpSession session) {
+        ModelAndView model = new ModelAndView("adminTest");
         // Gestión sesión
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            idHotel = hotelService.conseguirId(usuario);
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
         }
-        ModelAndView model = new ModelAndView("adminTest");
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
-        model.addObject("usuario", usuario);
+        // Gestión sesión
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
         List<TipoHab> tipohab = habitacionesService.todoHab();
         model.addObject("tipohab",tipohab);
         model.addObject("habitaciones", new Habitaciones());

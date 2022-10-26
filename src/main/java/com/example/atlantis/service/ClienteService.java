@@ -77,11 +77,11 @@ public class ClienteService {
 
     }
 
-    public Integer conseguirId(Login usuario){
+    public Integer conseguirId(String correo){
         List<Cliente> clientes = clienteRepository.findAll();
         Integer id = 0;
         for (Cliente x: clientes){
-            if (x.getEmail().getEmail().equals(usuario.getEmail())){
+            if (x.getEmail().getEmail().equals(correo)){
                 id = x.getId();
             }
             else {

@@ -5,6 +5,8 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.RegimenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,18 +33,17 @@ public class MainController{
         ModelAndView model = new ModelAndView("main");
 
         // Gestión sesión
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            idHotel = hotelService.conseguirId(usuario);
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
-        model.addObject("usuario", usuario);
         // Gestión sesión
 
         List<Hotel> listaprimera = hotelService.getAll();
@@ -67,18 +68,17 @@ public class MainController{
         ModelAndView model = new ModelAndView("resultado");
 
         // Gestión sesión
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            idHotel = hotelService.conseguirId(usuario);
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
-        model.addObject("usuario", usuario);
         // Gestión sesión
 
         List<Hotel> listaHoteles = hotelService.getAll();

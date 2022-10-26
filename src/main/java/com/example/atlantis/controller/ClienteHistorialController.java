@@ -3,7 +3,6 @@ package com.example.atlantis.controller;
 
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Reserva;
-import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-public class ClienteHistorial {
+public class ClienteHistorialController {
 
     @Autowired
     private ReservaService reservaService;
