@@ -21,9 +21,7 @@
 </head>
 
 <body class="bg-white">
-<nav th:if="${idCliente == 0}" th:include="navMenu.html"></nav>
-<nav th:if="${idCliente > 0 and usuario.getRol() == CLIENTE}" th:include="navMenuCliente"></nav>
-<nav th:if="${idHotel > 0 and usuario.getRol() == HOTEL}" th:include="navMenuHotel"></nav>
+<nav th:include="navMenu.html"></nav>
   <div th:each="h: ${hotelfinal}">
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
       <div class="container px-4 text-center">
