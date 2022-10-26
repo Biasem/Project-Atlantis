@@ -3,6 +3,7 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ public class HotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Hotel> getAll(){
         return hotelRepository.findAll();
@@ -47,6 +50,7 @@ public class HotelService {
         hotel1.setUrl_icono(hotel.getUrl_icono());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
         hotel1.setEmail(hotel.getEmail());
+        hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
 
         return hotel1;
     }

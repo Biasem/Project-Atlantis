@@ -23,6 +23,7 @@ public class RegisterControllerHotel {
     @Autowired
     private HotelService hotelService;
 
+
     @GetMapping("/registrohotel")
     public String registerhotelForm(Model model, @ModelAttribute Hotel hotel) {
 
