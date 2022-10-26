@@ -23,7 +23,7 @@
 <body class="bg-white">
 <nav th:include="navMenu.html"></nav>
 
-        <table th:action="@{/historialReservaCliente}" th:object="${cliente}" class="table bg-white rounded border table-striped table-dark">
+        <table  class="table bg-white rounded border table-striped table-dark">
           <thead>
           <tr>
             <th scope="col">ID</th>
@@ -34,14 +34,12 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="a:${listaHabitaciones}">
-            <td th:text="${a.getTipo_hab()}"></td>
-            <td th:text="${a.getMax_cliente()}"></td>
-            <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
-            <td> <input type="number" th:field="*{num}"></td>
-            <td><select th:field="*{id_regimen}">
-              <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
-            </select></td>
+          <tr th:each="a:${todas}">
+            <td th:text="${a.getNum_clientes()}"></td>
+
+
           </tr>
           </tbody>
         </table>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
+import com.example.atlantis.repository.ClienteRepository;
 import com.example.atlantis.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,9 @@ public class LoginService implements UserDetailsService {
 
     @Autowired
     private LoginRepository loginRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     public List<Login> getAll() {
         return loginRepository.findAll();
@@ -80,5 +84,17 @@ public class LoginService implements UserDetailsService {
         return registrado;
 
 
+    }
+
+    public Cliente copiartodoclienteconsession(String email){
+        List<Cliente> todos = clienteRepository.findAll();
+        Cliente cliente1 = new Cliente();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(email)){
+                cliente1 = todos.get(i);
+            }
+        }
+        return cliente1;
     }
 }
