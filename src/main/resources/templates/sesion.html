@@ -40,18 +40,19 @@
                                 <div class="mb-3"><input id="username" class="form-control" type="email" name="username" placeholder="Email"  style="margin-top: -1px;margin-left: 0px;"></div>
                                 <div class="mb-3"><input id="password" class="form-control" type="password" name="password" placeholder="Contraseña"  style="margin-top: 15px;margin-left: 0px;"></div>
                                 <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit"  style="margin-left: 1px;margin-right: 0px;">Entrar</button></div>
-                                <a class="nav-link" href="/register">¿No tienes cuenta?</a>
-                                <p class="text-muted">¿Olvidaste la contraseña?</p>
-                                <th:block th:if="${error}">
-                                    <div class="offset-3 col-6">
-                                        <div class="alert alert-danger" role="alert">
-                                            Usuario o Contraseña erróneos
-                                        </div>
-                                    </div>
-                                </th:block>
+                                <a class="nav-link" href="/register" style="margin-left: 20px;margin-right: 0px;">¿No tienes cuenta?</a>
+                                <p class="text-muted" style="margin-left: 10px;margin-right: 0px;">¿Olvidaste la contraseña?</p>
+
                             </form>
 
                         </div>
+                        <th:block th:if="${error}">
+                            <div class="offset-3 col-6">
+                                <div class="alert alert-danger" role="alert">
+                                    Email/Contraseña erróneos
+                                </div>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
