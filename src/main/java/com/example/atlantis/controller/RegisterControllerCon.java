@@ -32,6 +32,7 @@ public class RegisterControllerCon {
 
 
 
+
     @GetMapping("/register")
     public String registerForm(Model model, @ModelAttribute Cliente cliente) {
 
@@ -48,30 +49,33 @@ public class RegisterControllerCon {
 
     @PostMapping("/registrocliente")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
-        //If para verificar que los datos introducidos sean tal cual se necesite
-        if(cliente.getNombre() != null && cliente.getApellidos() != null
-                && cliente.getEmail().getEmail() != null &&
-        cliente.getEmail().getPassword() != null && cliente.getDni() != null
-                && clienteService.validarDNI(cliente.getDni()) != false) {
 
-            //Selección de Rol Cliente para el nuevo cliente
-            cliente.getEmail().setRol(Rol.CLIENTE);
-            cliente.getEmail().setPassword(bCryptPasswordEncoder.encode(cliente.getEmail().getPassword()));
+        try {
+            //If para verificar que los datos introducidos sean tal cual se necesite
+            if (cliente.getNombre() != null && cliente.getApellidos() != null
+                    && cliente.getEmail().getEmail() != null &&
+                    cliente.getEmail().getPassword() != null && cliente.getDni() != null
+                    && clienteService.validarDNI(cliente.getDni()) != false) {
 
-
-            //Guardado del cliente en base de datos
-            clienteService.guardarCliente(cliente);
-            System.out.println(cliente);
-
-            return "redirect:/main";
-
-        }else{
+                //Selección de Rol Cliente para el nuevo cliente
+                cliente.getEmail().setRol(Rol.CLIENTE);
+                cliente.getEmail().setPassword(bCryptPasswordEncoder.encode(cliente.getEmail().getPassword()));
 
 
+
+                //Guardado del cliente en base de datos
+                clienteService.guardarCliente(cliente);
+                System.out.println(cliente);
+
+                return "redirect:/main";
+
+            } else {
+                return "redirect:/register";
+            }
+        }catch (Exception e){
             return "redirect:/register";
         }
-   }
-
+    }
 
 
 

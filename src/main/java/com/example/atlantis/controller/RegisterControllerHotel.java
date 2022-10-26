@@ -50,6 +50,7 @@ public class RegisterControllerHotel {
     @PostMapping("/registrohotel")
     public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
 
+        try {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
@@ -69,6 +70,9 @@ public class RegisterControllerHotel {
             return "redirect:/main";
         } else {
 
+            return "redirect:/registrohotel";
+        }
+        }catch (Exception e){
             return "redirect:/registrohotel";
         }
 

@@ -22,31 +22,30 @@ public class LoginService implements UserDetailsService {
     @Autowired
     private LoginRepository loginRepository;
 
-    public List<Login> getAll(){
+    public List<Login> getAll() {
         return loginRepository.findAll();
     }
 
 
-    public boolean Buscar(Login login){
+    public boolean Buscar(Login login) {
         //Lista con todos los registros de login
         List<Login> todos = getAll();
         boolean registrado = false;
 
         //Validación de si existe el email y el password en un determinado registro, devolviendo un boolean
-        for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).getEmail().equals(login.getEmail()) && todos.get(i).getPassword().equals(login.getPassword())){
+        for (int i = 0; i < todos.size(); i++) {
+            if (todos.get(i).getEmail().equals(login.getEmail()) && todos.get(i).getPassword().equals(login.getPassword())) {
                 registrado = true;
                 break;
-            }
-            else {
+            } else {
                 registrado = false;
             }
         }
 
-    return registrado;
+        return registrado;
     }
 
-    public void guardarLogin(Login login){
+    public void guardarLogin(Login login) {
         loginRepository.save(login);
     }
 
@@ -65,5 +64,21 @@ public class LoginService implements UserDetailsService {
         return new User(login.getEmail(), login.getPassword(), roles);
     }
 
+    public boolean existe(Login login) {
+        List<Login> todos = getAll();
+        boolean registrado = false;
+        for (int i = 0; i < todos.size(); i++) {
+            if (login.getEmail().equals(todos.get(i).getEmail())) {
+                registrado = false;
+                break;
+            } else {
+                registrado = true;
 
+            }
+
+        }
+        return registrado;
+
+
+    }
 }
