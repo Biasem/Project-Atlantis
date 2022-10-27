@@ -4,6 +4,8 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,10 @@ public class GestionHotelController {
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private LoginService loginService;
+
 
 
     @GetMapping("/borrarhotel")
@@ -42,8 +48,11 @@ public class GestionHotelController {
     @GetMapping("/editarhotel")
         public String editarHotel(Model model, @ModelAttribute Hotel hotel) {
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        RegisHotFech hotel1 = loginService.copiartodohotelconsession(correo);
 
-        model.addAttribute("hotel", hotel);
+        model.addAttribute("hotel", hotel1);
 
         //Listas para insertar en html las opciones que queramos
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
@@ -69,7 +78,18 @@ public class GestionHotelController {
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
                 && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
-                && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
+                ) {
+
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Hotel datos = loginService.cogerid(correo);
+
+            hotel.setId(datos.getId());
+            hotel.setEmail(new Login());
+            hotel.getEmail().setPassword(datos.getEmail().getPassword());
+            hotel.getEmail().setRol(datos.getEmail().getRol());
+            hotel.getEmail().setEmail(datos.getEmail().getEmail());
 
         //Método para meter el hotel ya convertido en el modelo para ddbb
             hotelService.editarHotel(hotelService.convertirAHotel(hotel));

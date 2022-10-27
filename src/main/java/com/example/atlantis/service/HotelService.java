@@ -51,7 +51,7 @@ public class HotelService {
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
         hotel1.setEmail(hotel.getEmail());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
-
+        hotel1.setId(hotel.getId());
         return hotel1;
     }
 

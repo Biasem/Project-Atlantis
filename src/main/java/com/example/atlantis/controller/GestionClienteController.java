@@ -5,7 +5,10 @@ import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
+import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,8 @@ public class GestionClienteController {
 
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private LoginService loginService;
 
 
     @GetMapping("/borrarcliente")
@@ -43,10 +48,13 @@ public class GestionClienteController {
 
 
     @GetMapping("/editarcliente")
-    public String editarCliente(Model model, HttpSession session, @ModelAttribute Cliente cliente) {
+    public String editarCliente(Model model, @ModelAttribute Cliente cliente) {
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
+        model.addAttribute("cliente", cliente1);
 
-        model.addAttribute("cliente", cliente);
         //Login usuario = (Login) session.getAttribute("user");
 
         // Cliente cliente1 = clienteService.obtenerCliDeSesion(usuario);

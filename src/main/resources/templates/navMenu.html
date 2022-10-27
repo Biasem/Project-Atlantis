@@ -7,6 +7,7 @@
                 <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/login">Inicio sesión</a></li>
                 <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/register">Registro Cliente</a></li>
                 <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/registrohotel">Registro Hotel</a></li>
+
                 <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a class="nav-link" href="/historialReservaCliente">Tus reservas</a></li>
                 <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a class="nav-link" href="/editarcliente">Perfil</a></li>
                 <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}"> <i class="	fas fa-door-open"></i></a></li>
