@@ -95,7 +95,7 @@ public class webHotelController {
 //        listapreciohab.stream().forEach(p-> System.out.println(p.getId()));
 
         for (Precio_Hab ph:listapreciohab){
-            if(LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_inicio())){
+            if((LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_fin()))){
                 System.out.println(ph.getId());
             }
         }
