@@ -80,4 +80,18 @@ public class HabitacionesService {
 
         return habitacion;
     }
+
+    public Integer puedeEntrar (Integer idhotel, Integer idhabitacion){
+        List<Habitaciones> habitacion = habitacionesRepository.getHabitacionesById(idhabitacion);
+        Integer puede = 0;
+        for (Habitaciones x: habitacion){
+            if(x.getId_hotel().getId().equals(idhotel)){
+                puede = 1;
+            }
+            else{
+
+            }
+        }
+        return puede;
+    }
 }
