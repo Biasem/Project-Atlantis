@@ -94,7 +94,7 @@ public class AdminController{
 
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
         if (puede == 0){
-            ModelAndView error = new ModelAndView("error-404");
+            ModelAndView error = new ModelAndView("404");
             return error;
         }
 
