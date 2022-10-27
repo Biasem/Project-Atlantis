@@ -84,11 +84,11 @@ public class HotelService {
         return regimen;
     }
 
-    public Integer conseguirId(Login usuario){
+    public Integer conseguirId(String correo){
         List<Hotel> hoteles = hotelRepository.findAll();
         Integer id = 0;
         for (Hotel x: hoteles){
-            if (x.getEmail().getEmail().equals(usuario.getEmail())){
+            if (x.getEmail().getEmail().equals(correo)){
                 id = x.getId();
             }
             else {

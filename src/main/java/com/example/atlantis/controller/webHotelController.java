@@ -2,11 +2,15 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -38,6 +42,22 @@ public class webHotelController {
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
                                                      @RequestParam(value = "id") Integer id,
                                                      HttpSession session) {
+
+        ModelAndView model = new ModelAndView("hotelWeb");
+        // Gestión sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+            System.out.println(idCliente);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        // Gestión sesión
+
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
@@ -46,14 +66,7 @@ public class webHotelController {
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
-        Integer idCliente = 0;
-        ModelAndView model = new ModelAndView("hotelWeb");
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            System.out.println(idCliente);
-        }
+
         Integer estrellas = definitivo.getNum_estrellas();
         model.addObject("idCliente", idCliente);
         model.addObject("texto", new Comentario());

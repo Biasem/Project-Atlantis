@@ -5,6 +5,8 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HabitacionesService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController{
@@ -32,55 +35,39 @@ public class AdminController{
 
     @GetMapping("/admin")
     public ModelAndView admin(HttpSession session) {
+        ModelAndView model = new ModelAndView("adminTest");
         // Gestión sesión
-        Login usuario = new Login();
-        usuario = (Login) session.getAttribute("user");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (usuario != null){
-            idCliente = clienteService.conseguirId(usuario);
-            idHotel = hotelService.conseguirId(usuario);
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
+            System.out.println(idHotel);
         }
-
-        if(idHotel==0){
-            if (idCliente>0){
-                ModelAndView no = new ModelAndView("noDeberias");
-                return no;
-            }
-            else{
-                ModelAndView inicia = new ModelAndView("iniciaSesion");
-                return inicia;
-            }
-        }
-
-        if (idHotel>0){
-            ModelAndView model = new ModelAndView("adminTest");
-            model.addObject("idHotel", idHotel);
-            model.addObject("idCliente", idCliente);
-            model.addObject("usuario", usuario);
-            List<TipoHab> tipohab = habitacionesService.todoHab();
-            model.addObject("tipohab",tipohab);
-            model.addObject("habitaciones", new Habitaciones());
-            return model;
-        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
         // Gestión sesión
-        return new ModelAndView("redirect:/main");
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        List<TipoHab> tipohab = habitacionesService.todoHab();
+        model.addObject("tipohab",tipohab);
+        model.addObject("habitaciones", new Habitaciones());
+        List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
+        return model;
+
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
-    public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones) {
+    public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones,
+                                     @RequestParam("idhotel") Integer idhotel) {
         habitaciones.setHab_ocupadas(0);
+        habitacionesService.conseguirIDHotel(idhotel,habitaciones);
         habitacionesService.guardarHabitacion(habitaciones);
         ModelAndView model = new ModelAndView("adminHecho");
-        return model;
-    }
-
-    @RequestMapping(value = "/admin/habitaciones", method = RequestMethod.POST)
-    public ModelAndView hotel(@RequestParam(value = "numero") Integer id) {
-        List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-        ModelAndView model = new ModelAndView("adminHabitaciones");
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones));
         return model;
     }
 

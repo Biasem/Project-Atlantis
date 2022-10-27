@@ -1,5 +1,6 @@
 package com.example.atlantis;
 
+import com.example.atlantis.model.Rol;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/admin").hasAuthority(Rol.HOTEL.toString())
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/main")

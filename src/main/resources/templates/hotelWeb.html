@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-white">
-  <nav th:include="navMenu.html"></nav>
+<nav th:include="navMenu.html"></nav>
   <div th:each="h: ${hotelfinal}">
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
       <div class="container px-4 text-center">
@@ -97,7 +97,7 @@
           <div th:if="${idCliente >0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:each="z : ${hotelfinal}">
             <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
             <form class="mt-3 d-flex flex-row align-items-center p-3 form-color" action="#" th:action="@{/comentario}" th:object="${texto}" method="post">
-              <input type="text" name="texto" maxlength="250" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
+              <input type="text" name="texto" maxlength="70" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
               <p  style="margin-left: 20px;" > Puntuación:</p>
               <input type="number" min="1" max="5" style="margin-left: 20px;" th:field="*{puntuacion}">
               <input style="margin-left: 20px;" type="submit" class="btn btn-primary form-control text-center" value="Enviar">

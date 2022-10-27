@@ -21,9 +21,7 @@
 </head>
 
 <body class="bg-white">
-    <nav th:if="${idCliente == 0}" th:include="navMenu.html"></nav>
-    <nav th:if="${idCliente > 0 and usuario.getRol() == CLIENTE}" th:include="navMenuCliente"></nav>
-    <nav th:if="${idHotel > 0 and usuario.getRol() == HOTEL}" th:include="navMenuHotel"></nav>
+    <nav th:include="navMenu.html"></nav>
     <br>
     <br>
     <br>

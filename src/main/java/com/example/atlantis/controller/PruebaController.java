@@ -3,6 +3,8 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,24 @@ public class PruebaController{
         private ComentarioService comentarioService;
 
         @RequestMapping("/equipo")
-        public ModelAndView equipo(){
+        public ModelAndView equipo(HttpSession session){
             ModelAndView model = new ModelAndView("equipo");
+            // Gestión sesión
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Integer idCliente = 0;
+            Integer idHotel = 0;
+            if (correo != null){
+                idCliente = clienteService.conseguirId(correo);
+                idHotel = hotelService.conseguirId(correo);
+                System.out.println(idCliente);
+            }
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            // Gestión sesión
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            // Gestión sesión
             return model ;
         }
         @GetMapping("/prueba")
@@ -35,19 +53,6 @@ public class PruebaController{
             ModelAndView model = new ModelAndView("greeting");
             model.addObject("texto", new Comentario());
             return model ;
-        }
-        @PostMapping( "/hastalapolla")
-        public ModelAndView sadge(@ModelAttribute Comentario comentario){
-            Cliente dolor = new Cliente();
-            Hotel sufrir = new Hotel();
-            dolor.setId(2);
-            sufrir.setId(2);
-            comentario.setFecha(LocalDate.now());
-            comentario.setId_cliente(dolor);
-            comentario.setId_hotel(sufrir);
-            comentarioService.guardarComentario(comentario);
-            ModelAndView model = new ModelAndView("comentarioHecho");
-            return model;
         }
 
 }
