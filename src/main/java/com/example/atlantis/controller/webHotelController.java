@@ -87,11 +87,17 @@ public class webHotelController {
 
         System.out.println("precio habitacion por dia");
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll().stream().filter( h -> h.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        List<Precio_Hab> listapreciohab = new ArrayList<>();
         for(Habitaciones h:listaHabitaciones){
-            precioHabitacionService.getAll().stream().filter(p-> p.getId_hotel().getId().equals(id)).collect(Collectors.toList())
-                    .stream().filter(p-> p.getId_hab().getId().equals(h.getId())).collect(Collectors.toList())
-                    .stream().forEach(p-> p.getFecha_inicio().);
+                    listapreciohab.addAll(precioHabitacionService.getAll().stream().filter(p-> p.getId_hotel().getId().equals(id)).collect(Collectors.toList())
+                    .stream().filter(p-> p.getId_hab().getId().equals(h.getId())).collect(Collectors.toList()));
+        }
+//        listapreciohab.stream().forEach(p-> System.out.println(p.getId()));
 
+        for (Precio_Hab ph:listapreciohab){
+            if(LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_inicio())){
+                System.out.println(ph.getId());
+            }
         }
         return "redirect:/main";
     }
