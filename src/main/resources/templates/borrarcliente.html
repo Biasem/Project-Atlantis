@@ -30,12 +30,14 @@
 <br>
 <br>
 <br>
+<button onclick="location.href = '/perfilcliente';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
 <div class="row mb-5">
   <div class="col-md-8 col-xl-6 text-center mx-auto">
     <h2><span style="color: rgb(0, 0, 0);">¿Estás seguro?</span></h2>
     <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Una vez confirmes, su cuenta se borrará y no podrá volver a recuperarla</span></p>
   </div>
 </div>
+
 <form action="#" th:action="@{/borrarcliente}" method="post" th:object="${cliente}" class="container px-4" >
   <div class="form-group row">
     <label for="email" class="col-4 col-form-label">Email</label>
