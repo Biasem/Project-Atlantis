@@ -27,6 +27,15 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<div class="row mb-5">
+  <div class="col-md-8 col-xl-6 text-center mx-auto">
+    <h2><span style="color: rgb(0, 0, 0);">¿Estás seguro?</span></h2>
+    <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Una vez confirmes, su cuenta se borrará y no podrá volver a recuperarla</span></p>
+  </div>
+</div>
 <form action="#" th:action="@{/borrarcliente}" method="post" th:object="${cliente}" class="container px-4" >
   <div class="form-group row">
     <label for="email" class="col-4 col-form-label">Email</label>
@@ -37,12 +46,32 @@
             <i class="fa fa-envelope"></i>
           </div>
         </div>
-        <input id="email" name="email" placeholder="id" type="text" th:field="*{email.email}" class="form-control">
+        <input id="email" name="email" placeholder="Email" type="text" th:field="*{email.email}" class="form-control">
       </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="password" class="col-4 col-form-label">Password</label>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-envelope"></i>
+          </div>
+        </div>
+        <input id="password" name="id" placeholder="password" type="password" th:field="*{email.password}" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="offset-4 col-8">
+      <button name="submit" type="submit" class="btn btn-primary">Confirmar</button>
     </div>
   </div>
 
 </form>
+<br>
+<br>
 
 
 <footer th:include="footer.html"></footer>

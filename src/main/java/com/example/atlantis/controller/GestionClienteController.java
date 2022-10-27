@@ -31,9 +31,11 @@ public class GestionClienteController {
 
 
     @GetMapping("/borrarcliente")
-    public String deleteCliente(@ModelAttribute Cliente cliente) {
-        ModelAndView model = new ModelAndView("cliente");
-        model.addObject("cliente", cliente);
+    public String deleteCliente(Model model,@ModelAttribute Cliente cliente) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
+        model.addAttribute("cliente", cliente1);
         return "borrarcliente";
     }
 
