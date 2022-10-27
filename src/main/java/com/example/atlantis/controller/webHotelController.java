@@ -27,6 +27,9 @@ public class webHotelController {
     @Autowired
     private RegimenService regimenService;
 
+    @Autowired
+    private Precio_HabitacionService precioHabitacionService;
+
 
     @RequestMapping("/hoteles/{item}")
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
@@ -82,10 +85,16 @@ public class webHotelController {
         System.out.println(objeto_aux_reserva.getFechainicio());
         System.out.println(objeto_aux_reserva.getFechafin());
 
+        System.out.println("precio habitacion por dia");
+        List<Habitaciones> listaHabitaciones = habitacionesService.getAll().stream().filter( h -> h.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        for(Habitaciones h:listaHabitaciones){
+            precioHabitacionService.getAll().stream().filter(p-> p.getId_hotel().getId().equals(id)).collect(Collectors.toList())
+                    .stream().filter(p-> p.getId_hab().getId().equals(h.getId())).collect(Collectors.toList())
+                    .stream().forEach(p-> p.getFecha_inicio().);
+
+        }
         return "redirect:/main";
     }
-
-
 
 
 }
