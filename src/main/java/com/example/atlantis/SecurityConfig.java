@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/admin/**").hasRole(Rol.HOTEL.toString())
+                .antMatchers("/admin").hasAuthority(Rol.HOTEL.toString())
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/main")
