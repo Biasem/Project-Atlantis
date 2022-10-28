@@ -36,6 +36,8 @@ public class webHotelController {
     private ComentarioService comentarioService;
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private ReservaService reservaService;
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
@@ -76,7 +78,7 @@ public class webHotelController {
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
 
-        Objeto_Aux_Reserva objetoInteger = new Objeto_Aux_Reserva();
+        Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
         model.addObject("objeto_integer",objetoInteger);
 
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
@@ -99,36 +101,16 @@ public class webHotelController {
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
     }
-
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva objeto_aux_reserva,
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer id){
 
-        List<Regimen> regimenList =regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList());
-        List<Regimen> regimenAux = new ArrayList<>();
-        List<Double> sumaPreciosRegimenHab = new ArrayList<>();
-        List<Double> sumaPreciosFechaHab = new ArrayList<>();
-        for(int i=0;i<objeto_aux_reserva.getNum().size();i++){
-            for (Regimen r : regimenList){
-                if(TipoRegimen.valueOf(objeto_aux_reserva.getId_regimen().get(i)).equals(r.getCategoria())){
-                    sumaPreciosRegimenHab.add(r.getPrecio()*objeto_aux_reserva.getNum().get(i));
-                }
-            }
+        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
+        {
+            return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
         }
-
-        System.out.println("num habitaciones");
-        System.out.println(objeto_aux_reserva.getNum());
-        System.out.println("tipo regimen");
-        System.out.println(objeto_aux_reserva.getId_regimen());
-        System.out.println("id hotel: " + id);
-        System.out.println("suma precios regimen con num habitaciones");
-        System.out.println(sumaPreciosRegimenHab);
-        System.out.println("suma precios habitaciones por fechas");
-        System.out.println(objeto_aux_reserva.getFechainicio());
-        System.out.println(objeto_aux_reserva.getFechafin());
-
-
-
+        //objeto Reserva_para_bbdd
+       reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
 
         return "redirect:/main";
     }
