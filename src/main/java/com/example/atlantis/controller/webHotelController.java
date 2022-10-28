@@ -29,8 +29,7 @@ public class webHotelController {
     private RegimenService regimenService;
 
     @Autowired
-    private Precio_HabitacionService precioHabitacionService;
-
+    private ReservaService reservaService;
 
     @RequestMapping("/hoteles/{item}")
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
@@ -63,72 +62,7 @@ public class webHotelController {
         {
             return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
         }
-        List<Regimen> regimenList =regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList());
-        List<Regimen> regimenAux = new ArrayList<>();
-        List<Double> sumaPreciosRegimenHab = new ArrayList<>();
-        List<Double> sumaPreciosFechaHab = new ArrayList<>();
-        for(int i=0;i<objeto_aux_reserva.getNum().size();i++){
-            for (Regimen r : regimenList){
-                if(TipoRegimen.valueOf(objeto_aux_reserva.getId_regimen().get(i)).equals(r.getCategoria())){
-                    sumaPreciosRegimenHab.add(r.getPrecio()*objeto_aux_reserva.getNum().get(i));
-                }
-            }
-        }
-
-        System.out.println("num habitaciones");
-        System.out.println(objeto_aux_reserva.getNum());
-        System.out.println("tipo regimen");
-        System.out.println(objeto_aux_reserva.getId_regimen());
-        System.out.println("id hotel: " + id);
-        System.out.println("suma precios regimen con num habitaciones");
-        System.out.println(sumaPreciosRegimenHab);
-        System.out.println("suma precios habitaciones por fechas");
-        System.out.println(objeto_aux_reserva.getFechainicio());
-        System.out.println(objeto_aux_reserva.getFechafin());
-
-        System.out.println("precio habitacion por dia");
-        List<Habitaciones> listaHabitaciones = habitacionesService.getAll().stream().filter( h -> h.getId_hotel().getId().equals(id)).collect(Collectors.toList());
-        List<Precio_Hab> listapreciohab = new ArrayList<>();
-        for(Habitaciones h:listaHabitaciones){
-                    listapreciohab.addAll(precioHabitacionService.getAll().stream().filter(p-> p.getId_hotel().getId().equals(id)).collect(Collectors.toList())
-                    .stream().filter(p-> p.getId_hab().getId().equals(h.getId())).collect(Collectors.toList()));
-        }
-        Long diasreserva = DAYS.between(LocalDate.parse(objeto_aux_reserva.getFechainicio()),LocalDate.parse(objeto_aux_reserva.getFechafin()));
-        Double totalprecio = 0.0;
-        System.out.println("dias reservados : "+diasreserva);
-
-        for (Precio_Hab ph:listapreciohab){
-            //reserva en una hab-precio
-            if((LocalDate.parse(objeto_aux_reserva.getFechainicio()).isAfter(ph.getFecha_inicio())||
-                    (LocalDate.parse(objeto_aux_reserva.getFechainicio()).equals(ph.getFecha_inicio())))&&(
-                    (LocalDate.parse(objeto_aux_reserva.getFechafin()).isBefore(ph.getFecha_fin()))||
-                            (LocalDate.parse(objeto_aux_reserva.getFechafin()).equals(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()*DAYS.between(LocalDate.parse(objeto_aux_reserva.getFechainicio()),LocalDate.parse(objeto_aux_reserva.getFechafin()));
-            }
-                //coger el incio
-            if ((LocalDate.parse(objeto_aux_reserva.getFechainicio()).isAfter(ph.getFecha_inicio())&&
-                    (LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_fin()))&&
-                    (LocalDate.parse(objeto_aux_reserva.getFechafin()).isAfter(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()* DAYS.between(LocalDate.parse(objeto_aux_reserva.getFechainicio()),ph.getFecha_fin());
-
-            }//coger el fin
-            if (LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_inicio())&&
-                    (LocalDate.parse(objeto_aux_reserva.getFechafin()).isAfter(ph.getFecha_inicio())||
-                            LocalDate.parse(objeto_aux_reserva.getFechafin()).isEqual(ph.getFecha_inicio()))&&
-                    (LocalDate.parse(objeto_aux_reserva.getFechafin()).isBefore(ph.getFecha_fin())||
-                            (LocalDate.parse(objeto_aux_reserva.getFechafin()).isEqual(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()*(DAYS.between(ph.getFecha_inicio(),LocalDate.parse(objeto_aux_reserva.getFechafin()))+1);
-
-            }
-            //fechas de hab-precio entre otras hab-precio
-            if(LocalDate.parse(objeto_aux_reserva.getFechainicio()).isBefore(ph.getFecha_inicio())&&
-                    LocalDate.parse(objeto_aux_reserva.getFechafin()).isAfter(ph.getFecha_fin())){
-                totalprecio = totalprecio + ph.getPrecio()* (DAYS.between(ph.getFecha_inicio(), ph.getFecha_fin())+1);
-
-            }
-        }
-
-        System.out.println(totalprecio);
+       reservaService.precioHabReservada(id,objeto_aux_reserva);
         return "redirect:/main";
     }
 

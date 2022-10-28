@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Objeto_Aux_Reserva {
-    private List<Integer> num;
+    private List<Integer> cantidadHabitaciones;
     private List<String> id_regimen;
     private String fechainicio;
     private String fechafin;
