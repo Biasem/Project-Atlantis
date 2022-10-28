@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Controller
 public class webHotelController {
@@ -49,20 +48,22 @@ public class webHotelController {
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
 
-        Objeto_Aux_Reserva objetoInteger = new Objeto_Aux_Reserva();
+        Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
         model.addObject("objeto_integer",objetoInteger);
 
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva objeto_aux_reserva,
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer id){
 
-        if(LocalDate.parse(objeto_aux_reserva.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reserva.getFechafin())))
+        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
             return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
         }
-       reservaService.precioHabReservada(id,objeto_aux_reserva);
+        //objeto Reserva_para_bbdd
+       reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
+
         return "redirect:/main";
     }
 

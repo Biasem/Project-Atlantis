@@ -1,7 +1,6 @@
 package com.example.atlantis.model;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -9,9 +8,9 @@ import java.util.List;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Objeto_Aux_Reserva {
+public class Objeto_Aux_Reserva_html {
     private List<Integer> cantidadHabitaciones;
-    private List<String> id_regimen;
+    private List<String> tipo_regimen;
     private String fechainicio;
     private String fechafin;
 }
