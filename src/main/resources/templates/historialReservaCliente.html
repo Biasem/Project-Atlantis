@@ -22,12 +22,25 @@
 
 <body class="bg-white">
 <nav th:include="navMenu.html"></nav>
+<br>
+<br>
+<br>
+<br>
+<br>
 
+<form method="post" >
+
+  <div class="row">
+
+    <div class="col-md-8 mx-auto">
+  <table class="table table-bordered table-striped rounded">
         <table  class="table bg-white rounded border table-striped table-dark">
           <thead>
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">Hotel</th>
             <th scope="col">Huéspedes</th>
+            <th scope="col">Régimen</th>
             <th scope="col">Fecha entrada</th>
             <th scope="col">Fecha salida</th>
             <th scope="col">Precio total</th>
@@ -35,11 +48,21 @@
           </thead>
           <tbody>
           <tr th:each="a:${todas}">
+            <td th:text="${a.getId()}"></td>
             <td th:text="${a.getNum_clientes()}"></td>
+            <td th:text="${a.getFecha_entrada()}"></td>
+            <td th:text="${a.getFecha_salida()}"></td>
+            <td th:text="${a.getPrecio_total()}"></td>
 
 
           </tr>
           </tbody>
         </table>
+  </table>
+    </div>
+  </div>
+
+</form>
+>
 </body>
 </html>

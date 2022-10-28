@@ -33,6 +33,7 @@ public class ClienteHistorialController {
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
         List<Reserva> todas = reservaService.todasReservas(cliente1.getId());
         model.addObject("todas", todas);
+
         return model;
 
     }
