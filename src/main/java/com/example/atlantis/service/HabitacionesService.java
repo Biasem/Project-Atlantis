@@ -40,6 +40,18 @@ public class HabitacionesService {
         }
         return habitauwu;
     }
+    public Habitaciones conseguirHabitacion (Integer numero, List<Habitaciones> lista){
+        Habitaciones habitauwu = new Habitaciones();
+        for (Habitaciones x: lista){
+            if (x.getId().equals(numero)){
+                habitauwu = x;
+            }
+            else{
+
+            }
+        }
+        return habitauwu;
+    }
 
     public List<TipoHab> todoHab(){
         List<TipoHab> hab = new ArrayList<>();
@@ -79,5 +91,19 @@ public class HabitacionesService {
         habitacion.setId_hotel(hotel);
 
         return habitacion;
+    }
+
+    public Integer puedeEntrar (Integer idhotel, Integer idhabitacion){
+        List<Habitaciones> habitacion = habitacionesRepository.getHabitacionesById(idhabitacion);
+        Integer puede = 0;
+        for (Habitaciones x: habitacion){
+            if(x.getId_hotel().getId().equals(idhotel)){
+                puede = 1;
+            }
+            else{
+
+            }
+        }
+        return puede;
     }
 }
