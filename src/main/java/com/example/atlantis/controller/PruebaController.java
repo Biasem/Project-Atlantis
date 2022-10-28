@@ -1,17 +1,19 @@
 package com.example.atlantis.controller;
-import com.example.atlantis.model.Busqueda;
-import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.*;
+import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.atlantis.model.Cliente;
 import com.example.atlantis.service.ClienteService;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class PruebaController{
@@ -21,19 +23,34 @@ public class PruebaController{
 
         @Autowired
         private HotelService hotelService;
+        @Autowired
+        private ComentarioService comentarioService;
 
-        @GetMapping("/busqueda")
-        public ModelAndView getBusqueda(@ModelAttribute List<Hotel> listaHoteles){
-            ModelAndView model = new ModelAndView("codigosucio");
-            model.addObject("listaHotel", listaHoteles);
-            return model;
-
+        @RequestMapping("/equipo")
+        public ModelAndView equipo(HttpSession session){
+            ModelAndView model = new ModelAndView("equipo");
+            // Gestión sesión
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Integer idCliente = 0;
+            Integer idHotel = 0;
+            if (correo != null){
+                idCliente = clienteService.conseguirId(correo);
+                idHotel = hotelService.conseguirId(correo);
+                System.out.println(idCliente);
+            }
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            // Gestión sesión
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            // Gestión sesión
+            return model ;
         }
-        @RequestMapping("/greeting")
-        public ModelAndView listClientes(){
-            List<Cliente> listClientes= clienteService.getAll();
+        @GetMapping("/prueba")
+        public ModelAndView prueba(HttpSession session){
             ModelAndView model = new ModelAndView("greeting");
-            model.addObject("listClientes", listClientes);
+            model.addObject("texto", new Comentario());
             return model ;
         }
 

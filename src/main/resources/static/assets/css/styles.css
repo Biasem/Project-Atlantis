@@ -1985,9 +1985,11 @@
 
   .table-bordered > :not(caption) > * {
     border-width: 1px 0;
+    border-radius: 10px;
   }
   .table-bordered > :not(caption) > * > * {
     border-width: 0 1px;
+    border-radius: 10px;
   }
 
   .table-borderless > :not(caption) > * > * {
@@ -7729,7 +7731,7 @@
 
   .text-danger {
     --bs-text-opacity: 1;
-    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
   }
 
   .text-light {
@@ -7795,7 +7797,8 @@
 
   .bg-primary {
     --bs-bg-opacity: 1;
-    background-image: url(https://image.lexica.art/md/0dc4dd8c-e767-480d-9a47-a259d096368b);
+    color: whitesmoke;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important; rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
 
   .bg-secondary {
@@ -7829,6 +7832,10 @@
   }
 
   .bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+  }
+  .bg-darkk {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
   }
@@ -11289,8 +11296,201 @@
     padding-bottom: 9rem;
   }
 
+ .inline {
+    float:left; }
 
 
+  .icon {
+    padding-left: 25px;
+    background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat center;
+    background-size: 20px;
+    fill: white;
+  }
+
+  .cardd{
+
+    background-color: #fff;
+    border: none;
+  }
+
+  .form-color{
+
+    background-color: #fafafa;
+
+  }
+
+  .form-control{
+
+    height: 48px;
+    border-radius: 25px;
+  }
+
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #35b69f;
+    outline: 0;
+    box-shadow: none;
+    text-indent: 10px;
+  }
+
+  .c-badge{
+    background-color: #35b69f;
+    color: white;
+    height: 20px;
+    font-size: 11px;
+    width: 92px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px;
+  }
+
+  .comment-text{
+    font-size: 13px;
+  }
+
+  .wish{
+
+    color:#35b69f;
+  }
 
 
+  .user-feed{
+
+    font-size: 14px;
+    margin-top: 12px;
+  }
+
+  .single_advisor_profile {
+    position: relative;
+    margin-bottom: 50px;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    z-index: 1;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
+    box-shadow: 0 0.25rem 1rem 0 rgba(47, 91, 234, 0.125);
+  }
+  .single_advisor_profile .advisor_thumb {
+    position: relative;
+    z-index: 1;
+    border-radius: 15px 15px 0 0;
+    margin: 0 auto;
+    padding: 0px 0px 0 0px;
+    overflow: hidden;
+  }
+  .single_advisor_profile .advisor_thumb::after {
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    position: absolute;
+    width: 150%;
+    height: 80px;
+    bottom: -45px;
+    left: -25%;
+    content: "";
+    background-color: #ffffff;
+    -webkit-transform: rotate(-15deg);
+    transform: rotate(-15deg);
+  }
+  @media only screen and (max-width: 575px) {
+    .single_advisor_profile .advisor_thumb::after {
+      height: 160px;
+      bottom: -90px;
+    }
+  }
+  .single_advisor_profile .advisor_thumb .social-info {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    bottom: 0;
+    right: 30px;
+    text-align: right;
+  }
+  .single_advisor_profile .advisor_thumb .social-info a {
+    font-size: 14px;
+    color: #020710;
+    padding: 0 5px;
+  }
+  .single_advisor_profile .advisor_thumb .social-info a:hover,
+  .single_advisor_profile .advisor_thumb .social-info a:focus {
+    color: #3f43fd;
+  }
+  .single_advisor_profile .advisor_thumb .social-info a:last-child {
+    padding-right: 0;
+  }
+  .single_advisor_profile .single_advisor_details_info {
+    position: relative;
+    z-index: 1;
+    padding: 30px;
+    text-align: right;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    border-radius: 0 0 15px 15px;
+    background-color: #ffffff;
+  }
+  .single_advisor_profile .single_advisor_details_info::after {
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    position: absolute;
+    z-index: 1;
+    width: 50px;
+    height: 3px;
+    background-color: #3f43fd;
+    content: "";
+    top: 12px;
+    right: 30px;
+  }
+  .single_advisor_profile .single_advisor_details_info h6 {
+    margin-bottom: 0.25rem;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+  }
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .single_advisor_profile .single_advisor_details_info h6 {
+      font-size: 14px;
+    }
+  }
+  .single_advisor_profile .single_advisor_details_info p {
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .single_advisor_profile .single_advisor_details_info p {
+      font-size: 12px;
+    }
+  }
+  .single_advisor_profile:hover .advisor_thumb::after,
+  .single_advisor_profile:focus .advisor_thumb::after {
+    background-color: #212529;
+  }
+  .single_advisor_profile:hover .advisor_thumb .social-info a,
+  .single_advisor_profile:focus .advisor_thumb .social-info a {
+    color: #ffffff;
+  }
+  .single_advisor_profile:hover .advisor_thumb .social-info a:hover,
+  .single_advisor_profile:hover .advisor_thumb .social-info a:focus,
+  .single_advisor_profile:focus .advisor_thumb .social-info a:hover,
+  .single_advisor_profile:focus .advisor_thumb .social-info a:focus {
+    color: #ffffff;
+  }
+  .single_advisor_profile:hover .single_advisor_details_info,
+  .single_advisor_profile:focus .single_advisor_details_info {
+    background-color: #212529;
+  }
+  .single_advisor_profile:hover .single_advisor_details_info::after,
+  .single_advisor_profile:focus .single_advisor_details_info::after {
+    background-color: #ffffff;
+  }
+  .single_advisor_profile:hover .single_advisor_details_info h6,
+  .single_advisor_profile:focus .single_advisor_details_info h6 {
+    color: #ffffff;
+  }
+  .single_advisor_profile:hover .single_advisor_details_info p,
+  .single_advisor_profile:focus .single_advisor_details_info p {
+    color: #ffffff;
+  }
 

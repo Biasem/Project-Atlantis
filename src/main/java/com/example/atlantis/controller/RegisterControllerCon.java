@@ -7,6 +7,8 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +23,24 @@ public class RegisterControllerCon {
 
 
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    @Autowired
    private ClienteService clienteService;
+
+
+
 
 
     @GetMapping("/register")
     public String registerForm(Model model, @ModelAttribute Cliente cliente) {
 
-        Cliente cliente1 = cliente;
 
+        Cliente cliente1 = cliente;
         model.addAttribute("cliente", cliente1);
 
+        //Listas para introducir en el html los paises que queremos que salgan
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
         model.addAttribute("listpais", listpais);
 
@@ -39,24 +49,33 @@ public class RegisterControllerCon {
 
     @PostMapping("/registrocliente")
     public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
-        if(cliente.getNombre() != null && cliente.getApellidos() != null
-                && cliente.getEmail().getEmail() != null &&
-        cliente.getEmail().getPassword() != null && cliente.getDni() != null
-                && clienteService.validarDNI(cliente.getDni()) != false) {
 
-            cliente.getEmail().setRol(Rol.CLIENTE);
-            clienteService.guardarCliente(cliente);
-            System.out.println(cliente);
+        try {
+            //If para verificar que los datos introducidos sean tal cual se necesite
+            if (cliente.getNombre() != null && cliente.getApellidos() != null
+                    && cliente.getEmail().getEmail() != null &&
+                    cliente.getEmail().getPassword() != null && cliente.getDni() != null
+                    && clienteService.validarDNI(cliente.getDni()) != false) {
 
-            return "redirect:/main";
+                //Selección de Rol Cliente para el nuevo cliente
+                cliente.getEmail().setRol(Rol.CLIENTE);
+                cliente.getEmail().setPassword(bCryptPasswordEncoder.encode(cliente.getEmail().getPassword()));
 
-        }else{
 
 
+                //Guardado del cliente en base de datos
+                clienteService.guardarCliente(cliente);
+                System.out.println(cliente);
+
+                return "redirect:/main";
+
+            } else {
+                return "redirect:/register";
+            }
+        }catch (Exception e){
             return "redirect:/register";
         }
-   }
-
+    }
 
 
 

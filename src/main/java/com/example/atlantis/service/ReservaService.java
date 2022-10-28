@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.sound.sampled.ReverbType;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,33 @@ public class ReservaService {
 
     public Reserva getById(int id){
         return reservaRepository.findById(id).orElse(null);
+    }
+
+    public List<Reserva> todasReservas(int id){
+       List<Reserva> todas = reservaRepository.findAll();
+       List<Reserva> buscadas = new ArrayList<>();
+
+        for(int i = 0; i < todas.size(); i++ ){
+            if(todas.get(i).getId_cliente().getId().equals(id)){
+                buscadas.add(todas.get(i));
+            }
+        }
+        return buscadas;
+
+
+    }
+
+    public List<Reserva> todasReservasHotel(int id){
+        List<Reserva> todas = reservaRepository.findAll();
+        List<Reserva> buscadas = new ArrayList<>();
+
+        for(int i = 0; i < todas.size(); i++ ){
+            if(todas.get(i).getId_hotel().getId().equals(id)){
+                buscadas.add(todas.get(i));
+            }
+        }
+        return buscadas;
+
 
     }
     public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
@@ -113,6 +143,53 @@ public class ReservaService {
             }
         }
         return totalprecio;
+    }
+    public List<HistorialReservaClientes> cambiomodelohistorial(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
+
+        List<HistorialReservaClientes> cambiados = new ArrayList<>();
+
+        for(int i = 0; i < listareserva.size(); i++ )
+        {
+            for(int a = 0; a < listahabre.size(); a++ ){
+                if(listahabre.get(a).getReserva().getId().equals(listareserva.get(i).getId())) {
+                    HistorialReservaClientes reservas = new HistorialReservaClientes();
+                    reservas.setId(listareserva.get(i).getId());
+                    reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
+                    reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
+                    reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
+                    reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
+                    reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
+                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                    cambiados.add(reservas);
+                }
+            }
+        }
+        return cambiados;
+    }
+
+
+    public List<HistorialReservaClientes> cambiomodelohistorialvigente(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
+
+        List<HistorialReservaClientes> cambiados = new ArrayList<>();
+
+        for(int i = 0; i < listareserva.size(); i++ ) {
+            if (listareserva.get(i).getFecha_salida().isAfter(LocalDate.now())) {
+                for (int a = 0; a < listahabre.size(); a++) {
+                    if (listahabre.get(a).getReserva().getId().equals(listareserva.get(i).getId())) {
+                        HistorialReservaClientes reservas = new HistorialReservaClientes();
+                        reservas.setId(listareserva.get(i).getId());
+                        reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
+                        reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
+                        reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
+                        reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
+                        reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
+                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                        cambiados.add(reservas);
+                    }
+                }
+            }
+        }
+        return cambiados;
     }
 
 

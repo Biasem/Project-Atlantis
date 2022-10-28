@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-white">
-<nav th:include="navMenu.html"></nav>
+<nav th:include="navMenu"></nav>
 <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
     <div class="container px-4 text-center">
         <h1 class="fw-bolder"> <p>Administrador habitaciones | Editar</p></h1>
@@ -30,8 +30,6 @@
 <br>
 <br>
 <div class="row">
-
-
     <div class="col-md-8 mx-auto" th:each="a: ${habitacion}">
         <form action="#" th:action="@{/admin/habitaciones/editar/hecho/item?id={id}(id=${a.getId()})}" th:object="${habitaciones}" method="post" >
             <table class="table bg-white rounded border table-striped table-dark">
@@ -54,6 +52,73 @@
                 <tr>
                     <td>Máximo pernoctadores</td>
                     <td><input type="number" th:field="*{max_cliente}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-primary form-control text-center">
+        </form>
+    </div>
+</div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="col-md-8 mx-auto">
+        <table>
+            <thead>
+            <tr>
+                <th>Precios</th>
+            </tr>
+            </thead>
+        </table>
+        <br>
+            <table class="table bg-white rounded border table-striped table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Fecha Inicio</th>
+                    <th scope="col">Fecha Fin</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tr th:each="p: ${precios}">
+                    <td th:text="${p.getFecha_inicio()}"></td>
+                    <td th:text="${p.getFecha_fin()}"></td>
+                    <td th:text="${p.getPrecio()} + '€'"></td>
+                    <td> <a th:text="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px" th:href="@{/admin/habitaciones/precio/borrar/item?id={id}(id=${p.getId()})}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col-md-8 mx-auto" th:each="a: ${habitacion}">
+        <form action="#" th:action="@{/admin/habitaciones/editar/precio/hecho/item?id={id}(id=${a.getId()})}" th:object="${nuevoprecio}" method="post" >
+        <table>
+            <thead>
+            <tr>
+                <th>Crear precio</th>
+            </tr>
+            </thead>
+        </table>
+        <br>
+            <table class="table bg-white rounded border table-striped table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Fecha inicio</th>
+                    <th scope="col">Fecha fin</th>
+                    <th scope="col">Precio</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+
+                    <td><input class="inputbox textmuted" name="fechainicio" type="date"></td>
+                    <td><input class="inputbox textmuted" name="fechafin" type="date"></td>
+                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" th:field="*{precio}"></td>
+                    <input type="hidden" name="idhotel" th:value="${idHotel}"/>
                 </tr>
                 </tbody>
             </table>

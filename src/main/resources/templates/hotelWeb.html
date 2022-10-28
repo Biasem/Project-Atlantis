@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-white">
-  <nav th:include="navMenu.html"></nav>
+<nav th:include="navMenu.html"></nav>
   <div th:each="h: ${hotelfinal}">
     <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent), url(' + ${h.getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
       <div class="container px-4 text-center">
@@ -37,47 +37,47 @@
       <div class="row">
 
         <div class="col-md-8 mx-auto">
-        <form action="/reservar" method="post" th:object="${objeto_integer}">
+          <form action="/reservar" method="post" th:object="${objeto_integer}">
+            <input type="hidden" name="idhotel" th:value="${h.getId()}"/>
+            <table class="table table-bordered table-striped rounded">
+              <thead>
+                <tr>
+                  <th scope="col">Entrada</th>
+                  <th scope="col">Salida</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input class="inputbox textmuted" type="date"></td>
+                  <td><input class="inputbox textmuted " type="date"></td>
+                </tr>
+              </tbody>
+            </table>
 
-          <input type="hidden" name="idhotel" th:value="${h.getId()}"/>
-          <table>
-            <thead>
+            <table class="table bg-white rounded border table-striped table-dark">
+              <thead>
               <tr>
-                <th scope="col">Entrada</th>
-                <th scope="col">Salida</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Huéspedes</th>
+                <th scope="col">Disponibles</th>
+                <th scope="col">Nº Habitaciones</th>
+                <th scope="col">Régimen</th>
               </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input class="inputbox textmuted" type="date" th:field="*{fechainicio}" th:min="${fechamin}" required></td>
-                <td><input class="inputbox textmuted " type="date" th:field="*{fechafin}" th:min="${fechamin}" required></td>
+              </thead>
+              <tbody>
+              <tr th:each="a:${listaHabitaciones}">
+                <td th:text="${a.getTipo_hab()}"></td>
+                <td th:text="${a.getMax_cliente()}"></td>
+                <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+                <td> <input type="number" th:field="*{num}"></td>
+                <td><select th:field="*{id_regimen}">
+                  <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
+                </select></td>
               </tr>
-            </tbody>
-          </table>
-
-          <table class="table bg-white rounded border table-striped table-dark">
-            <thead>
-            <tr>
-              <th scope="col">Tipo</th>
-              <th scope="col">Huéspedes</th>
-              <th scope="col">Disponibles</th>
-              <th scope="col">Nº Habitaciones</th>
-              <th scope="col">Régimen</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="a:${listaHabitaciones}">
-              <td th:text="${a.getTipo_hab()}"></td>
-              <td th:text="${a.getMax_cliente()}"></td>
-              <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
-              <td> <input type="number" th:field="*{cantidadHabitaciones}" min="0" th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:max="${total}" ></td>
-              <td><select th:field="*{tipo_regimen}">
-                <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
-              </select></td>
-            </tr>
-            </tbody>
-          </table>
-          <button class="btn btn-primary form-control text-center">Reservar</button>
+              </tbody>
+            </table>
+            <button class="btn btn-primary form-control text-center">Reservar</button>
+          </form>
         </form>
         </div>
       </div>
@@ -86,6 +86,58 @@
 <br>
 <br>
 <br>
+  <div class="container mt-10 mb-10">
+    <div class="row height d-flex justify-content-center align-items-center">
+      <div class="col-md-7">
+        <div class="cardd">
+          <div class="p-3">
+            <h6><b>Comentarios</b></h6>
+          </div>
+
+          <div th:if="${idCliente >0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color" th:each="z : ${hotelfinal}">
+            <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
+            <form class="mt-3 d-flex flex-row align-items-center p-3 form-color" action="#" th:action="@{/comentario}" th:object="${texto}" method="post">
+              <input type="text" name="texto" maxlength="70" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
+              <p  style="margin-left: 20px;" > Puntuación:</p>
+              <input type="number" min="1" max="5" style="margin-left: 20px;" th:field="*{puntuacion}">
+              <input style="margin-left: 20px;" type="submit" class="btn btn-primary form-control text-center" value="Enviar">
+              <input type="hidden" name="idhotel" th:value="${z.getId()}">
+              <input type="hidden" name="idcliente" th:value="${idCliente}">
+            </form>
+          </div>
+
+          <div th:if="${idCliente == 0} and ${idHotel == 0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color">
+            <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
+            <b style="margin-left: 20px;" >Inicia sesión para crear un comentario.</b>
+            <a  href="/login"><input style="margin-left: 20px;" th:if="${idCliente == 0}" type="button" class="btn btn-primary form-control text-center" value="Inicia sesión"></a>
+          </div>
+
+          <div th:if="${idHotel > 0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color">
+            <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
+            <b style="margin-left: 20px;" >Debes tener una cuenta como cliente para comentar.</b>
+          </div>
+
+          <div class="mt-2">
+            <div th:each="c : ${comentarios}" class="d-flex flex-row p-3">
+              <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="40" height="40" class="rounded-circle mr-3">
+              <div class="w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex flex-row align-items-center">
+                    <span th:text="${c.getId_cliente().getNombre()}" class="mr-2" style="margin-left: 10px;margin-right: 10px;"></span>
+                    <svg th:each="i: ${#numbers.sequence(1, c.getPuntuacion())}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="">
+                      <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                  </div>
+                  <small th:text="${c.getFecha()}"></small>
+                </div>
+                <p th:text="${c.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <footer th:include="footer.html"></footer>
 <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>

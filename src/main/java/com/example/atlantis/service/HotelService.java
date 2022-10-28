@@ -3,6 +3,7 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ public class HotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Hotel> getAll(){
         return hotelRepository.findAll();
@@ -25,12 +28,16 @@ public class HotelService {
 
     }
 
+
+    //Convertir el Hotel de un modelo de obtención de datos  al modelo real para meter en bbdd
     public Hotel convertirAHotel(RegisHotFech hotel){
 
+        //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(Rol.HOTEL);
 
         Hotel hotel1 = new Hotel();
 
+        //Introducción  de datos en el modelo real para insertar en bbdd
         hotel1.setNombre(hotel.getNombre());
         hotel1.setPais(hotel.getPais());
         hotel1.setLocalidad(hotel.getLocalidad());
@@ -43,10 +50,13 @@ public class HotelService {
         hotel1.setUrl_icono(hotel.getUrl_icono());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
         hotel1.setEmail(hotel.getEmail());
-
+        hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
+        hotel1.setId(hotel.getId());
         return hotel1;
     }
 
+
+    //Función para verificar si el Hotel es Apartamento o no, devuelve un boolean según sea
     public boolean siEsApartaHotel(RegisHotFech hotel){
 
         boolean i = false;
@@ -72,6 +82,54 @@ public class HotelService {
         regimen.add(TipoRegimen.PENSION_COMPLETA);
         regimen.add(TipoRegimen.TODO_INCLUIDO);
         return regimen;
+    }
+
+    public Integer conseguirId(String correo){
+        List<Hotel> hoteles = hotelRepository.findAll();
+        Integer id = 0;
+        for (Hotel x: hoteles){
+            if (x.getEmail().getEmail().equals(correo)){
+                id = x.getId();
+            }
+            else {
+
+            }
+        }
+        return id;
+    }
+
+
+    public void borrarHotel(Hotel hotel){
+       List<Hotel> todos = hotelRepository.findAll();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().equals(hotel.getEmail())){
+
+                hotelRepository.delete(hotel);
+            }
+        }
+    }
+
+    public Hotel copiartodohotel(Hotel hotel){
+        List<Hotel> todos = hotelRepository.findAll();
+        Hotel hotel1 = new Hotel();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(hotel.getEmail().getEmail())){
+                hotel1 = todos.get(i);
+            }
+        }
+        return hotel1;
+    }
+
+
+    public void editarHotel(Hotel hotel){
+
+        hotelRepository.editarHotel(hotel.getNombre(), hotel.getPais(), hotel.getLocalidad(),
+        hotel.getDireccion(), hotel.getFecha_apertura(), hotel.getFecha_cierre(),
+                hotel.getNum_estrellas(), hotel.getTipo_hotel(), hotel.getTelefono(), hotel.getUrl_icono(),
+                hotel.getUrl_imagen_general(), hotel.getEmail().getEmail());
+
     }
 
 

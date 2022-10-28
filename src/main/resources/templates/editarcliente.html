@@ -28,9 +28,16 @@
 <br>
 <br>
 <br>
+<br>
+<button onclick="location.href = '/perfilcliente';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
+<form action="#" th:action="@{/editarcliente}" method="post" th:object="${cliente}" class="container px-4" >
+  <div class="row mb-5">
+    <div class="col-md-8 col-xl-6 text-center mx-auto">
+      <h2><span style="color: rgb(0, 0, 0);">Edita tu perfil</span></h2>
+      <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Una vez confirmes, sus datos cambiaran</span></p>
+    </div>
+  </div>
 
-
-<form action="#" th:action="@{/registrocliente}" method="post" th:object="${cliente}" class="container px-4" >
   <div class="form-group row">
     <label for="nombre" class="col-4 col-form-label">Nombre:</label>
     <div class="col-8">
@@ -141,3 +148,4 @@
 </body>
 
 </html>
+

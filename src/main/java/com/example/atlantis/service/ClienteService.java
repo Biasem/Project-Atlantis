@@ -1,10 +1,13 @@
 package com.example.atlantis.service;
 
 import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.Hotel;
+import com.example.atlantis.model.Login;
 import com.example.atlantis.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
@@ -44,6 +47,58 @@ public class ClienteService {
     }
 
 
+    public Cliente copiartodocliente(Cliente cliente){
+        List<Cliente> todos = clienteRepository.findAll();
+        Cliente cliente1 = new Cliente();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(cliente.getEmail().getEmail())){
+                cliente1 = todos.get(i);
+            }
+        }
+        return cliente1;
+    }
+
+    public void borrarCliente(Cliente cliente){
+        List<Cliente> todos = clienteRepository.findAll();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().equals(cliente.getEmail())){
+
+                clienteRepository.delete(cliente);
+            }
+        }
+    }
+
+    public void editarCliente(Cliente cliente){
+
+        clienteRepository.editarCliente(cliente.getNombre(),cliente.getApellidos(),cliente.getDni(), cliente.getPais(),
+                cliente.getTelefono(), cliente.getEmail().getEmail());
+
+    }
+
+    public Integer conseguirId(String correo){
+        List<Cliente> clientes = clienteRepository.findAll();
+        Integer id = 0;
+        for (Cliente x: clientes){
+            if (x.getEmail().getEmail().equals(correo)){
+                id = x.getId();
+            }
+            else {
+
+            }
+        }
+        return id;
+    }
+
+    public Cliente obtenerCliDeSesion(Login login){
+        Cliente cliente = clienteRepository.buscarConSession(login.getEmail());
+
+
+        return cliente;
+    }
+
+    
 
 
 }
