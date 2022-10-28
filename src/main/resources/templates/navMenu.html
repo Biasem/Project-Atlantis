@@ -13,7 +13,6 @@
                 <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}"> <i class="	fas fa-door-open"></i></a></li>
 
                 <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a class="nav-link" href="/admin">Tus habitaciones</a></li>
-                <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a class="nav-link" href="/admin">Reservas</a></li>
                 <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a class="nav-link" href="/editarhotel">Perfil</a></li>
                 <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}"> <i class="	fas fa-door-open"></i></a></li>
 
