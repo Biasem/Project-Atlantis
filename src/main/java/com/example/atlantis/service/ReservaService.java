@@ -1,12 +1,12 @@
 package com.example.atlantis.service;
 
-import com.example.atlantis.model.Cliente;
-import com.example.atlantis.model.Reserva;
+import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.ReverbType;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +39,54 @@ public class ReservaService {
 
     }
 
+
+    public List<HistorialReservaClientes> cambiomodelohistorial(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
+
+        List<HistorialReservaClientes> cambiados = new ArrayList<>();
+
+        for(int i = 0; i < listareserva.size(); i++ )
+        {
+            for(int a = 0; a < listahabre.size(); a++ ){
+                if(listahabre.get(a).getReserva().getId().equals(listareserva.get(i).getId())) {
+                    HistorialReservaClientes reservas = new HistorialReservaClientes();
+                    reservas.setId(listareserva.get(i).getId());
+                    reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
+                    reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
+                    reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
+                    reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
+                    reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
+                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                    cambiados.add(reservas);
+                }
+                        }
+                    }
+        return cambiados;
+    }
+
+
+    public List<HistorialReservaClientes> cambiomodelohistorialvigente(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
+
+        List<HistorialReservaClientes> cambiados = new ArrayList<>();
+
+        for(int i = 0; i < listareserva.size(); i++ ) {
+            if (listareserva.get(i).getFecha_salida().isAfter(LocalDate.now())) {
+                for (int a = 0; a < listahabre.size(); a++) {
+                    if (listahabre.get(a).getReserva().getId().equals(listareserva.get(i).getId())) {
+                        HistorialReservaClientes reservas = new HistorialReservaClientes();
+                        reservas.setId(listareserva.get(i).getId());
+                        reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
+                        reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
+                        reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
+                        reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
+                        reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
+                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                        cambiados.add(reservas);
+                    }
+                }
+            }
+        }
+        return cambiados;
+    }
 
 
 }

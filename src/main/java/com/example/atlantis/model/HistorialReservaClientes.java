@@ -1,10 +1,17 @@
 package com.example.atlantis.model;
 
+import lombok.*;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class HistorialReservaClientes {
 
     private Integer id;

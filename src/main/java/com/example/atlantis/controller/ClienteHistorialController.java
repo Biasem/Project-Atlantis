@@ -1,9 +1,10 @@
 package com.example.atlantis.controller;
 
 
-import com.example.atlantis.model.Cliente;
-import com.example.atlantis.model.Reserva;
+import com.example.atlantis.model.*;
+import com.example.atlantis.service.Habitacion_Reserva_HotelService;
 import com.example.atlantis.service.LoginService;
+import com.example.atlantis.service.RegimenService;
 import com.example.atlantis.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,29 +26,50 @@ public class ClienteHistorialController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private RegimenService regimenService;
+
+    @Autowired
+    private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
+
+
+    //Todas las reservas
     @GetMapping("/historialReservaCliente")
     public ModelAndView historial(@ModelAttribute Cliente cliente) {
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
+        //Obtención de listas para metodo
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
         List<Reserva> todas = reservaService.todasReservas(cliente1.getId());
-        model.addObject("todas", todas);
+        List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
+        List<Regimen> todosregimen = regimenService.getAll();
+        //Lista que se devuelve con método de búsqueda
+        List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorial(todas, todasReservaporHab, todosregimen);
+        model.addObject("todas", todasmodelohistorial);
 
         return model;
 
     }
 
-    @PostMapping("/historialReservaCliente")
-    public ModelAndView historial2(@ModelAttribute Cliente cliente) {
 
-        ModelAndView model = new ModelAndView("hotelWeb");
-        List<Reserva> todas = reservaService.todasReservas(cliente.getId());
-
-        model.addObject("todas", todas);
-        System.out.println(todas);
+    //Reservas Vigentes
+    @GetMapping("/historialReservaClienteVigentes")
+    public ModelAndView historialVigente(@ModelAttribute Cliente cliente) {
+        ModelAndView model = new ModelAndView("historialReservaCliente");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
+        //Obtención de listas para metodo
+        List<Reserva> todas = reservaService.todasReservas(cliente1.getId());
+        List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
+        List<Regimen> todosregimen = regimenService.getAll();
+        //Lista que se devuelve con método de búsqueda
+        List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorialvigente(todas, todasReservaporHab, todosregimen);
+        model.addObject("todas", todasmodelohistorial);
 
         return model;
+
     }
 
 
