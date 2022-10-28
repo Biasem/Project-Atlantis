@@ -1,10 +1,12 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +29,9 @@ public class AdminController{
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private HabitacionesRepository habitacionesRepository;
 
     @Autowired
     private Precio_HabitacionService precio_habitacionService;
@@ -70,6 +75,12 @@ public class AdminController{
     @RequestMapping("/admin/habitaciones/borrar/{item}")
     public @ResponseBody ModelAndView borrarHabitacion(@PathVariable(value="item") String numerito,
                                                      @RequestParam(value = "id") Integer id) {
+
+        List<Habitaciones> habitaciones = habitacionesService.getAll();
+        Habitaciones habitacion = new Habitaciones();
+        habitacion = habitacionesService.conseguirHabitacion(id, habitaciones);
+        List<Precio_Hab> precios = precio_habitacionService.getAll();
+        precio_habitacionService.borrarLista(precios, habitacion);
         habitacionesService.borrarHabitacion(id);
         ModelAndView model = new ModelAndView("adminHecho");
         return model;
@@ -94,7 +105,7 @@ public class AdminController{
 
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
         if (puede == 0){
-            ModelAndView error = new ModelAndView("404");
+            ModelAndView error = new ModelAndView("error/403");
             return error;
         }
 
@@ -142,4 +153,32 @@ public class AdminController{
         return model;
     }
 
+    @RequestMapping("/admin/habitaciones/precio/borrar/{item}")
+    public @ResponseBody ModelAndView borrarPrecio(@PathVariable(value="item") String numerito,
+                                                  @RequestParam(value = "id") Integer id) {
+        ModelAndView model = new ModelAndView("adminHecho");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+            System.out.println(idCliente);
+            System.out.println(idHotel);
+        }
+
+        Integer preciofinal = precio_habitacionService.conseguirPrecioHabitacion(id);
+
+        if (preciofinal == idHotel){
+            precio_habitacionService.borrarPrecio(id);
+            return model;
+        }
+
+        else{
+            ModelAndView error = new ModelAndView("error/403");
+            return error;
+        }
+    }
 }

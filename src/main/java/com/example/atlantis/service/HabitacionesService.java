@@ -40,6 +40,18 @@ public class HabitacionesService {
         }
         return habitauwu;
     }
+    public Habitaciones conseguirHabitacion (Integer numero, List<Habitaciones> lista){
+        Habitaciones habitauwu = new Habitaciones();
+        for (Habitaciones x: lista){
+            if (x.getId().equals(numero)){
+                habitauwu = x;
+            }
+            else{
+
+            }
+        }
+        return habitauwu;
+    }
 
     public List<TipoHab> todoHab(){
         List<TipoHab> hab = new ArrayList<>();

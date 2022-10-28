@@ -40,6 +40,17 @@ public class Precio_HabitacionService {
         return filtrado;
     }
 
+    public Integer conseguirPrecioHabitacion (Integer id){
+        List<Precio_Hab> completa = precio_habitacionRepository.findAll();
+        Integer idHotel = 0;
+        for (Precio_Hab x: completa){
+            if (x.getId().equals(id)){
+                idHotel = x.getId_hotel().getId();
+            }
+        }
+        return idHotel;
+    }
+
     public Hotel conseguirIDHotelprecio (Integer idhotel){
         List<Hotel> hoteles = hotelRepository.findAll();
         Hotel hotel = new Hotel();
@@ -65,5 +76,30 @@ public class Precio_HabitacionService {
 
     public void guardarPrecio (Precio_Hab hab){
         precio_habitacionRepository.save(hab);
+    }
+
+    public void borrarLista (List<Precio_Hab> lista, Habitaciones habitacion){
+        for (Precio_Hab x: lista){
+            if(x.getId_hab().getId().equals(habitacion.getId())){
+                precio_habitacionRepository.delete(x);
+            }
+            else{
+
+            }
+        }
+    }
+
+    public void borrarPrecio (Integer id){
+        List<Precio_Hab> lista = precio_habitacionRepository.findAll();
+        Precio_Hab precio = new Precio_Hab();
+        for (Precio_Hab x: lista){
+            if(x.getId().equals(id)){
+                precio = x;
+            }
+            else{
+
+            }
+        }
+        precio_habitacionRepository.delete(precio);
     }
 }

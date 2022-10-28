@@ -79,6 +79,7 @@
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Fin</th>
                     <th scope="col">Precio</th>
+                    <th scope="col"></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -86,6 +87,7 @@
                     <td th:text="${p.getFecha_inicio()}"></td>
                     <td th:text="${p.getFecha_fin()}"></td>
                     <td th:text="${p.getPrecio()}"></td>
+                    <td> <a th:text="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px" th:href="@{/admin/habitaciones/precio/borrar/item?id={id}(id=${p.getId()})}"></a></td>
                 </tr>
                 </tbody>
             </table>
