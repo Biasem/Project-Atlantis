@@ -39,6 +39,20 @@ public class ReservaService {
 
     }
 
+    public List<Reserva> todasReservasHotel(int id){
+        List<Reserva> todas = reservaRepository.findAll();
+        List<Reserva> buscadas = new ArrayList<>();
+
+        for(int i = 0; i < todas.size(); i++ ){
+            if(todas.get(i).getId_hotel().getId().equals(id)){
+                buscadas.add(todas.get(i));
+            }
+        }
+        return buscadas;
+
+
+    }
+
 
     public List<HistorialReservaClientes> cambiomodelohistorial(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
 
