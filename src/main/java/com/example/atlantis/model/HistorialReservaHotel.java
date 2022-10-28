@@ -16,6 +16,10 @@ public class HistorialReservaHotel {
 
     private String nombreCliente;
 
+    private String apellidosCliente;
+
+    private String dniCliente;
+
     private String emailCliente;
 
     private Integer num_clientes;

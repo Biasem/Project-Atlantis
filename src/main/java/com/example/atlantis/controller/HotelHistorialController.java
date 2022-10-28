@@ -43,7 +43,7 @@ public class HotelHistorialController {
         List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
         List<Regimen> todosregimen = regimenService.getAll();
 
-        List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorial(todas, todasReservaporHab, todosregimen);
+        List<HistorialReservaHotel> todasmodelohistorial = reservaService.cambiomodelohistorialhotel(todas, todasReservaporHab, todosregimen);
 
 
         model.addObject("todas", todasmodelohistorial);
