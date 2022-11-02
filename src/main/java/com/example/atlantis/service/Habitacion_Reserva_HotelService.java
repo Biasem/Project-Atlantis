@@ -17,8 +17,7 @@ public class Habitacion_Reserva_HotelService {
         return habitacion_reserva_hotelRepository.findAll();
     }
 
-    private Hab_Reserva_Hotel getById(int id){
-        return habitacion_reserva_hotelRepository.findById(id).orElse(null);
+    public void guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
+        habitacion_reserva_hotelRepository.save(habReservaHotel);
     }
-
 }

@@ -192,5 +192,9 @@ public class ReservaService {
         return cambiados;
     }
 
+    public void guardarReserva(Reserva reserva){
+        reservaRepository.save(reserva);
+    }
+
 
 }

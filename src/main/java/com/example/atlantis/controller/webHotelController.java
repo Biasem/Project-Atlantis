@@ -110,6 +110,12 @@ public class webHotelController {
         //objeto Reserva_para_bbdd
        Reserva_Para_BBDD reserva = reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
 
+        ////////////////////////////////////////////////////////////////////////
+        //hacemos la query de la reserva
+
+
+        ////////////////////////////////////////////////////////////////////////
+
         return "redirect:/main";
     }
 
