@@ -20,4 +20,7 @@ public class Habitacion_Reserva_HotelService {
     public void guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
         habitacion_reserva_hotelRepository.save(habReservaHotel);
     }
+    public Integer UltimoIdReservadelCliente(Integer idcliente){
+        return habitacion_reserva_hotelRepository.UltimoIdReservadelCliente(idcliente);
+    }
 }
