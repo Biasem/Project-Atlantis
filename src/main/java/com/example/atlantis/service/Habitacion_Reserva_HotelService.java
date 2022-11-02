@@ -21,4 +21,18 @@ public class Habitacion_Reserva_HotelService {
         return habitacion_reserva_hotelRepository.findById(id).orElse(null);
     }
 
+    public Integer checkearReserva(Integer id){
+        List<Hab_Reserva_Hotel> lista = habitacion_reserva_hotelRepository.findAll();
+        Integer comprobar = 0;
+        for (Hab_Reserva_Hotel x: lista){
+            if (x.getId_regimen().getId().equals(id)){
+                comprobar = 1;
+            }
+            else{
+
+            }
+        }
+        return comprobar;
+    }
+
 }
