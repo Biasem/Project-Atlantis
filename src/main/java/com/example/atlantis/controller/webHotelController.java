@@ -54,7 +54,6 @@ public class webHotelController {
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
@@ -96,7 +95,6 @@ public class webHotelController {
         comentario.setPuntuacion(comentario.getPuntuacion());
         comentario.setSentencia(comentario.getSentencia());
         comentarioService.comentarioID(idhotel,idcliente,comentario);
-        System.out.println(comentario);
         comentarioService.guardarComentario(comentario);
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;

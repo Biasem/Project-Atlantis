@@ -40,8 +40,6 @@ public class MainController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
@@ -76,8 +74,6 @@ public class MainController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
@@ -96,6 +92,6 @@ public class MainController{
 
     @GetMapping("/")
     public String irAMain(@ModelAttribute Busqueda busqueda) {
-        return "main";
+        return "redirect:/main";
     }
 }
