@@ -110,7 +110,7 @@ public class webHotelController {
             return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
         }
         //objeto Reserva_para_bbdd
-       reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
+       Reserva_Para_BBDD reserva = reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
 
         return "redirect:/main";
     }
