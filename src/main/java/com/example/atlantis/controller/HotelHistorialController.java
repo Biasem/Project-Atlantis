@@ -31,7 +31,6 @@ public class HotelHistorialController {
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
 
 
-
     @GetMapping("/historialReservaHotel")
     public ModelAndView historial(@ModelAttribute Hotel hotel) {
         ModelAndView model = new ModelAndView("historialReservaHotel");
@@ -52,4 +51,24 @@ public class HotelHistorialController {
 
     }
 
+
+    //Reservas Vigentes
+    @GetMapping("/historialReservaHotelVigentes")
+    public ModelAndView historialVigente(@ModelAttribute Hotel hotel) {
+        ModelAndView model = new ModelAndView("historialReservaHotel");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Hotel hotel1 = loginService.cogerid(correo);
+
+        //Obtención de listas para metodo
+        List<Reserva> todas = reservaService.todasReservasHotel(hotel1.getId());
+        List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
+        List<Regimen> todosregimen = regimenService.getAll();
+        //Lista que se devuelve con método de búsqueda
+        List<HistorialReservaHotel> todasmodelohistorial = reservaService.cambiomodelohistorialhotelvigente(todas, todasReservaporHab, todosregimen);
+        model.addObject("todas", todasmodelohistorial);
+
+        return model;
+
+    }
 }
