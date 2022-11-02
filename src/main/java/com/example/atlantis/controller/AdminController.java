@@ -36,6 +36,9 @@ public class AdminController{
     @Autowired
     private Precio_HabitacionService precio_habitacionService;
 
+    @Autowired
+    private RegimenService regimenService;
+
     @GetMapping("/admin")
     public ModelAndView admin(HttpSession session) {
         ModelAndView model = new ModelAndView("adminTest");
@@ -54,6 +57,10 @@ public class AdminController{
         model.addObject("idCliente", idCliente);
         // Gestión sesión
         List<TipoHab> tipohab = habitacionesService.todoHab();
+        List<Regimen> regimenes = regimenService.regimenHotel(idHotel);
+        List<TipoRegimen> regimen = regimenService.todoRegimen();
+        model.addObject("regimen", regimen);
+        model.addObject("regimenes", regimenes);
         model.addObject("tipohab",tipohab);
         model.addObject("habitaciones", new Habitaciones());
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
@@ -69,6 +76,26 @@ public class AdminController{
         habitacionesService.conseguirIDHotel(idhotel,habitaciones);
         habitacionesService.guardarHabitacion(habitaciones);
         ModelAndView model = new ModelAndView("adminHecho");
+        return model;
+    }
+    @RequestMapping(value = "/admin/habitaciones/crear/regimen/hecho/", method = RequestMethod.POST)
+    public ModelAndView crearRegimen(@ModelAttribute Regimen regimen,
+                                     @RequestParam("idhotel") Integer idhotel,
+                                     @RequestParam("categoria") TipoRegimen categoria,
+                                     @RequestParam("precio") Double precio) {
+
+        ModelAndView model = new ModelAndView("adminHecho");
+        Regimen nuevoRegimen = new Regimen();
+        nuevoRegimen.setCategoria(categoria);
+        nuevoRegimen.setPrecio(precio);
+        List<Hotel> hotel = regimenService.conseguirHotel(idhotel);
+        Hotel hotelfinal = new Hotel();
+        for (Hotel x: hotel){
+            if(x.getId().equals(idhotel));
+            hotelfinal = x;
+        }
+        nuevoRegimen.setId_hotel(hotelfinal);
+        regimenService.guardarRegimen(nuevoRegimen);
         return model;
     }
 
