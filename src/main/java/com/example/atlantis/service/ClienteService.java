@@ -64,11 +64,11 @@ public class ClienteService {
 
     public void borrarCliente(Cliente cliente){
         List<Cliente> todos = clienteRepository.findAll();
-
+        Cliente cliente1 = copiartodocliente(cliente);
         for(int i = 0; i < todos.size(); i++ ){
 
-            if(todos.get(i).getEmail().equals(cliente.getEmail())){
-                clienteRepository.delete(cliente);
+            if(todos.get(i).getEmail().equals(cliente1.getEmail())){
+                clienteRepository.delete(cliente1);
             }
         }
     }

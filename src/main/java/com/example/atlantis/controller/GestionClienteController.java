@@ -5,6 +5,7 @@ import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import java.util.List;
 @Controller
 public class GestionClienteController {
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private ClienteService clienteService;
     @Autowired
@@ -42,11 +45,20 @@ public class GestionClienteController {
 
     @PostMapping("/borrarcliente")
     public String deleteCliente2(@ModelAttribute Cliente cliente) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
 
-        Cliente cliente1 = clienteService.copiartodocliente(cliente);
-        clienteService.borrarCliente(cliente1);
+        Cliente cliente2 = loginService.copiartodoclienteconsession(correo);
 
-        return "redirect:/logout";
+        if (cliente2.getEmail().getEmail().equals(cliente.getEmail().getEmail()) && encoder.matches(cliente.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
+            clienteService.borrarCliente(cliente);
+
+            return "redirect:/logout";
+        }
+        else {
+            return "redirect:/borrarcliente";
+        }
     }
 
 
