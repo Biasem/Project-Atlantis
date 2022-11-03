@@ -38,6 +38,8 @@ public class AdminController{
 
     @Autowired
     private RegimenService regimenService;
+    @Autowired
+    private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
 
     @GetMapping("/admin")
     public ModelAndView admin(HttpSession session) {
@@ -111,6 +113,43 @@ public class AdminController{
         habitacionesService.borrarHabitacion(id);
         ModelAndView model = new ModelAndView("adminHecho");
         return model;
+    }
+    @RequestMapping("/admin/habitaciones/regimen/borrar/{item}")
+    public @ResponseBody ModelAndView borrarRegimen(@PathVariable(value="item") String numerito,
+                                                     @RequestParam(value = "id") Integer id) {
+
+        ModelAndView model = new ModelAndView("adminHecho");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+            System.out.println(idCliente);
+            System.out.println(idHotel);
+        }
+
+        Integer preciofinal = regimenService.conseguirRegimenIDHotel(id);
+
+        if (preciofinal == idHotel){
+            Integer comprobar = habitacion_reserva_hotelService.checkearReserva(id);
+            if (comprobar.equals(0)){
+                regimenService.borrarRegimen(id);
+                return model;
+            }
+            else{
+                ModelAndView error = new ModelAndView("errorAdmin");
+                return error;
+            }
+
+        }
+
+        else{
+            ModelAndView error = new ModelAndView("error/403");
+            return error;
+        }
     }
 
     @RequestMapping("/admin/habitaciones/editar/{item}")
