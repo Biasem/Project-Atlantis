@@ -139,8 +139,6 @@ public class webHotelController {
         reservaService.guardarReserva(reserva);
         //////////////////////////////////////////
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
-
-
         for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
             Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
@@ -148,8 +146,6 @@ public class webHotelController {
             habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
             habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
         }
-
-
         ////////////////////////////////////////////////////////////////////////
 
 
