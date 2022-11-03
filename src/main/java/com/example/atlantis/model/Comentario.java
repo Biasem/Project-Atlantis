@@ -29,7 +29,7 @@ public class Comentario {
     @JoinColumn(name = "puntuacion")
     private Integer puntuacion;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
