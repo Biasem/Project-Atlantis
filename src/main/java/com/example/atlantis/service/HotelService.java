@@ -1,14 +1,16 @@
 package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Service
 public class HotelService {
@@ -18,6 +20,10 @@ public class HotelService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    ComentarioService comentarioService;
+    @Autowired
+    ComentarioRepository comentarioRepository;
 
     public List<Hotel> getAll(){
         return hotelRepository.findAll();
@@ -130,6 +136,38 @@ public class HotelService {
                 hotel.getNum_estrellas(), hotel.getTipo_hotel(), hotel.getTelefono(), hotel.getUrl_icono(),
                 hotel.getUrl_imagen_general(), hotel.getEmail().getEmail());
 
+    }
+
+    public Map<Hotel, Integer> filtrarmejores (List<Hotel> hoteles){
+        Map<Hotel, Integer> mapa = new HashMap<>();
+        for (Hotel x: hoteles){
+            Integer id = x.getId();
+            Integer media = comentarioService.mediaPuntuacion(id);
+            if (media.equals(0)){
+
+            }
+            else{
+                mapa.put(x, media);
+            }
+        }
+
+        //Ordenamos la lista de hoteles
+        List<Hotel> topPuntacion = mapa.keySet().stream().sorted(Comparator.comparing(mapa::get)).collect(Collectors.toList());
+
+        System.out.println(topPuntacion);
+
+        // Sublista con el top 3
+        List<Hotel> trePrimeros = topPuntacion.subList(topPuntacion.size()-3, topPuntacion.size());
+        topPuntacion.forEach(x-> System.out.println(x.getNombre()));
+
+        //Mapa nuevo vacio
+        Map<Hotel, Integer> mapa2 = new HashMap<>();
+
+        //Mapa vacio, metemos los tres hoteles como clave y el valor que tenian
+        // los hoteles en el mapa 1
+        trePrimeros.forEach(h-> mapa2.put(h, mapa.get(h)));
+
+        return mapa2;
     }
 
 

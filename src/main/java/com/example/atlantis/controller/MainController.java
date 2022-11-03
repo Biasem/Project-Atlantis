@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -48,10 +49,9 @@ public class MainController{
         // Gestión sesión
 
         List<Hotel> listaprimera = hotelService.getAll();
-        Collections.shuffle(listaprimera);
-        List<Hotel> listaHotel = listaprimera.subList(0, 3);
+        Map<Hotel, Integer> lista = hotelService.filtrarmejores(listaprimera);
 
-        model.addObject("listaHotel", listaHotel);
+        model.addObject("lista", lista);
         model.addObject("fechamin", LocalDate.now());
         model.addObject("busqueda", busqueda);
         return model;
