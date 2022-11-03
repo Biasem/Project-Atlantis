@@ -4,6 +4,7 @@ import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.repository.ClienteRepository;
+import com.example.atlantis.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
 
     public List<Cliente> getAll(){
@@ -63,8 +66,8 @@ public class ClienteService {
         List<Cliente> todos = clienteRepository.findAll();
 
         for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).getEmail().equals(cliente.getEmail())){
 
+            if(todos.get(i).getEmail().equals(cliente.getEmail())){
                 clienteRepository.delete(cliente);
             }
         }
@@ -97,6 +100,8 @@ public class ClienteService {
 
         return cliente;
     }
+
+
 
     
 

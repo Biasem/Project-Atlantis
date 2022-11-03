@@ -29,13 +29,14 @@ public class Comentario {
     @JoinColumn(name = "puntuacion")
     private Integer puntuacion;
 
-    @JoinColumn(name = "id_cliente")
+
     @ManyToOne(cascade = CascadeType.ALL)
-    private Cliente id_cliente;
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
     @JoinColumn(name = "id_hotel")
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Hotel id_hotel;
+    @ManyToOne()
+    private Hotel hotel;
 
 
 }

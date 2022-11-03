@@ -1,11 +1,7 @@
 package com.example.atlantis.controller;
 
-import com.example.atlantis.model.Cliente;
-import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.Login;
-import com.example.atlantis.service.ClienteService;
-import com.example.atlantis.service.HotelService;
-import com.example.atlantis.service.LoginService;
+import com.example.atlantis.model.*;
+import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +25,11 @@ public class GestionClienteController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private ComentarioService comentarioService;
+    @Autowired
+    private ReservaService reservaService;
+
 
     @GetMapping("/borrarcliente")
     public String deleteCliente(Model model,@ModelAttribute Cliente cliente) {
@@ -45,7 +46,7 @@ public class GestionClienteController {
         Cliente cliente1 = clienteService.copiartodocliente(cliente);
         clienteService.borrarCliente(cliente1);
 
-        return "redirect:/main";
+        return "redirect:/logout";
     }
 
 

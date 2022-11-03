@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ComentarioRepository extends JpaRepository<Comentario, Integer> {
     List<Comentario> findAll();
+
 }
