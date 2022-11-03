@@ -15,6 +15,6 @@ public interface Habitacion_Reserva_HotelRepository extends JpaRepository<Hab_Re
     List<Hab_Reserva_Hotel> findAll();
 
 
-    @Query(value = " select id from reserva r  where id_cliente= :idcliente  order by id desc limit 1  " , nativeQuery = true)
+    @Query(value = " select id from reserva r  where id_cliente= :idCliente  order by id desc limit 1  " , nativeQuery = true)
     Integer UltimoIdReservadelCliente(@Param("idCliente") Integer idcliente);
 }
