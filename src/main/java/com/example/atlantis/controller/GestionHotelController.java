@@ -44,7 +44,7 @@ public class GestionHotelController {
         Hotel hotel1 = hotelService.copiartodohotel(hotel);
         hotelService.borrarHotel(hotel1);
 
-        return "redirect:/main";
+        return "redirect:/logout";
     }
 
 

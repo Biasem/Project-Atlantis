@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -58,5 +59,16 @@ public class Hotel {
     @JoinColumn(name = "url_imagen_general")
     private String url_imagen_general;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
+    private List<Comentario> comentarios;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_hotel")
+    private List<Habitaciones> habitaciones;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_hotel")
+    private List<Regimen> regimen;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_hotel")
+    private List<Reserva> reserva;
 
 }

@@ -4,6 +4,7 @@ package com.example.atlantis.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="habitaciones")
@@ -19,7 +20,7 @@ public class Habitaciones {
     @JoinColumn(name = "id")
     private Integer id;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "id_hotel")
     private Hotel id_hotel;
 
@@ -34,6 +35,12 @@ public class Habitaciones {
 
     @JoinColumn(name = "max_cliente")
     private Integer max_cliente;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_hab")
+    private List<Precio_Hab> precio_hab;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_hab")
+    private List<Hab_Reserva_Hotel> hab_reserva_hotel;
 
 
 }
