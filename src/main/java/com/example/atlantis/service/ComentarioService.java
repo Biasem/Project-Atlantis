@@ -50,14 +50,14 @@ public class ComentarioService {
         List<Comentario> lista = comentarioRepository.findAll();
         List<Comentario> fin = new ArrayList<>();
         for (Comentario x: lista){
-            if (x.getId_hotel().getId() == id){
+            if (x.getHotel().getId() == id){
                 fin.add(x);
             }
         }
         return fin;
     }
     public Integer mediaPuntuacion (Integer id){
-        List<Comentario> lista = comentarioRepository.findAll().stream().filter(x -> x.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        List<Comentario> lista = comentarioRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(id)).collect(Collectors.toList());
         Integer numero = 0;
         Integer divisor = 0;
         for (Comentario x: lista){
