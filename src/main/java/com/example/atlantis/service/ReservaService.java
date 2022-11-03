@@ -65,7 +65,7 @@ public class ReservaService {
     }
     public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
 
-        List<Regimen> regimenList =regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
+        List<Regimen> regimenList = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
         List<Double> listaPreciosRegimenHab = new ArrayList<>();
         List<Integer> listaIdRegimen= new ArrayList<>();
         //precios para los regimenes por dia y cantidad de habitaciones
@@ -190,6 +190,10 @@ public class ReservaService {
             }
         }
         return cambiados;
+    }
+
+    public void guardarReserva(Reserva reserva){
+        reservaRepository.save(reserva);
     }
 
 

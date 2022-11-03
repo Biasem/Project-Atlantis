@@ -39,6 +39,9 @@ public class webHotelController {
     @Autowired
     private ReservaService reservaService;
 
+    @Autowired
+    private Habitacion_Reserva_HotelService habitacionReservaHotelService;
+
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
@@ -54,7 +57,6 @@ public class webHotelController {
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
@@ -96,21 +98,60 @@ public class webHotelController {
         comentario.setPuntuacion(comentario.getPuntuacion());
         comentario.setSentencia(comentario.getSentencia());
         comentarioService.comentarioID(idhotel,idcliente,comentario);
-        System.out.println(comentario);
         comentarioService.guardarComentario(comentario);
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
     }
     @PostMapping("/reservar")
     public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
-                               @RequestParam("idhotel") Integer id){
+                               @RequestParam("idhotel") Integer idhotel){
+
+        ModelAndView model = new ModelAndView();
+        // Gestión sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        // Gestión sesión
 
         if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
-            return "redirect:/hoteles/item?id="+id; //siento esta fechoria xd
+            return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
         }
         //objeto Reserva_para_bbdd
-       reservaService.precioHabReservada(id, objeto_aux_reservaHtml);
+       Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
+
+        ////////////////////////////////////////////////////////////////////////
+        //hacemos la query de la reserva
+        Reserva reserva = new Reserva();
+        reserva.setId_hotel(hotelService.getById(idhotel));
+        reserva.setId_cliente(clienteService.getById(idCliente));
+        reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
+        reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
+        reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
+        reserva.setNum_clientes(1);
+        reservaService.guardarReserva(reserva);
+        //////////////////////////////////////////
+        //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
+
+
+        for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
+            Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
+            habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
+            habReservaHotel.setId_regimen(regimenService.getById(reserva_para_bbdd.getListIdRegimen().get(i)));
+            habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
+            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////
+
 
         return "redirect:/main";
     }
