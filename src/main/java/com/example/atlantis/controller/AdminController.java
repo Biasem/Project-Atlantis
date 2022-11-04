@@ -41,6 +41,9 @@ public class AdminController{
     @Autowired
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
 
+    @Autowired
+    private LoginService loginService;
+
     @GetMapping("/admin")
     public ModelAndView admin(HttpSession session) {
         ModelAndView model = new ModelAndView("adminTest");
@@ -86,18 +89,37 @@ public class AdminController{
                                      @RequestParam("categoria") TipoRegimen categoria,
                                      @RequestParam("precio") Double precio) {
 
-        ModelAndView model = new ModelAndView("adminHecho");
-        Regimen nuevoRegimen = new Regimen();
-        nuevoRegimen.setCategoria(categoria);
-        nuevoRegimen.setPrecio(precio);
-        List<Hotel> hotel = regimenService.conseguirHotel(idhotel);
-        Hotel hotelfinal = new Hotel();
-        for (Hotel x: hotel){
-            if(x.getId().equals(idhotel));
-            hotelfinal = x;
+        ModelAndView model = new ModelAndView();
+        List<Regimen> regimenes = regimenService.getAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Hotel hotel1 = loginService.cogerid(correo);
+        regimen.setId(hotel1.getId());
+        boolean bool = true;
+
+        for(Regimen r : regimenes) {
+
+            if (r.getCategoria().equals(regimen.getCategoria()) && r.getId_hotel().getId().equals(regimen.getId())) {
+
+                model = new ModelAndView("adminHecho");
+                bool = false;
+                break;
+            }
         }
-        nuevoRegimen.setId_hotel(hotelfinal);
-        regimenService.guardarRegimen(nuevoRegimen);
+               if(bool !=false) {
+                   model = new ModelAndView("adminHecho");
+                   Regimen nuevoRegimen = new Regimen();
+                   nuevoRegimen.setCategoria(categoria);
+                   nuevoRegimen.setPrecio(precio);
+                   List<Hotel> hotel = regimenService.conseguirHotel(idhotel);
+                   Hotel hotelfinal = new Hotel();
+                   for (Hotel x : hotel) {
+                       if (x.getId().equals(idhotel)) ;
+                       hotelfinal = x;
+                   }
+                   nuevoRegimen.setId_hotel(hotelfinal);
+                   regimenService.guardarRegimen(nuevoRegimen);
+               }
         return model;
     }
 
