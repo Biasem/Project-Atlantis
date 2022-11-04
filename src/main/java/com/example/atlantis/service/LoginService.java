@@ -148,4 +148,22 @@ public class LoginService implements UserDetailsService {
         }
         return hotel;
     }
+
+    public Cliente cogeridcliente(String email){
+        List<Cliente> todos = clienteRepository.findAll();
+        Cliente cliente = new Cliente();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(email)){
+                cliente.setId(todos.get(i).getId());
+                cliente.setEmail(new Login());
+                cliente.getEmail().setPassword(todos.get(i).getEmail().getPassword());
+                cliente.getEmail().setRol(todos.get(i).getEmail().getRol());
+                cliente.getEmail().setEmail(todos.get(i).getEmail().getEmail());
+            }
+        }
+        return cliente;
+    }
+
+
 }

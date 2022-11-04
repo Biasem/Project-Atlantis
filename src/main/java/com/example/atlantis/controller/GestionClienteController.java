@@ -45,12 +45,15 @@ public class GestionClienteController {
 
     @PostMapping("/borrarcliente")
     public String deleteCliente2(@ModelAttribute Cliente cliente) {
+
+        //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
 
         Cliente cliente2 = loginService.copiartodoclienteconsession(correo);
 
+        //If para saber si los datos estan correctos y pueden borrar o no
         if (cliente2.getEmail().getEmail().equals(cliente.getEmail().getEmail()) && encoder.matches(cliente.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
             clienteService.borrarCliente(cliente);
 
@@ -70,12 +73,6 @@ public class GestionClienteController {
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
         model.addAttribute("cliente", cliente1);
 
-        //Login usuario = (Login) session.getAttribute("user");
-
-        // Cliente cliente1 = clienteService.obtenerCliDeSesion(usuario);
-
-
-        // model.addAttribute("cliente1", cliente1);
 
         //Listas para introducir en el html los paises que queremos que salgan
         List<String> listpais = Arrays.asList("España", "Francia", "Alemania");
@@ -90,9 +87,19 @@ public class GestionClienteController {
     public String editarCliente2(@ModelAttribute Cliente cliente) {
         //If para verificar que los datos introducidos sean tal cual se necesite
         if(cliente.getNombre() != null && cliente.getApellidos() != null
-                && cliente.getEmail().getEmail() != null &&
-                cliente.getEmail().getPassword() != null && cliente.getDni() != null
                 && clienteService.validarDNI(cliente.getDni()) != false) {
+
+            //Recogida datos de sesión e insertarlos en el modelo
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Cliente datos = loginService.cogeridcliente(correo);
+            cliente.setId(datos.getId());
+            cliente.setEmail(new Login());
+            cliente.getEmail().setPassword(datos.getEmail().getPassword());
+            cliente.getEmail().setRol(datos.getEmail().getRol());
+            cliente.getEmail().setEmail(datos.getEmail().getEmail());
+
+
 
             //Introduccion de datos a Service para meter en ddbb
         clienteService.editarCliente(cliente);

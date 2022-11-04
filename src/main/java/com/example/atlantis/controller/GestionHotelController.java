@@ -94,7 +94,7 @@ public class GestionHotelController {
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 ) {
 
-
+        //Recogida de datos con sesión y copia del modelo entero
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
             Hotel datos = loginService.cogerid(correo);
