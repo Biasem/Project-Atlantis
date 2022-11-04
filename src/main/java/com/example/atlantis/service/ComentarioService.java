@@ -36,6 +36,10 @@ public class ComentarioService {
         }
         return fin;
     }
+
+    public Comentario getById(Integer id){
+        return comentarioRepository.findById(id).orElse(null);
+    }
     public List<Comentario> conseguirComentariosCliente (Integer id){
         List<Comentario> lista = comentarioRepository.findAll();
         List<Comentario> fin = new ArrayList<>();

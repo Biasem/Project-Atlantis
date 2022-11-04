@@ -1,5 +1,6 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class perfilController {
     private HotelService hotelService;
     @Autowired
     private ComentarioService comentarioService;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     @RequestMapping("/perfilcliente")
     public ModelAndView perfil(HttpSession session){
@@ -76,4 +80,14 @@ public class perfilController {
         model.addObject("estrellas", hotel.getNum_estrellas());
         return model;
     }
+
+    @RequestMapping("/perfilcliente/borrarcomentario")
+    public ModelAndView borrarComentario(@RequestParam("idcomentario") Integer id){
+        ModelAndView model = new ModelAndView("comentarioHecho");
+        model.addObject("idcomentario", id);
+        Comentario borrar = comentarioService.getById(id);
+        comentarioRepository.delete(borrar);
+        return model;
+    }
+
 }

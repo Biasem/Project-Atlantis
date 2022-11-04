@@ -59,6 +59,10 @@
                         <small th:text="${c.getFecha()}"></small>
                     </div>
                     <p th:text="${c.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
+                    <form method="post" action="#" th:action="@{/perfilcliente/borrarcomentario}">
+                        <input name="idcomentario" th:value="${c.getId()}">
+                    <input type="submit" value="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px"/>
+                    </form>
                 </div>
             </div>
         </div>
