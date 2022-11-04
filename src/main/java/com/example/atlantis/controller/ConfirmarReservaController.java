@@ -1,5 +1,6 @@
 package com.example.atlantis.controller;
 
+import com.example.atlantis.model.Objeto_Aux_Reserva_html;
 import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -33,6 +37,7 @@ public class ConfirmarReservaController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
+        System.out.println(1);
 
         return model;
     }

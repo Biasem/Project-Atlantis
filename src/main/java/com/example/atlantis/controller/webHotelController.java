@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 
 @Controller
 public class webHotelController {
@@ -103,10 +106,9 @@ public class webHotelController {
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
+    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer idhotel){
-
-        ModelAndView model = new ModelAndView();
+        ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -122,11 +124,14 @@ public class webHotelController {
 
         if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
-            return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
+            return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
-        //objeto Reserva_para_bbdd
-       Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
 
+        //objeto Reserva_para_bbdd
+        Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
+        Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
+        model.addObject("dias",dias);
+        model.addObject("total",reserva_para_bbdd.getPrecioTotal());
         ////////////////////////////////////////////////////////////////////////
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
@@ -136,7 +141,7 @@ public class webHotelController {
         reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
         reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
         reserva.setNum_clientes(1);
-        reservaService.guardarReserva(reserva);
+//        reservaService.guardarReserva(reserva);
         //////////////////////////////////////////
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
         for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
@@ -144,12 +149,12 @@ public class webHotelController {
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
             habReservaHotel.setId_regimen(regimenService.getById(reserva_para_bbdd.getListIdRegimen().get(i)));
             habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
-            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
+//            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
         }
         ////////////////////////////////////////////////////////////////////////
 
 
-        return "redirect:/main";
+        return model;
     }
 
 
