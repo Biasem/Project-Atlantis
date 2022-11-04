@@ -47,8 +47,8 @@
                     </tbody>
                 </table>
                 <br>
-                <table class="table bg-white rounded border table-striped table-dark">
-                    <thead>
+                <table class="table">
+                    <thead class="table-dark">
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Atributos</th>
@@ -94,8 +94,8 @@
                     </thead>
                 </table>
                 <br>
-                <table class="table bg-white rounded border table-striped table-dark">
-                    <thead>
+                <table class="table">
+                    <thead class="table-dark">
                     <tr>
                         <th scope="col">Tipo</th>
                         <th scope="col">Huéspedes</th>
@@ -130,8 +130,8 @@
                     </thead>
                 </table>
                 <br>
-                <table class="table bg-white rounded border table-striped table-dark">
-                    <thead>
+                <table class="table">
+                    <thead class="table-dark">
                     <tr>
                         <th scope="col">Categoría</th>
                         <th scope="col">Precio</th>
@@ -160,8 +160,8 @@
                 </thead>
             </table>
             <br>
-            <table class="table bg-white rounded border table-striped table-dark">
-                <thead>
+            <table class="table">
+                <thead class="table-dark">
                 <tr>
                     <th scope="col">Categoria</th>
                     <th scope="col">Precio</th>
@@ -173,12 +173,13 @@
                     <td><select name="categoria">
                     <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
                 </select></td>
-                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" name="precio"></td>
-                    <input type="hidden" name="idhotel" th:value="${idHotel}"/>
+                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" name="precio">
+                        <input type="hidden" name="idhotel" th:value="${idHotel}"/></td>
+                    <td><input type="submit" class="btn btn-primary form-control text-center" style="width: 100px; height: 27px; padding: 1px 5px"></td>
                 </tr>
                 </tbody>
             </table>
-            <input type="submit" class="btn btn-primary form-control text-center">
+
         </form>
     </div>
     <br>

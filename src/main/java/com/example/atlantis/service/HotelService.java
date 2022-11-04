@@ -151,23 +151,30 @@ public class HotelService {
             }
         }
 
-        //Ordenamos la lista de hoteles
-        List<Hotel> topPuntacion = mapa.keySet().stream().sorted(Comparator.comparing(mapa::get)).collect(Collectors.toList());
+        if (mapa.size()<3){
+            return mapa;
+        }
+        else{
+            //Ordenamos la lista de hoteles
+            List<Hotel> topPuntacion = mapa.keySet().stream().sorted(Comparator.comparing(mapa::get)).collect(Collectors.toList());
 
-        System.out.println(topPuntacion);
+            System.out.println(topPuntacion);
 
-        // Sublista con el top 3
-        List<Hotel> trePrimeros = topPuntacion.subList(topPuntacion.size()-3, topPuntacion.size());
-        topPuntacion.forEach(x-> System.out.println(x.getNombre()));
+            // Sublista con el top 3
+            List<Hotel> trePrimeros = topPuntacion.subList(topPuntacion.size()-3, topPuntacion.size());
+            topPuntacion.forEach(x-> System.out.println(x.getNombre()));
 
-        //Mapa nuevo vacio
-        Map<Hotel, Integer> mapa2 = new HashMap<>();
+            //Mapa nuevo vacio
+            Map<Hotel, Integer> mapa2 = new HashMap<>();
 
-        //Mapa vacio, metemos los tres hoteles como clave y el valor que tenian
-        // los hoteles en el mapa 1
-        trePrimeros.forEach(h-> mapa2.put(h, mapa.get(h)));
+            //Mapa vacio, metemos los tres hoteles como clave y el valor que tenian
+            // los hoteles en el mapa 1
+            trePrimeros.forEach(h-> mapa2.put(h, mapa.get(h)));
 
-        return mapa2;
+            return mapa2;
+        }
+
+
     }
 
 
