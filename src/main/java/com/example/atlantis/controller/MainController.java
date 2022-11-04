@@ -49,10 +49,24 @@ public class MainController{
         List<Hotel> listaprimera = hotelService.getAll();
         Map<Hotel, Integer> lista = hotelService.filtrarmejores(listaprimera);
 
-        model.addObject("lista", lista);
-        model.addObject("fechamin", LocalDate.now());
-        model.addObject("busqueda", busqueda);
-        return model;
+        if (lista.size()<3){
+            ModelAndView azar = new ModelAndView("mainazar");
+            Collections.shuffle(listaprimera);
+            List<Hotel> listaHotel = listaprimera.subList(0, 3);
+            azar.addObject("fechamin", LocalDate.now());
+            azar.addObject("busqueda", busqueda);
+            azar.addObject("listaHotel", listaHotel);
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+            return azar;
+        }
+
+        else{
+            model.addObject("lista", lista);
+            model.addObject("fechamin", LocalDate.now());
+            model.addObject("busqueda", busqueda);
+            return model;
+        }
     }
 
     @GetMapping("/hoteleditar")
