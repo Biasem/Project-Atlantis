@@ -40,20 +40,26 @@
         </tr>
         </tbody>
       </table>
+
       <table class="table bg-white rounded border table-striped table-dark">
         <thead>
         <tr>
           <th scope="col">Habitacion</th>
+          <th scope="col">Cantidad</th>
           <th scope="col">Precio</th>
           <th scope="col">Regimen</th>
           <th scope="col">Precio</th>
         </tr>
         </thead>
         <tbody>
-
+        <tr th:each="a:${listareserva}">
+          <td th:text="${a.getHabitaciones()}"></td>
+          <td th:text="${a.getCantHab()}"></td>
+          <td th:text="${a.getPrecioHab()}"></td>
+          <td th:text="${a.getRegimen()}"></td>
+          <td th:text="${a.getRegimen().getPrecio()}"></td>
+        </tr>
         </tbody>
-
-
       </table>
     <table class="table bg-white rounded border table-striped table-dark">
       <thead>
@@ -63,7 +69,10 @@
       </tr>
       </thead>
     </table>
+    <form action="/pago" method="post">
+      <input type="hidden" name="objeto_para_bbdd" th:value="${objeto}">
     <button class="btn btn-primary form-control text-center">Pagar: </button>
+    </form>
   </div>
 </div>
 

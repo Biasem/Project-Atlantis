@@ -42,8 +42,7 @@ public class webHotelController {
     @Autowired
     private ReservaService reservaService;
 
-    @Autowired
-    private Habitacion_Reserva_HotelService habitacionReservaHotelService;
+
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
@@ -129,29 +128,15 @@ public class webHotelController {
 
         //objeto Reserva_para_bbdd
         Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
+        List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
+
+
         Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
+        model.addObject("objeto", reserva_para_bbdd);
         model.addObject("dias",dias);
         model.addObject("total",reserva_para_bbdd.getPrecioTotal());
-        ////////////////////////////////////////////////////////////////////////
-        //hacemos la query de la reserva
-        Reserva reserva = new Reserva();
-        reserva.setId_hotel(hotelService.getById(idhotel));
-        reserva.setId_cliente(clienteService.getById(idCliente));
-        reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
-        reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
-        reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
-        reserva.setNum_clientes(1);
-//        reservaService.guardarReserva(reserva);
-        //////////////////////////////////////////
-        //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
-        for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
-            Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
-            habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
-            habReservaHotel.setId_regimen(regimenService.getById(reserva_para_bbdd.getListIdRegimen().get(i)));
-            habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
-//            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
-        }
-        ////////////////////////////////////////////////////////////////////////
+        model.addObject("listareserva",listamostrar);
+
 
 
         return model;

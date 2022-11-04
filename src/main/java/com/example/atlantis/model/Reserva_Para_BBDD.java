@@ -11,13 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reserva_Para_BBDD {
-List<Integer> listIdRegimen;
+List<Regimen> listIdRegimen;
 List<Habitaciones> listHabitacion;
+List<Integer> numhab;
+List<Double> preciohab;
 Integer idHotel;
 Integer idCliente;
 Integer numClientes;
 LocalDate fechaEntrada;
 LocalDate fechasalida;
 Double precioTotal;
-
 }
