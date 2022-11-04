@@ -3025,27 +3025,26 @@
   }
   .btn-primary:hover {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: #3B6363;
+    border-color: #3B6363;
   }
   .btn-check:focus + .btn-primary, .btn-primary:focus {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
-    box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+    background-color: #3B6363;
+    border-color: #3B6363;
   }
   .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0a58ca;
-    border-color: #0a53be;
+    background-color: #3B6363;
+    border-color: #3B6363;
   }
   .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
   }
   .btn-primary:disabled, .btn-primary.disabled {
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: #3B6363;
+    border-color: #3B6363;
   }
 
   .btn-secondary {
@@ -7706,7 +7705,7 @@
   /* rtl:end:remove */
   .text-primary {
     --bs-text-opacity: 1;
-    color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+    color: #86A8A8;
   }
 
   .text-secondary {
@@ -11302,7 +11301,7 @@
 
   .icon {
     padding-left: 25px;
-    background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat center;
+    background: url("https://i.imgur.com/9gZkVH2.png") no-repeat center;
     background-size: 20px;
     fill: white;
   }
@@ -11322,16 +11321,13 @@
   .form-control{
 
     height: 48px;
-    border-radius: 25px;
   }
 
   .form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #35b69f;
+    color: black;
+    background-color: white;
     outline: 0;
     box-shadow: none;
-    text-indent: 10px;
   }
 
   .c-badge{
