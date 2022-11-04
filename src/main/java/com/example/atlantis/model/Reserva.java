@@ -21,7 +21,7 @@ public class Reserva {
     private Integer id;
 
     @JoinColumn(name = "id_hotel")
-    @OneToOne
+    @ManyToOne()
     private Hotel id_hotel;
 
     @JoinColumn(name = "id_cliente")

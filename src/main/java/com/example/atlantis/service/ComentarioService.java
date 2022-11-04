@@ -30,7 +30,7 @@ public class ComentarioService {
         List<Comentario> lista = comentarioRepository.findAll();
         List<Comentario> fin = new ArrayList<>();
         for (Comentario x: lista){
-            if (x.getId_hotel().getId() == id){
+            if (x.getHotel().getId() == id){
                 fin.add(x);
             }
         }
@@ -44,7 +44,7 @@ public class ComentarioService {
         List<Comentario> lista = comentarioRepository.findAll();
         List<Comentario> fin = new ArrayList<>();
         for (Comentario x: lista){
-            if (x.getId_cliente().getId() == id){
+            if (x.getCliente().getId() == id){
                 fin.add(x);
             }
         }
@@ -54,14 +54,14 @@ public class ComentarioService {
         List<Comentario> lista = comentarioRepository.findAll();
         List<Comentario> fin = new ArrayList<>();
         for (Comentario x: lista){
-            if (x.getId_hotel().getId() == id){
+            if (x.getHotel().getId() == id){
                 fin.add(x);
             }
         }
         return fin;
     }
     public Integer mediaPuntuacion (Integer id){
-        List<Comentario> lista = comentarioRepository.findAll().stream().filter(x -> x.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        List<Comentario> lista = comentarioRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(id)).collect(Collectors.toList());
         Integer numero = 0;
         Integer divisor = 0;
         for (Comentario x: lista){
@@ -100,9 +100,30 @@ public class ComentarioService {
             }
         }
 
-        comentario.setId_cliente(cliente);
-        comentario.setId_hotel(hotel);
+        comentario.setCliente(cliente);
+        comentario.setHotel(hotel);
         return comentario;
+    }
+
+    public List<Comentario> conseguirComentariosClienteId(Cliente cliente){
+        List<Comentario> obtenidos = new ArrayList<>();
+        List<Comentario> lista = comentarioRepository.findAll();
+
+        for(int i = 0; i < lista.size(); i++ ){
+         if (lista.get(i).getCliente().getId().equals(cliente.getId())){
+             obtenidos.add(lista.get(i));
+         }
+        }
+
+        return obtenidos;
+    }
+
+
+    public void borrarcomentarios(Cliente cliente, List<Comentario> comentarios){
+
+        for(int i = 0; i < comentarios.size(); i++ ){
+            comentarioRepository.delete(comentarios.get(i));
+        }
     }
 
 }

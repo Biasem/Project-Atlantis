@@ -20,7 +20,7 @@ public class Regimen {
     private Integer id;
 
     @JoinColumn(name = "id_hotel")
-    @OneToOne
+    @ManyToOne()
     private Hotel id_hotel;
 
     @JoinColumn(name = "categoria")
