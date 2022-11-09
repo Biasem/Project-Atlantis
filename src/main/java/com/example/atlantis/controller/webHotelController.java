@@ -131,6 +131,7 @@ public class webHotelController {
         List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
 
 
+
         Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
         model.addObject("objeto", reserva_para_bbdd);
         model.addObject("dias",dias);

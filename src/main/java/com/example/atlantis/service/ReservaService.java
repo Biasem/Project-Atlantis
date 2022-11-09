@@ -46,8 +46,6 @@ public class ReservaService {
             }
         }
         return buscadas;
-
-
     }
 
     public List<Reserva> todasReservasHotel(int id){
@@ -60,9 +58,8 @@ public class ReservaService {
             }
         }
         return buscadas;
-
-
     }
+
     public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
         Reserva_Para_BBDD reserva_para_bbdd = new Reserva_Para_BBDD();
 
@@ -70,7 +67,7 @@ public class ReservaService {
         for(Regimen regimen:regimenService.getAll()){
             if(regimen.getId_hotel().getId().equals(idHotel))regimenList.add(regimen);
         }
-        System.out.println(regimenList.size());
+
 
         List<Double> listaPreciosRegimenHab = new ArrayList<>();
         List<Integer> listaIdRegimen= new ArrayList<>();
@@ -84,6 +81,7 @@ public class ReservaService {
                 }
             }
         }
+
         //filtramos las habitaciones
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll().stream().filter(h -> h.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
         List<Double> precioporhab = new ArrayList<>();
@@ -105,8 +103,11 @@ public class ReservaService {
             precioTotal = precioTotal+ p;
         }
         //preparamos el objeto para la confirmacion de reserva del html
-
-        reserva_para_bbdd.setListIdRegimen(regimenService.getAll().stream().filter(r-> listaIdRegimen.stream().anyMatch(lr->lr.equals(r.getId()))).collect(Collectors.toList()));
+        List<Regimen> regimenList1 = new ArrayList<>();
+        for(Integer i:listaIdRegimen){
+            regimenList1.add(regimenService.getById(i));
+        }
+        reserva_para_bbdd.setListIdRegimen(regimenList1);
         reserva_para_bbdd.setListHabitacion(listaHabitaciones);
         reserva_para_bbdd.setIdHotel(idHotel);
 //        reserva_para_bbdd.setIdHotel(idCliente);
@@ -207,11 +208,6 @@ public class ReservaService {
 
     public List<Ob_mostrar_reserva> obtenerlistareserva(Reserva_Para_BBDD reserva_para_bbdd){
         List<Ob_mostrar_reserva> lista_reserva_mostrar = new ArrayList<>();
-        System.out.println(reserva_para_bbdd.getListHabitacion().size());
-        System.out.println(reserva_para_bbdd.getListIdRegimen().size());
-        System.out.println(reserva_para_bbdd.getNumhab().size());
-        System.out.println(reserva_para_bbdd.getPreciohab().size());
-
 
         for(int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
             Ob_mostrar_reserva ob_mostrar_reserva= new Ob_mostrar_reserva();
@@ -219,6 +215,7 @@ public class ReservaService {
             ob_mostrar_reserva.setRegimen(reserva_para_bbdd.getListIdRegimen().get(i));
             ob_mostrar_reserva.setCantHab(reserva_para_bbdd.getNumhab().get(i));
             ob_mostrar_reserva.setPrecioHab(reserva_para_bbdd.getPreciohab().get(i));
+            lista_reserva_mostrar.add(ob_mostrar_reserva);
         }
         return lista_reserva_mostrar;
     }

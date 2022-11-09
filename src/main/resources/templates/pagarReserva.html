@@ -53,11 +53,11 @@
         </thead>
         <tbody>
         <tr th:each="a:${listareserva}">
-          <td th:text="${a.getHabitaciones()}"></td>
+          <td th:text="${a.getHabitaciones().getTipo_hab()}"></td>
           <td th:text="${a.getCantHab()}"></td>
           <td th:text="${a.getPrecioHab()}"></td>
-          <td th:text="${a.getRegimen()}"></td>
-          <td th:text="${a.getRegimen().getPrecio()}"></td>
+          <td th:text="${a.getRegimen().getCategoria()}"></td>
+          <td th:text="${a.getRegimen().getPrecio()*a.getCantHab()}"></td>
         </tr>
         </tbody>
       </table>
