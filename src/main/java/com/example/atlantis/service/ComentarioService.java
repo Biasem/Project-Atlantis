@@ -1,6 +1,7 @@
 package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ClienteRepository;
+import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.service.HotelService;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +23,8 @@ public class ComentarioService {
 
     @Autowired
     HotelRepository hotelRepository;
+    @Autowired
+    ComentarioLikeRepository comentarioLikeRepository;
 
     public List<Comentario> conseguirComentarios (Integer id){
         List<Comentario> lista = comentarioRepository.findAll();
@@ -124,6 +124,60 @@ public class ComentarioService {
         for(int i = 0; i < comentarios.size(); i++ ){
             comentarioRepository.delete(comentarios.get(i));
         }
+    }
+
+    public void likedislike (Integer idcliente, Integer idcomentario, Integer idhotel, Integer like, Integer dislike){
+        List<Comentario> comentario = comentarioRepository.findAll().stream().filter(x -> x.getId().equals(idcomentario)).collect(Collectors.toList());
+        Comentario comentariofinal = new Comentario();
+
+        for (Comentario x:comentario){
+            comentariofinal = x;
+        }
+
+        List<Cliente> cliente = clienteRepository.findAll().stream().filter(x-> x.getId().equals(idcliente)).collect(Collectors.toList());
+        Cliente clientefinal = new Cliente();
+
+        for (Cliente x: cliente){
+            clientefinal = x;
+        }
+
+        List<Hotel> hoteles = hotelRepository.findAll().stream().filter(x-> x.getId().equals(idhotel)).collect(Collectors.toList());
+        Hotel hotelfinal = new Hotel();
+
+        for (Hotel x: hoteles){
+            hotelfinal = x;
+        }
+
+        ComentarioLike likes = new ComentarioLike();
+        Integer numerolike = like - dislike;
+        likes.setId_cliente(clientefinal);
+        likes.setId_comentario(comentariofinal);
+        likes.setPuntuacion(numerolike);
+        likes.setId_hotel(hotelfinal);
+
+        comentarioLikeRepository.save(likes);
+    }
+
+    public void sumalikes (Integer idcomentario){
+        List<ComentarioLike> listaComentarios = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_comentario().getId().equals(idcomentario)).collect(Collectors.toList());
+
+
+        Integer numero = 0;
+
+        for (ComentarioLike x: listaComentarios){
+            numero = numero + x.getPuntuacion();
+        }
+
+        List<Comentario> comentarios = comentarioRepository.findAll().stream().filter(x -> x.getId().equals(idcomentario)).collect(Collectors.toList());
+        Comentario comentario = new Comentario();
+
+        for (Comentario x: comentarios){
+            comentario = x;
+        }
+
+        comentario.setLikes(numero);
+        comentarioRepository.save(comentario);
+
     }
 
 }
