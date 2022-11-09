@@ -69,7 +69,6 @@ public class webHotelController {
         model.addObject("idHotelreserva", idHotelreserva);
         // Gestión sesión
 
-        List<ComentarioLike> likes = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_hotel().getId().equals(idHotelreserva)).collect(Collectors.toList());
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
@@ -92,7 +91,6 @@ public class webHotelController {
         model.addObject("objeto_integer",objetoInteger);
 
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
-        model.addObject("likes", likes);
         return model;
     }
 

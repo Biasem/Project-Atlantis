@@ -180,4 +180,10 @@ public class ComentarioService {
 
     }
 
+    public void trituradoraLikes (List<ComentarioLike> comentarioLikes){
+        for (ComentarioLike x: comentarioLikes){
+            comentarioLikeRepository.delete(x);
+        }
+    }
+
 }

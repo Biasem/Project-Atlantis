@@ -133,18 +133,17 @@
                 <p th:text="${c.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
                 <div class="d-flex flex-row user-feed">
 
-                  <span>
+                  <span th:if="${idCliente>0}">
                     <form action="/like" method="post" th:object="${objeto_integer}" style="float: left;">
-                      <button style="background-color: transparent; border: transparent;"><i class="fa fa-thumbs-up mr-2"></i></button>
+                      <button style="background-color: transparent; border: transparent;"><i class="fa fa-thumbs-up mr-2" style="color: #2F4F4F"></i></button>
                       <input type="hidden" name="idcomentario" th:value="${c.getId()}">
                       <input type="hidden" name="idcliente" th:value="${idCliente}">
                       <input type="hidden" name="idhotelreserva" th:value="${idHotelreserva}">
                       <input type="hidden" name="like" th:value="1">
                       <input type="hidden" name="dislike" th:value="0">
                     </form>
-                    <span style="margin-left: 5px; margin-right: 5px; float: left;" th:text="${c.getLikes()}" ></span>
                     <form action="/like" method="post" th:object="${objeto_integer}" style="float: left;">
-                      <button style="background-color: transparent; border: transparent;"><i class="fa fa-thumbs-down mr-2"></i></button>
+                      <button style="background-color: transparent; border: transparent;"><i class="fa fa-thumbs-down mr-2" style="color: #B33F40;"></i></button>
                       <input type="hidden" name="idcomentario" th:value="${c.getId()}">
                       <input type="hidden" name="idcliente" th:value="${idCliente}">
                       <input type="hidden" name="idhotelreserva" th:value="${idHotelreserva}">
@@ -152,6 +151,7 @@
                       <input type="hidden" name="dislike" th:value="1">
                     </form>
                   </span>
+                  <span style="margin-left: 5px; margin-right: 5px; float: left;"><strong th:text="'Likes:' + '' + ${c.getLikes()}"></strong></span>
 
                 </div>
               </div>
