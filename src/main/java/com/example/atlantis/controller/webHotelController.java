@@ -1,5 +1,6 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 
 import java.security.Principal;
@@ -41,6 +44,8 @@ public class webHotelController {
 
     @Autowired
     private Habitacion_Reserva_HotelService habitacionReservaHotelService;
+    @Autowired
+    private ComentarioLikeRepository comentarioLikeRepository;
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
@@ -58,8 +63,10 @@ public class webHotelController {
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
         }
+        Integer idHotelreserva = id;
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
+        model.addObject("idHotelreserva", idHotelreserva);
         // Gestión sesión
 
         List<Hotel> listaHoteles = hotelService.getAll();
@@ -97,8 +104,26 @@ public class webHotelController {
         comentario.setSentencia(texto);
         comentario.setPuntuacion(comentario.getPuntuacion());
         comentario.setSentencia(comentario.getSentencia());
+        comentario.setLikes(0);
         comentarioService.comentarioID(idhotel,idcliente,comentario);
         comentarioService.guardarComentario(comentario);
+        ModelAndView model = new ModelAndView("comentarioHecho");
+        return model;
+    }
+
+    @PostMapping("/like")
+    public @ResponseBody ModelAndView likeComentario(HttpSession session,
+                                                      @ModelAttribute Comentario comentario,
+                                                      @ModelAttribute ComentarioLike comentarioLike,
+                                                      @RequestParam("idcomentario") Integer idcomentario,
+                                                      @RequestParam("idcliente") Integer idcliente,
+                                                      @RequestParam("like") Integer like,
+                                                     @RequestParam("dislike") Integer dislike,
+                                                     @RequestParam("idhotelreserva") Integer idhotelreserva){
+
+        System.out.println(idhotelreserva);
+        comentarioService.likedislike(idcliente,idcomentario,idhotelreserva,like,dislike);
+        comentarioService.sumalikes(idcomentario);
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
     }
@@ -155,8 +180,4 @@ public class webHotelController {
 
         return "redirect:/main";
     }
-
-
-
-
 }

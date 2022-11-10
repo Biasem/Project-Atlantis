@@ -177,5 +177,16 @@ public class HotelService {
 
     }
 
+    public Map<Integer, Hotel> filtrarHotel (List<Hotel> hoteles){
+        Map<Integer, Hotel> mapa = new TreeMap<>(Collections.reverseOrder());
+        for (Hotel x: hoteles){
+            Integer id = x.getId();
+            Integer media = comentarioService.mediaPuntuacion(id);
+            mapa.put(media, x);
+        }
+        System.out.println(mapa);
+    return mapa;
+    }
+
 
 }

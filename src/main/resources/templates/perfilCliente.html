@@ -58,7 +58,14 @@
                         </div>
                         <small th:text="${c.getFecha()}"></small>
                     </div>
+                    <div style="margin-top: 10px;">
                     <p th:text="${c.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
+                    <strong style="margin-left: 30px;" th:text="'Likes:' + '' + ${c.getLikes()}"></strong>
+                    <form method="post" action="#" th:action="@{/perfilcliente/borrarcomentario}" style="float: left">
+                        <input type="hidden" name="idcomentario" th:value="${c.getId()}">
+                    <input type="submit" value="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px"/>
+                    </form>
+                    </div>
                 </div>
             </div>
         </div>

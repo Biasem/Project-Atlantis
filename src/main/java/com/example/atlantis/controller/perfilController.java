@@ -1,5 +1,7 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioLikeRepository;
+import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class perfilController {
@@ -24,6 +27,11 @@ public class perfilController {
     private HotelService hotelService;
     @Autowired
     private ComentarioService comentarioService;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+    @Autowired
+    private ComentarioLikeRepository comentarioLikeRepository;
 
     @RequestMapping("/perfilcliente")
     public ModelAndView perfil(HttpSession session){
@@ -76,4 +84,16 @@ public class perfilController {
         model.addObject("estrellas", hotel.getNum_estrellas());
         return model;
     }
+
+    @RequestMapping("/perfilcliente/borrarcomentario")
+    public ModelAndView borrarComentario(@RequestParam("idcomentario") Integer id){
+        ModelAndView model = new ModelAndView("comentarioHecho");
+        model.addObject("idcomentario", id);
+        List<ComentarioLike> likes = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_comentario().getId().equals(id)).collect(Collectors.toList());
+        comentarioService.trituradoraLikes(likes);
+        Comentario borrar = comentarioService.getById(id);
+        comentarioRepository.delete(borrar);
+        return model;
+    }
+
 }

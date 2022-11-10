@@ -169,7 +169,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr th:if="${regimen.size()>0}">
                     <td><select name="categoria">
                     <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
                 </select></td>
@@ -177,9 +177,9 @@
                         <input type="hidden" name="idhotel" th:value="${idHotel}"/></td>
                     <td><input type="submit" class="btn btn-primary form-control text-center" style="width: 100px; height: 27px; padding: 1px 5px"></td>
                 </tr>
-                </tbody>
+                <tr th:if="${regimen.size()==0}">
+                    <td><p> No puedes crear más regimenes hasta que borres alguno.</p></td>
             </table>
-
         </form>
     </div>
     <br>
