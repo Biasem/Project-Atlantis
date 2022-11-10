@@ -151,7 +151,8 @@
                       <input type="hidden" name="dislike" th:value="1">
                     </form>
                   </span>
-                  <span style="margin-left: 5px; margin-right: 5px; float: left;"><strong th:text="'Likes:' + '' + ${c.getLikes()}"></strong></span>
+                  <span style="margin-left: 5px; margin-right: 5px; float: left;">Likes: <strong th:text="${c.getLikes()}"></strong></span>
+                  <span th:if="${idHotel == idHotelreserva}" style="margin-left: 10px;"><i class="fa fa-reply" aria-hidden="true"></i></span>
 
                 </div>
               </div>
