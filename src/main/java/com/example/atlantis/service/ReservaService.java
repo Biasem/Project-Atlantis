@@ -110,8 +110,7 @@ public class ReservaService {
         reserva_para_bbdd.setListIdRegimen(regimenList1);
         reserva_para_bbdd.setListHabitacion(listaHabitaciones);
         reserva_para_bbdd.setIdHotel(idHotel);
-//        reserva_para_bbdd.setIdHotel(idCliente);
-//        reserva_para_bbdd.setNumClientes(numclientes);
+        reserva_para_bbdd.setNumClientes(1);
         reserva_para_bbdd.setFechaEntrada(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()));
         reserva_para_bbdd.setFechasalida(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()));
         reserva_para_bbdd.setPrecioTotal(precioTotal);

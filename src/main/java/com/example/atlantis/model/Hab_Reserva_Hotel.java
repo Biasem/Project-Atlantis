@@ -31,6 +31,9 @@ public class Hab_Reserva_Hotel {
     @JoinColumn(name = "id_hab")
     private Habitaciones id_hab;
 
+    @Column(name = "num_hab")
+    private Integer numhab;
+
 
 
 }
