@@ -3,6 +3,9 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -33,6 +37,12 @@ public class GestionClienteController {
     @Autowired
     private ReservaService reservaService;
 
+    @GetMapping("/todos")
+    @QueryMapping
+    public List<Cliente> getAll() {
+        return clienteService.getAll();
+    }
+
 
     @GetMapping("/borrarcliente")
     public String deleteCliente(Model model,@ModelAttribute Cliente cliente) {
@@ -44,9 +54,11 @@ public class GestionClienteController {
     }
 
     @PostMapping("/borrarcliente")
-    public String deleteCliente2(@ModelAttribute Cliente cliente) {
+    @SchemaMapping(typeName = "Mutation", value = "deleteCliente2")
 
-        //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
+    public String deleteCliente2(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput input) {
+
+        //Encriptado y recogida de datos de al sesión para copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -54,8 +66,8 @@ public class GestionClienteController {
         Cliente cliente2 = loginService.copiartodoclienteconsession(correo);
 
         //If para saber si los datos estan correctos y pueden borrar o no
-        if (cliente2.getEmail().getEmail().equals(cliente.getEmail().getEmail()) && encoder.matches(cliente.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
-            clienteService.borrarCliente(cliente);
+        if (cliente2.getEmail().getEmail().equals(input.getEmail().getEmail()) && encoder.matches(input.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
+            clienteService.borrarCliente(input);
 
             return "redirect:/logout";
         }
@@ -84,25 +96,26 @@ public class GestionClienteController {
 
 
     @PostMapping("/editarcliente")
-    public String editarCliente2(@ModelAttribute Cliente cliente) {
+    @SchemaMapping(typeName = "Mutation", value = "editar2")
+    public String editarCliente2(Cliente input) {
         //If para verificar que los datos introducidos sean tal cual se necesite
-        if(cliente.getNombre() != null && cliente.getApellidos() != null
-                && clienteService.validarDNI(cliente.getDni()) != false) {
+        if(input.getNombre() != null && input.getApellidos() != null
+                && clienteService.validarDNI(input.getDni()) != false) {
 
             //Recogida datos de sesión e insertarlos en el modelo
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
             Cliente datos = loginService.cogeridcliente(correo);
-            cliente.setId(datos.getId());
-            cliente.setEmail(new Login());
-            cliente.getEmail().setPassword(datos.getEmail().getPassword());
-            cliente.getEmail().setRol(datos.getEmail().getRol());
-            cliente.getEmail().setEmail(datos.getEmail().getEmail());
+            input.setId(datos.getId());
+           input.setEmail(new Login());
+            input.getEmail().setPassword(datos.getEmail().getPassword());
+            input.getEmail().setRol(Rol.CLIENTE);
+            input.getEmail().setEmail(datos.getEmail().getEmail());
 
 
 
             //Introduccion de datos a Service para meter en ddbb
-        clienteService.editarCliente(cliente);
+        clienteService.editarCliente(input);
             return "redirect:/main";
 
         }else{

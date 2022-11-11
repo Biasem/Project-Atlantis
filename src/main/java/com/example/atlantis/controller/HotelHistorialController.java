@@ -6,11 +6,14 @@ import com.example.atlantis.service.LoginService;
 import com.example.atlantis.service.RegimenService;
 import com.example.atlantis.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -54,7 +57,8 @@ public class HotelHistorialController {
 
     //Reservas Vigentes
     @GetMapping("/historialReservaHotelVigentes")
-    public ModelAndView historialVigente(@ModelAttribute Hotel hotel) {
+    @SchemaMapping(typeName = "Query", value = "historialVigenteHotel")
+    public ModelAndView historialVigente(@RequestBody @Argument(name = "Hotel") GraphqlInput.HotelInput hotel) {
         ModelAndView model = new ModelAndView("historialReservaHotel");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();

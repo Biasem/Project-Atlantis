@@ -7,12 +7,15 @@ import com.example.atlantis.service.LoginService;
 import com.example.atlantis.service.RegimenService;
 import com.example.atlantis.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -55,7 +58,8 @@ public class ClienteHistorialController {
 
     //Reservas Vigentes
     @GetMapping("/historialReservaClienteVigentes")
-    public ModelAndView historialVigente(@ModelAttribute Cliente cliente) {
+    @SchemaMapping(typeName = "Query", value = "historialVigente")
+    public ModelAndView historialVigente(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput cliente) {
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();

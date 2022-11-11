@@ -5,6 +5,8 @@ import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.RegimenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -105,7 +107,8 @@ public class MainController{
     }
 
     @GetMapping("/")
-    public String irAMain(@ModelAttribute Busqueda busqueda) {
+    @SchemaMapping(typeName = "Query", value = "irAMain")
+    public String irAMain(@PathVariable @Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
         return "redirect:/main";
     }
 }

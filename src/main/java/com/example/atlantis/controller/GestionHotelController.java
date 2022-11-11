@@ -4,6 +4,8 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -40,7 +43,8 @@ public class GestionHotelController {
     }
 
     @PostMapping("/borrarhotel")
-    public String deleteHotel2(@ModelAttribute Hotel hotel) {
+    @SchemaMapping(typeName = "Mutation", value = "deleteHotel2")
+    public String deleteHotel2(@RequestBody @Argument(name = "input") GraphqlInput.HotelInput hotel) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -86,12 +90,13 @@ public class GestionHotelController {
 
 
     @PostMapping("/editarhotel")
-    public String editarhotel2(@ModelAttribute RegisHotFech hotel) {
+    @SchemaMapping(typeName = "Mutation", value = "editarhotel2")
+    public String editarhotel2(@RequestBody @Argument(name = "cliente") GraphqlInput.RegisHotFechInput input) {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
-        if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
-                && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
-                && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
-                && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
+        if (input.getNombre() != null && input.getDireccion() != null && input.getPais() != null
+                && input.getLocalidad() != null && input.getFecha_apertura() != null
+                && input.getFecha_cierre() != null && input.getTipo_hotel() != null
+                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
                 ) {
 
         //Recogida de datos con sesión y copia del modelo entero
@@ -99,14 +104,15 @@ public class GestionHotelController {
             String correo = auth.getName();
             Hotel datos = loginService.cogerid(correo);
 
-            hotel.setId(datos.getId());
-            hotel.setEmail(new Login());
-            hotel.getEmail().setPassword(datos.getEmail().getPassword());
-            hotel.getEmail().setRol(datos.getEmail().getRol());
-            hotel.getEmail().setEmail(datos.getEmail().getEmail());
+
+            input.setId(datos.getId());
+//            input.setEmail(new GraphqlInput.LoginInput());
+            input.getEmail().setPassword(datos.getEmail().getPassword());
+            input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
+            input.getEmail().setEmail(datos.getEmail().getEmail());
 
         //Método para meter el hotel ya convertido en el modelo para ddbb
-            hotelService.editarHotel(hotelService.convertirAHotel(hotel));
+            hotelService.editarHotel(hotelService.convertirAHotel(input));
             return "redirect:/main";
         } else {
 

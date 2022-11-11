@@ -1,12 +1,15 @@
 package com.example.atlantis.service;
 
 import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.GraphqlInput;
 import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.repository.ClienteRepository;
 import com.example.atlantis.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -50,7 +53,7 @@ public class ClienteService {
     }
 
 
-    public Cliente copiartodocliente(Cliente cliente){
+    public Cliente copiartodocliente(GraphqlInput.ClienteInput cliente){
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
@@ -62,7 +65,7 @@ public class ClienteService {
         return cliente1;
     }
 
-    public void borrarCliente(Cliente cliente){
+    public void borrarCliente(GraphqlInput.ClienteInput cliente){
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = copiartodocliente(cliente);
         for(int i = 0; i < todos.size(); i++ ){
@@ -73,10 +76,10 @@ public class ClienteService {
         }
     }
 
-    public void editarCliente(Cliente cliente){
+    public void editarCliente(@RequestBody Cliente input){
 
-        clienteRepository.editarCliente(cliente.getNombre(),cliente.getApellidos(),cliente.getDni(), cliente.getPais(),
-                cliente.getTelefono(), cliente.getEmail().getEmail());
+        clienteRepository.editarCliente(input.getNombre(),input.getApellidos(),input.getDni(), input.getPais(),
+               input.getTelefono(), input.getEmail().getEmail());
 
     }
 

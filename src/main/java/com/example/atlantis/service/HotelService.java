@@ -3,11 +3,13 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.repository.HotelRepository;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,26 +38,31 @@ public class HotelService {
 
 
     //Convertir el Hotel de un modelo de obtención de datos  al modelo real para meter en bbdd
-    public Hotel convertirAHotel(RegisHotFech hotel){
+    public Hotel convertirAHotel(GraphqlInput.RegisHotFechInput hotel){
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+
+        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
         //Selección de ROL Hotel para el nuevo Hotel
-        hotel.getEmail().setRol(Rol.HOTEL);
-
+        hotel.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
+        Login login = new Login();
         Hotel hotel1 = new Hotel();
-
+        hotel1.setEmail(login);
         //Introducción  de datos en el modelo real para insertar en bbdd
         hotel1.setNombre(hotel.getNombre());
         hotel1.setPais(hotel.getPais());
         hotel1.setLocalidad(hotel.getLocalidad());
         hotel1.setDireccion(hotel.getDireccion());
-        hotel1.setFecha_apertura(LocalDate.parse(hotel.getFecha_apertura()));
-        hotel1.setFecha_cierre(LocalDate.parse(hotel.getFecha_cierre()));
+        hotel1.setFecha_apertura(fechap);
+        hotel1.setFecha_cierre(fechap1);
         hotel1.setNum_estrellas(hotel.getNum_estrellas());
         hotel1.setTelefono(hotel.getTelefono());
         hotel1.setTipo_hotel(hotel.getTipo_hotel());
         hotel1.setUrl_icono(hotel.getUrl_icono());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
-        hotel1.setEmail(hotel.getEmail());
+        hotel1.getEmail().setEmail(hotel.getEmail().getEmail());
+        hotel1.getEmail().setRol(hotel1.getEmail().getRol());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
         hotel1.setId(hotel.getId());
         return hotel1;
@@ -63,7 +70,7 @@ public class HotelService {
 
 
     //Función para verificar si el Hotel es Apartamento o no, devuelve un boolean según sea
-    public boolean siEsApartaHotel(RegisHotFech hotel){
+    public boolean siEsApartaHotel(GraphqlInput.RegisHotFechInput hotel){
 
         boolean i = false;
 
@@ -116,7 +123,7 @@ public class HotelService {
         }
     }
 
-    public Hotel copiartodohotel(Hotel hotel){
+    public Hotel copiartodohotel(GraphqlInput.HotelInput hotel){
         List<Hotel> todos = hotelRepository.findAll();
         Hotel hotel1 = new Hotel();
 
