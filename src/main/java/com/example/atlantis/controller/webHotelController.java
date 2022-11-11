@@ -50,8 +50,6 @@ public class webHotelController {
     private Habitacion_Reserva_HotelService habitacionReservaHotelService;
     @Autowired
     private ComentarioLikeRepository comentarioLikeRepository;
-    @Autowired
-    private Habitacion_Reserva_HotelService habitacionReservaHotelService;
     protected static Reserva_Para_BBDD reserva_para_bbdd = null;
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)

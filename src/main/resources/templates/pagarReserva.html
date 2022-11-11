@@ -55,19 +55,17 @@
         <tr th:each="a:${listareserva}">
           <td th:text="${a.getHabitaciones().getTipo_hab()}"></td>
           <td th:text="${a.getCantHab()}"></td>
-          <td th:text="${a.getPrecioHab()}"></td>
+          <td th:text="${a.getPrecioHab()/2}"></td>
           <td th:text="${a.getRegimen().getCategoria()}"></td>
           <td th:text="${a.getRegimen().getPrecio()*a.getCantHab()}"></td>
         </tr>
         </tbody>
       </table>
     <table class="table bg-white rounded border table-striped table-dark">
-      <thead>
       <tr>
         <th scope="col">Días: <a th:text="*{dias}"></a></th>
         <th scope="col">Total: <a th:text="*{total}"></a></th>
       </tr>
-      </thead>
     </table>
     <form action="/pago" method="post">
     <button class="btn btn-primary form-control text-center" type="submit" >Pagar: </button>
