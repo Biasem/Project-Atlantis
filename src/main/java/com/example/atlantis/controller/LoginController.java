@@ -34,33 +34,4 @@ public class LoginController {
     }
 
 
-
-//    @GetMapping("/login")
-//    public ModelAndView submitForm(@ModelAttribute Login login) {
-//        ModelAndView model = new ModelAndView("sesion");
-//        model.addObject("login", login);
-//        return model;
-//
-//    }
-//    @PostMapping("/login")
-//    public String submitForm1(@ModelAttribute Login login, Busqueda busqueda, HttpSession session, RedirectAttributes redirectAttributes) {
-//        //Lleva según si es cierto true o false, a la pantalla sesion (false) o main (true)
-//        ModelAndView model = new ModelAndView("sesion");
-//        model.addObject("login", login);
-//        ModelAndView model1 = new ModelAndView("main");
-//        model1.addObject("login", login);
-//        //Metodo que devuelve un true o un false a partir del email y password dado por el usuario
-//        boolean cierto = loginService.Buscar(login);
-//
-//        if(cierto){
-//            redirectAttributes.addAttribute("login", login);
-//            session.setAttribute("user", login);
-//            return "redirect:/main";
-//            //return "redirect: /main";
-//        }else {
-//            return "sesion";
-//        }
-//    }
-
-
 }

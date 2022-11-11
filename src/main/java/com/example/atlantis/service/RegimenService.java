@@ -1,10 +1,7 @@
 package com.example.atlantis.service;
 
 
-import com.example.atlantis.model.Habitaciones;
-import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.Regimen;
-import com.example.atlantis.model.TipoRegimen;
+import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.repository.RegimenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +61,54 @@ public class RegimenService {
 
     public void guardarRegimen (Regimen regimen){
         regimenRepository.save(regimen);
+    }
+
+    public Integer conseguirRegimenIDHotel (Integer id){
+        List<Regimen> completa = regimenRepository.findAll();
+        Integer idHotel = 0;
+        for (Regimen x: completa){
+            if (x.getId().equals(id)){
+                idHotel = x.getId_hotel().getId();
+            }
+        }
+        return idHotel;
+    }
+
+    public void borrarRegimen (Integer id){
+        List<Regimen> lista = regimenRepository.findAll();
+        Regimen regimen = new Regimen();
+        for (Regimen x: lista){
+            if(x.getId().equals(id)){
+                regimen = x;
+            }
+            else{
+
+            }
+        }
+        regimenRepository.delete(regimen);
+    }
+
+    public List<TipoRegimen> checkRegimen (List<Regimen> regimen){
+        List<Regimen> lista = new ArrayList<>();
+        List<TipoRegimen> crear = todoRegimen();
+        for (Regimen x: regimen){
+            if (x.getCategoria() == TipoRegimen.DESAYUNO){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.SIN_PENSION){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.PENSION_COMPLETA){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.MEDIA_PENSION){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.TODO_INCLUIDO){
+                crear.remove(x.getCategoria());
+            }
+        }
+        return crear;
     }
 
 }

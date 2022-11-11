@@ -6,6 +6,7 @@ import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,11 +41,21 @@ public class GestionHotelController {
 
     @PostMapping("/borrarhotel")
     public String deleteHotel2(@ModelAttribute Hotel hotel) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+
 
         Hotel hotel1 = hotelService.copiartodohotel(hotel);
-        hotelService.borrarHotel(hotel1);
 
-        return "redirect:/main";
+        if(hotel1.getEmail().getEmail().equals(hotel.getEmail().getEmail()) && encoder.matches(hotel.getEmail().getPassword(), hotel1.getEmail().getPassword())){
+            hotelService.borrarHotel(hotel1);
+            return "redirect:/logout";
+        }
+        else{
+            return "redirect:/borrarhotel";
+        }
+
     }
 
 
@@ -83,7 +94,7 @@ public class GestionHotelController {
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
                 ) {
 
-
+        //Recogida de datos con sesión y copia del modelo entero
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
             Hotel datos = loginService.cogerid(correo);

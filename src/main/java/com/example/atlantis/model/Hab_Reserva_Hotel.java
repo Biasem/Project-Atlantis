@@ -27,7 +27,7 @@ public class Hab_Reserva_Hotel {
     @JoinColumn(name = "id_regimen")
     private Regimen id_regimen;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "id_hab")
     private Habitaciones id_hab;
 

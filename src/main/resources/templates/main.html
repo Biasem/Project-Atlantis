@@ -21,7 +21,7 @@
 </head>
 
 <body class="bg-white">
-    <nav th:include="navMenu.html"></nav>
+<nav th:include="navMenu.html"></nav>
     <br>
     <br>
     <br>
@@ -36,7 +36,7 @@
                         <div class="row align-items-end">
                             <div class="col-lg-3 mb-3">
                                 <label class="form-label" style="font-weight: 500;">Introduce destino</label>
-                                <input type="text" class="form-control shadow-none" placeholder="Introduce destino" th:field="*{hotelBuscar}">
+                                <input type="text" class="form-control shadow-none" style="" placeholder="Introduce destino" th:field="*{hotelBuscar}">
                             </div>
                             <div class="col-lg-3 mb-3">
                                 <label class="form-label" style="font-weight: 500;">Fecha Entrada</label>
@@ -65,21 +65,26 @@
     <div class="container py-4 py-xl-5" style="margin-top: 29px;padding-top: 0px;">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
-                <h2><span style="color: rgb(0, 0, 0);">Hoteles</span></h2>
-                <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Descubre cual será tu próxima gran aventura gracias a nuestros destinos al azar.</span></p>
+                <h2><span style="color: rgb(0, 0, 0);">Hoteles mejor puntuados</span></h2>
+                <p class="w-lg-50"><span style="color: rgb(0, 0, 0);">Descubre cual será tu próxima gran aventura gracias a nuestra selección de los mejores hoteles.</span></p>
             </div>
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-            <div th:each="h: ${listaHotel}" class="col" th:id="${h.id}" th:object="${numero}">
-                <div class="card"><img th:src="${h.url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
+            <div th:each="h: ${lista}" class="col" th:id="${h.getKey().getId()}">
+                <div class="card"><img th:src="${h.getKey().url_imagen_general}" class="img-fluid card-img-top w-100 d-block fit-cover" style="height: 200px;">
                     <div class="card-body p-3">
-                        <p class="text-primary card-text mb-0" th:text="${h.getTipo_hotel()}"> </p>
-                        <h4><a th:text="${h.nombre}" class="card-title" style="color: #1c1f23;text-decoration: none;" th:href="@{/hoteles/item?id={id}(id=${h.getId()})}"></a></h4>
-                        <p class="card-text"> Este <b th:text="${h.getTipo_hotel()}"></b>, ubicado en <b th:text="${h.localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.telefono}"></b> </p>
-                        <div class="d-flex"><img th:src="${h.url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
+                        <p class="text-primary card-text mb-0" th:text="${h.getKey().getTipo_hotel()}"> </p>
+                        <h4><a th:text="${h.getKey().getNombre()}" class="card-title" style="color: #1c1f23;text-decoration: none;" th:href="@{/hoteles/item?id={id}(id=${h.getKey().getId()})}"></a></h4>
+                        <p class="card-text"> Este <b th:text="${h.getKey().getTipo_hotel()}"></b>, ubicado en <b th:text="${h.getKey().localidad}"></b>, tiene su número de telefono indicado como <b th:text="${h.getKey().getTelefono}"></b> </p>
+                        <div class="d-flex"><img th:src="${h.getKey().url_icono}" class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50">
                             <div>
-                                <p th:text="${h.direccion}" class="fw-bold mb-0"></p>
-                                <p class="text-muted mb-0">Número de estrellas: <b th:text="${h.num_estrellas}"></b> </p>
+                                <p th:text="${h.getKey().direccion}" class="fw-bold mb-0"></p>
+                                <p class="text-muted mb-0">Estrellas:
+                                    <svg th:each="i: ${#numbers.sequence(1, h.getKey().getNum_estrellas())}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>
+                                </p>
+                                <p class="text-muted mb-0">Puntuación: <b th:text="${h.getValue()}"></b> </p>
                             </div>
                         </div>
                     </div>

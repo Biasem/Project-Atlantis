@@ -24,8 +24,11 @@
 <nav th:include="navMenu.html"></nav>
 <div>
   <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
-    <div class="container px-4 text-center">
+    <div class="container px-4 text-center" th:if="${idcomentario == null}">
       <h1 class="fw-bolder"> <p>Comentario publicado</p></h1>
+    </div>
+    <div class="container px-4 text-center" th:if="${idcomentario > 0}">
+      <h1 class="fw-bolder"> <p>Comentario borrado</p></h1>
     </div>
   </header>
   <br>

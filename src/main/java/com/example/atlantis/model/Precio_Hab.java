@@ -20,7 +20,7 @@ public class Precio_Hab {
     private Integer id;
 
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "id_hab")
     private Habitaciones id_hab;
 

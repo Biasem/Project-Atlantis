@@ -32,26 +32,26 @@
 <div class="row">
     <div class="col-md-8 mx-auto" th:each="a: ${habitacion}">
         <form action="#" th:action="@{/admin/habitaciones/editar/hecho/item?id={id}(id=${a.getId()})}" th:object="${habitaciones}" method="post" >
-            <table class="table bg-white rounded border table-striped table-dark">
+            <table class="table">
                 <tr>
                     <td>Nº Habitaciones</td>
-                    <td><input type="text" th:field="*{num_hab}"></td>
+                    <td><input type="text" th:field="*{num_hab}" class="form-control shadow-none"></td>
                 </tr>
                 <tr>
                     <td>Tipo habitación</td>
                     <td>
-                        <select id="tipo" th:field="*{tipo_hab}">
+                        <select id="tipo" th:field="*{tipo_hab}" class="form-control shadow-none">
                             <option th:each="x: ${tipohab}" th:value="${x.name()}" th:text="${x.name()}"></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>Habitaciones ocupadas</td>
-                    <td><input type="number" th:field="*{hab_ocupadas}"></td>
+                    <td><input type="number" th:field="*{hab_ocupadas}" class="form-control shadow-none"></td>
                 </tr>
                 <tr>
                     <td>Máximo pernoctadores</td>
-                    <td><input type="number" th:field="*{max_cliente}"></td>
+                    <td><input type="number" th:field="*{max_cliente}" class="form-control shadow-none"></td>
                 </tr>
                 </tbody>
             </table>
@@ -73,8 +73,8 @@
             </thead>
         </table>
         <br>
-            <table class="table bg-white rounded border table-striped table-dark">
-                <thead>
+            <table class="table">
+                <thead class="table-dark">
                 <tr>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Fin</th>
@@ -104,12 +104,13 @@
             </thead>
         </table>
         <br>
-            <table class="table bg-white rounded border table-striped table-dark">
-                <thead>
+            <table class="table">
+                <thead class="table-dark">
                 <tr>
                     <th scope="col">Fecha inicio</th>
                     <th scope="col">Fecha fin</th>
                     <th scope="col">Precio</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -117,12 +118,12 @@
 
                     <td><input class="inputbox textmuted" name="fechainicio" type="date"></td>
                     <td><input class="inputbox textmuted" name="fechafin" type="date"></td>
-                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" th:field="*{precio}"></td>
-                    <input type="hidden" name="idhotel" th:value="${idHotel}"/>
+                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" th:field="*{precio}">
+                        <input type="hidden" name="idhotel" th:value="${idHotel}"/></td>
+                    <td><input type="submit" class="btn btn-primary form-control text-center" style="width: 100px; height: 27px; padding: 1px 5px"></td>
                 </tr>
                 </tbody>
             </table>
-            <input type="submit" class="btn btn-primary form-control text-center">
         </form>
     </div>
 </div>
