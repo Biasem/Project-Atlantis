@@ -93,6 +93,7 @@ public class MainController{
         model.addObject("idCliente", idCliente);
         // Gestión sesión
 
+        session.setAttribute(busqueda.getFechaInicial(),busqueda.getFechaFinal());
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
         Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
