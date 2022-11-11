@@ -1,9 +1,6 @@
 package com.example.atlantis.service;
 import com.example.atlantis.model.*;
-import com.example.atlantis.repository.ClienteRepository;
-import com.example.atlantis.repository.ComentarioLikeRepository;
-import com.example.atlantis.repository.ComentarioRepository;
-import com.example.atlantis.repository.HotelRepository;
+import com.example.atlantis.repository.*;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,9 @@ public class ComentarioService {
     HotelRepository hotelRepository;
     @Autowired
     ComentarioLikeRepository comentarioLikeRepository;
+
+    @Autowired
+    ComentarioHotelRepository comentarioHotelRepository;
 
     public List<Comentario> conseguirComentarios (Integer id){
         List<Comentario> lista = comentarioRepository.findAll();
@@ -80,6 +80,9 @@ public class ComentarioService {
     public void guardarComentario (Comentario comentario){
         comentarioRepository.save(comentario);
     }
+    public void guardarComentarioHotel (ComentarioHotel comentario){
+        comentarioHotelRepository.save(comentario);
+    }
 
     public Comentario comentarioID (Integer idhotel, Integer idcliente, Comentario comentario){
 
@@ -102,6 +105,33 @@ public class ComentarioService {
 
         comentario.setCliente(cliente);
         comentario.setHotel(hotel);
+        return comentario;
+    }
+    public ComentarioHotel comentarioIDHotel (Integer idhotel, Integer idcliente, Integer idcomentario, ComentarioHotel comentario){
+
+        List<Hotel> hoteles = hotelRepository.findAll();
+        List<Cliente> clientes = clienteRepository.findAll();
+        Comentario comentarioID = comentarioRepository.findAll().stream().filter(x-> x.getId().equals(idcomentario)).collect(Collectors.toList()).get(0);
+
+
+
+        Hotel hotel = new Hotel();
+        Cliente cliente = new Cliente();
+
+        for (Hotel x: hoteles){
+            if(x.getId()==idhotel){
+                hotel = x;
+            }
+        }
+        for (Cliente x: clientes){
+            if(x.getId()==idcliente){
+                cliente = x;
+            }
+        }
+
+        comentario.setCliente(cliente);
+        comentario.setHotel(hotel);
+        comentario.setComentario(comentarioID);
         return comentario;
     }
 
@@ -183,6 +213,12 @@ public class ComentarioService {
     public void trituradoraLikes (List<ComentarioLike> comentarioLikes){
         for (ComentarioLike x: comentarioLikes){
             comentarioLikeRepository.delete(x);
+        }
+    }
+
+    public void trituradoraComentariosHotel (List<ComentarioHotel> comentarioHoteles){
+        for (ComentarioHotel x: comentarioHoteles){
+            comentarioHotelRepository.delete(x);
         }
     }
 

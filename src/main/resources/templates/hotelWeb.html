@@ -100,7 +100,7 @@
               <input type="text" name="texto" maxlength="70" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
               <p  style="margin-left: 20px;" > Puntuación:</p>
               <input type="number" min="1" max="5" style="margin-left: 20px;" th:field="*{puntuacion}">
-              <input style="margin-left: 20px;" type="submit" class="btn btn-primary form-control text-center" value="Enviar">
+              <input style="margin-left: 20px;" type="submit" class="btn btn-primary form-control text-center">
               <input type="hidden" name="idhotel" th:value="${z.getId()}">
               <input type="hidden" name="idcliente" th:value="${idCliente}">
             </form>
@@ -113,8 +113,9 @@
           </div>
 
           <div th:if="${idHotel > 0}" class="mt-3 d-flex flex-row align-items-center p-3 form-color">
-            <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="50" class="rounded-circle mr-2">
+            <img th:src="${hotelConectado.getUrl_icono()}" width="50" class="rounded-circle mr-2">
             <b style="margin-left: 20px;" >Debes tener una cuenta como cliente para comentar.</b>
+            <p th:if="${idHotel == idHotelreserva}" style="font-size: 11px;">Pero puedes responder comentarios de clientes.</p>
           </div>
 
           <div class="mt-2">
@@ -152,30 +153,28 @@
                     </form>
                   </span>
                   <span style="margin-left: 5px; margin-right: 5px; float: left;">Likes: <strong th:text="${c.getLikes()}"></strong></span>
-                  <div th:if="${idHotel == idHotelreserva}">
-                    <form class="mt-3 d-flex flex-row align-items-center p-3 form-color" action="#" th:action="@{/comentario}" th:object="${texto}" method="post">
-                      <input type="text" name="texto" maxlength="70" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px;">
-                      <span style="margin-left: 10px;"><i class="fa fa-reply" aria-hidden="true"></i></span>
-                    </form>
-                  </div>
-                </div>
 
-                <div th:each="c : ${comentarios}" class="d-flex flex-row p-3" style="margin-left: 30px;">
-                  <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="40" height="40" class="rounded-circle mr-3">
-                  <div class="w-100">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div class="d-flex flex-row align-items-center">
-                        <span th:text="${c.getCliente().getNombre()}" class="mr-2" style="margin-left: 10px;margin-right: 10px;"></span>
-                        <svg th:each="i: ${#numbers.sequence(1, c.getPuntuacion())}" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="">
-                          <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                        </svg>
+                  <form th:if="${idHotel == idHotelreserva}" class="d-flex flex-row align-items-center" th:action="@{/comentario/hotel}" method="post">
+                    <button type="submit" style="background-color: transparent; border: transparent; margin-left: 10px;"><i class="fa fa-reply" aria-hidden="true"></i></button>
+                    <input type="hidden" name="idcomentario" th:value="${c.getId()}">
+                    <input type="hidden" name="idhotel" th:value="${idHotel}">
+                    <input type="hidden" name="idcliente" th:value="${c.getCliente().getId()}">
+                    <input type="text" name="texto" maxlength="70" class="form-control" placeholder="Introduce tu comentario..." style="margin-left: 20px; height: 20px;">
+                  </form>
+                </div>
+                <div th:each="ch : ${listaComentariosHotel}"  class="d-flex flex-row p-3" style="margin-left: 30px;" th:if="${ch.getComentario().getId()} == ${c.getId()}">
+                    <img th:src="${ch.getHotel().getUrl_icono()}" width="40" height="40" class="rounded-circle mr-3">
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-row align-items-center">
+                          <span th:text="${ch.getHotel().getNombre()}" class="mr-2" style="margin-left: 10px;margin-right: 10px;"></span>
+                        </div>
+                        <small th:text="${ch.getFecha()}"></small>
                       </div>
-                      <small th:text="${c.getFecha()}"></small>
+                      <p th:text="${ch.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
                     </div>
-                    <p th:text="${c.getSentencia()}" class="text-justify comment-text mb-0" style="margin-left: 10px;"> </p>
-                  </div>
+                  </section>
                 </div>
-
               </div>
             </div>
           </div>

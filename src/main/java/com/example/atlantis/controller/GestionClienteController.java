@@ -1,6 +1,8 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioHotelRepository;
+import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,6 +35,11 @@ public class GestionClienteController {
     @Autowired
     private ReservaService reservaService;
 
+    @Autowired
+    private ComentarioLikeRepository comentarioLikeRepository;
+    @Autowired
+    private ComentarioHotelRepository comentarioHotelRepository;
+
 
     @GetMapping("/borrarcliente")
     public String deleteCliente(Model model,@ModelAttribute Cliente cliente) {
@@ -55,6 +62,7 @@ public class GestionClienteController {
 
         //If para saber si los datos estan correctos y pueden borrar o no
         if (cliente2.getEmail().getEmail().equals(cliente.getEmail().getEmail()) && encoder.matches(cliente.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
+
             clienteService.borrarCliente(cliente);
 
             return "redirect:/logout";

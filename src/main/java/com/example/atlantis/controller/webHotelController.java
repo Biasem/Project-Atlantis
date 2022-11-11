@@ -1,6 +1,8 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioHotelRepository;
 import com.example.atlantis.repository.ComentarioLikeRepository;
+import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -46,6 +48,10 @@ public class webHotelController {
     private Habitacion_Reserva_HotelService habitacionReservaHotelService;
     @Autowired
     private ComentarioLikeRepository comentarioLikeRepository;
+    @Autowired
+    private ComentarioHotelRepository comentarioHotelRepository;
+    @Autowired
+    private HotelRepository hotelRepository;
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
@@ -64,6 +70,12 @@ public class webHotelController {
             idHotel = hotelService.conseguirId(correo);
         }
         Integer idHotelreserva = id;
+
+        if (idHotel>0){
+            Integer finalIdHotel = idHotel;
+            Hotel hotelConectado = hotelRepository.findAll().stream().filter(x-> x.getId().equals(finalIdHotel)).collect(Collectors.toList()).get(0);
+            model.addObject("hotelConectado", hotelConectado);
+        }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         model.addObject("idHotelreserva", idHotelreserva);
@@ -72,13 +84,14 @@ public class webHotelController {
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-        List<Comentario> comentarios = new ArrayList<>();
+        List<ComentarioHotel> listaComentariosHotel = comentarioHotelRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(idHotelreserva)).collect(Collectors.toList());
         BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
 
         Integer estrellas = definitivo.getNum_estrellas();
+        model.addObject("listaComentariosHotel", listaComentariosHotel);
         model.addObject("idCliente", idCliente);
         model.addObject("texto", new Comentario());
         model.addObject("hotelfinal", hotelfinal);
@@ -86,10 +99,8 @@ public class webHotelController {
         model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().sorted(Comparator.comparing(Habitaciones::getTipo_hab)).collect(Collectors.toList()));
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
-
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
         model.addObject("objeto_integer",objetoInteger);
-
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
         return model;
     }
@@ -107,6 +118,21 @@ public class webHotelController {
         comentario.setLikes(0);
         comentarioService.comentarioID(idhotel,idcliente,comentario);
         comentarioService.guardarComentario(comentario);
+        ModelAndView model = new ModelAndView("comentarioHecho");
+        return model;
+    }
+    @PostMapping("/comentario/hotel")
+    public @ResponseBody ModelAndView comentariorespuestaHotel(HttpSession session,
+                                                      @ModelAttribute ComentarioHotel comentario,
+                                                      @RequestParam("idhotel") Integer idhotel,
+                                                      @RequestParam("idcliente") Integer idcliente,
+                                                      @RequestParam("texto") String texto,
+                                                               @RequestParam("idcomentario") Integer idcomentario){
+        comentario.setFecha(LocalDate.now());
+        comentario.setSentencia(texto);
+        comentario.setSentencia(comentario.getSentencia());
+        comentarioService.comentarioIDHotel(idhotel,idcliente, idcomentario, comentario);
+        comentarioService.guardarComentarioHotel(comentario);
         ModelAndView model = new ModelAndView("comentarioHecho");
         return model;
     }
@@ -144,14 +170,12 @@ public class webHotelController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-
         if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
             return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
         }
         //objeto Reserva_para_bbdd
        Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
-
         ////////////////////////////////////////////////////////////////////////
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
@@ -164,8 +188,6 @@ public class webHotelController {
         reservaService.guardarReserva(reserva);
         //////////////////////////////////////////
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
-
-
         for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
             Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
@@ -173,11 +195,6 @@ public class webHotelController {
             habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
             habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
         }
-
-
-        ////////////////////////////////////////////////////////////////////////
-
-
         return "redirect:/main";
     }
 }

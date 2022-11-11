@@ -1,5 +1,6 @@
 package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioHotelRepository;
 import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.service.ComentarioService;
@@ -32,6 +33,8 @@ public class perfilController {
     private ComentarioRepository comentarioRepository;
     @Autowired
     private ComentarioLikeRepository comentarioLikeRepository;
+    @Autowired
+    private ComentarioHotelRepository comentarioHotelRepository;
 
     @RequestMapping("/perfilcliente")
     public ModelAndView perfil(HttpSession session){
@@ -90,7 +93,9 @@ public class perfilController {
         ModelAndView model = new ModelAndView("comentarioHecho");
         model.addObject("idcomentario", id);
         List<ComentarioLike> likes = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_comentario().getId().equals(id)).collect(Collectors.toList());
+        List<ComentarioHotel> comentarioHoteles = comentarioHotelRepository.findAll().stream().filter(x-> x.getComentario().getId().equals(id)).collect(Collectors.toList());
         comentarioService.trituradoraLikes(likes);
+        comentarioService.trituradoraComentariosHotel(comentarioHoteles);
         Comentario borrar = comentarioService.getById(id);
         comentarioRepository.delete(borrar);
         return model;
