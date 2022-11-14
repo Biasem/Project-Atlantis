@@ -195,16 +195,21 @@ public class webHotelController {
     @PostMapping("/pago")
     public String confirmarReserva(){
 
-       Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
         ////////////////////////////////////////////////////////////////////////
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
         reserva.setId_hotel(hotelService.getById(reserva_para_bbdd.getIdHotel()));
+        System.out.println("1" + reserva);
         reserva.setId_cliente(clienteService.getById(reserva_para_bbdd.getNumClientes()));
+        System.out.println("2" +reserva);
         reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
+        System.out.println("3" +reserva);
         reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
+        System.out.println("4" +reserva);
         reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
+        System.out.println("5" +reserva);
         reserva.setNum_clientes(1);
+        System.out.println("6" +reserva);
         reservaService.guardarReserva(reserva);
 
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
@@ -212,6 +217,7 @@ public class webHotelController {
             Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
             habReservaHotel.setId_regimen(reserva_para_bbdd.getListIdRegimen().get(i));
+
             habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(reserva_para_bbdd.getIdCliente())));
             habReservaHotel.setNumhab(reserva_para_bbdd.getNumhab().get(i));
             habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);

@@ -169,7 +169,7 @@ public class ReservaService {
                     reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                     reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                     reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
-                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
                     cambiados.add(reservas);
                 }
             }
@@ -192,7 +192,7 @@ public class ReservaService {
                         reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                         reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                         reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
-                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
                         cambiados.add(reservas);
                     }
                 }
