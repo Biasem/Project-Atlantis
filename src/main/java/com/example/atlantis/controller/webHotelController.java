@@ -16,11 +16,15 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 
 @Controller
 public class webHotelController {
@@ -53,6 +57,7 @@ public class webHotelController {
     @Autowired
     private HotelRepository hotelRepository;
 
+    protected static Reserva_Para_BBDD reserva_para_bbdd = null;
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
@@ -154,10 +159,10 @@ public class webHotelController {
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
+    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer idhotel){
 
-        ModelAndView model = new ModelAndView();
+        ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -172,29 +177,46 @@ public class webHotelController {
         // Gestión sesión
         if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
-            return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
+            return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
         //objeto Reserva_para_bbdd
+        reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
+        reserva_para_bbdd.setIdCliente(idCliente);
+        List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
+        Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
+
+        model.addObject("dias",dias);
+        model.addObject("total",reserva_para_bbdd.getPrecioTotal());
+        model.addObject("listareserva",listamostrar);
+
+        return model;
+    }
+
+    @PostMapping("/pago")
+    public String confirmarReserva(){
+
        Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
         ////////////////////////////////////////////////////////////////////////
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
-        reserva.setId_hotel(hotelService.getById(idhotel));
-        reserva.setId_cliente(clienteService.getById(idCliente));
+        reserva.setId_hotel(hotelService.getById(reserva_para_bbdd.getIdHotel()));
+        reserva.setId_cliente(clienteService.getById(reserva_para_bbdd.getNumClientes()));
         reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
         reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
         reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
         reserva.setNum_clientes(1);
         reservaService.guardarReserva(reserva);
-        //////////////////////////////////////////
+
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
         for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
             Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
-            habReservaHotel.setId_regimen(regimenService.getById(reserva_para_bbdd.getListIdRegimen().get(i)));
-            habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(idCliente)));
+            habReservaHotel.setId_regimen(reserva_para_bbdd.getListIdRegimen().get(i));
+            habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(reserva_para_bbdd.getIdCliente())));
+            habReservaHotel.setNumhab(reserva_para_bbdd.getNumhab().get(i));
             habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
         }
+        reserva_para_bbdd = null;
         return "redirect:/main";
     }
 }

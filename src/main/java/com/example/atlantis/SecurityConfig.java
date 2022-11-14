@@ -48,6 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/admin").hasAuthority(Rol.HOTEL.toString())
+                .antMatchers("/editarcliente", "borrarcliente","/historialReservaCliente","/historialReservaClienteVigentes",
+                        "/perfilcliente", "/reservar").hasAuthority(Rol.CLIENTE.toString())
+                .antMatchers("/borrarhotel", "/editarhotel","/admin/habitaciones/crear/regimen/hecho/",
+                        "/admin/habitaciones/borrar/{item}","/admin/habitaciones/regimen/borrar/{item}","/admin/habitaciones/editar/{item}",
+                        "/admin/habitaciones/editar/hecho/{item}", "/admin/habitaciones/editar/precio/hecho/{item}","/admin/habitaciones/precio/borrar/{item}",
+                        "/historialReservaHotel","/historialReservaHotelVigentes", "/hoteleditar", "/perfilhotel").hasAuthority(Rol.HOTEL.toString())
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/main")
