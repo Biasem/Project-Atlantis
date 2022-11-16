@@ -2,6 +2,7 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -45,7 +46,7 @@ public class webHotelController {
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
-                                                     @RequestParam(value = "id") Integer id,
+                                                     @RequestParam(value = "id")@PathVariable @Argument Integer id,
                                                      HttpSession session) {
 
         ModelAndView model = new ModelAndView("hotelWeb");

@@ -2,7 +2,7 @@ scalar Date
 
 
 type Query{
-    getAll :[Cliente]
+
     perfil :String
     perfilHotel :String
 
@@ -22,10 +22,7 @@ type Query{
         hotel : HotelInput
     ):String
 
-    listarReservas :[Reserva]
-    listarRegimen : [Regimen]
-    listarHotel : [Hotel]
-    listarTipoRegimen : [TipoRegimen]
+
 }
 
 
