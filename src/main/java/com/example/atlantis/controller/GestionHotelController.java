@@ -46,6 +46,7 @@ public class GestionHotelController {
     @SchemaMapping(typeName = "Mutation", value = "deleteHotel2")
     public String deleteHotel2(@RequestBody @Argument(name = "input") GraphqlInput.HotelInput hotel) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
 
@@ -90,27 +91,33 @@ public class GestionHotelController {
 
 
     @PostMapping("/editarhotel")
-    @SchemaMapping(typeName = "Mutation", value = "editarhotel2")
-    public String editarhotel2(@RequestBody @Argument(name = "cliente") GraphqlInput.RegisHotFechInput input) {
+    @SchemaMapping(typeName = "Mutation", value = "editarHotel2")
+    public String editarhotel2(@RequestBody @Argument(name = "input") GraphqlInput.RegisHotFechInput input) {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (input.getNombre() != null && input.getDireccion() != null && input.getPais() != null
                 && input.getLocalidad() != null && input.getFecha_apertura() != null
                 && input.getFecha_cierre() != null && input.getTipo_hotel() != null
-                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
+//                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
                 ) {
 
-        //Recogida de datos con sesión y copia del modelo entero
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-            Hotel datos = loginService.cogerid(correo);
+
+            if(input.getEmail().getEmail()!= null){
+                input.setId(null);
+                input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
+            }
+            else {
+                //Recogida de datos con sesión y copia del modelo entero
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String correo = auth.getName();
+                Hotel datos = loginService.cogerid(correo);
 
 
-            input.setId(datos.getId());
+                input.setId(datos.getId());
 //            input.setEmail(new GraphqlInput.LoginInput());
-            input.getEmail().setPassword(datos.getEmail().getPassword());
-            input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
-            input.getEmail().setEmail(datos.getEmail().getEmail());
-
+                input.getEmail().setPassword(datos.getEmail().getPassword());
+                input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
+                input.getEmail().setEmail(datos.getEmail().getEmail());
+            }
         //Método para meter el hotel ya convertido en el modelo para ddbb
             hotelService.editarHotel(hotelService.convertirAHotel(input));
             return "redirect:/main";

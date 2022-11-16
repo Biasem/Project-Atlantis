@@ -42,8 +42,8 @@ public class HotelService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 
-        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
-        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
+//        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
+//        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
         //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
         Login login = new Login();
@@ -54,8 +54,8 @@ public class HotelService {
         hotel1.setPais(hotel.getPais());
         hotel1.setLocalidad(hotel.getLocalidad());
         hotel1.setDireccion(hotel.getDireccion());
-        hotel1.setFecha_apertura(fechap);
-        hotel1.setFecha_cierre(fechap1);
+//        hotel1.setFecha_apertura(fechap);
+//        hotel1.setFecha_cierre(fechap1);
         hotel1.setNum_estrellas(hotel.getNum_estrellas());
         hotel1.setTelefono(hotel.getTelefono());
         hotel1.setTipo_hotel(hotel.getTipo_hotel());

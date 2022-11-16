@@ -76,7 +76,7 @@ public class ClienteService {
         }
     }
 
-    public void editarCliente(@RequestBody Cliente input){
+    public void editarCliente(@RequestBody GraphqlInput.ClienteInput input){
 
         clienteRepository.editarCliente(input.getNombre(),input.getApellidos(),input.getDni(), input.getPais(),
                input.getTelefono(), input.getEmail().getEmail());

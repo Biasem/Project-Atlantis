@@ -1,10 +1,7 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.*;
-import com.example.atlantis.service.Habitacion_Reserva_HotelService;
-import com.example.atlantis.service.LoginService;
-import com.example.atlantis.service.RegimenService;
-import com.example.atlantis.service.ReservaService;
+import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -26,6 +23,9 @@ public class HotelHistorialController {
     private ReservaService reservaService;
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private HotelService hotelService;
 
     @Autowired
     private RegimenService regimenService;
@@ -58,12 +58,18 @@ public class HotelHistorialController {
     //Reservas Vigentes
     @GetMapping("/historialReservaHotelVigentes")
     @SchemaMapping(typeName = "Query", value = "historialVigenteHotel")
-    public ModelAndView historialVigente(@RequestBody @Argument(name = "Hotel") GraphqlInput.HotelInput hotel) {
-        ModelAndView model = new ModelAndView("historialReservaHotel");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Hotel hotel1 = loginService.cogerid(correo);
+    public ModelAndView historialVigenteHotel(@RequestBody @Argument(name = "hotel") GraphqlInput.HotelInput hotel) {
 
+        Hotel hotel1 = new Hotel();
+        ModelAndView model = new ModelAndView("historialReservaHotel");
+        if(hotel.getEmail().getEmail()!=null){
+            hotel1 = hotelService.copiartodohotel(hotel);
+
+        }else {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            hotel1 = loginService.cogerid(correo);
+        }
         //Obtención de listas para metodo
         List<Reserva> todas = reservaService.todasReservasHotel(hotel1.getId());
         List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();

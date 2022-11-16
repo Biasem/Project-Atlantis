@@ -56,14 +56,20 @@ public class GestionClienteController {
     @PostMapping("/borrarcliente")
     @SchemaMapping(typeName = "Mutation", value = "deleteCliente2")
 
-    public String deleteCliente2(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput input) {
-
-        //Encriptado y recogida de datos de al sesión para copiar todo el modelo
+    public String deleteCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
+        Cliente cliente2 = new Cliente();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
 
-        Cliente cliente2 = loginService.copiartodoclienteconsession(correo);
+        if(input.getEmail().getEmail()!=null){
+            cliente2 = clienteService.copiartodocliente(input);
+
+        }else {
+            //Encriptado y recogida de datos de al sesión para copiar todo el modelo
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+
+             cliente2 = loginService.copiartodoclienteconsession(correo);
+        }
 
         //If para saber si los datos estan correctos y pueden borrar o no
         if (cliente2.getEmail().getEmail().equals(input.getEmail().getEmail()) && encoder.matches(input.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
@@ -96,22 +102,28 @@ public class GestionClienteController {
 
 
     @PostMapping("/editarcliente")
-    @SchemaMapping(typeName = "Mutation", value = "editar2")
-    public String editarCliente2(Cliente input) {
+    @SchemaMapping(typeName = "Mutation", value = "editarCliente2")
+    public String editarCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
         //If para verificar que los datos introducidos sean tal cual se necesite
         if(input.getNombre() != null && input.getApellidos() != null
                 && clienteService.validarDNI(input.getDni()) != false) {
 
-            //Recogida datos de sesión e insertarlos en el modelo
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-            Cliente datos = loginService.cogeridcliente(correo);
-            input.setId(datos.getId());
-           input.setEmail(new Login());
-            input.getEmail().setPassword(datos.getEmail().getPassword());
-            input.getEmail().setRol(Rol.CLIENTE);
-            input.getEmail().setEmail(datos.getEmail().getEmail());
+            if(input.getEmail().getEmail()!=null){
+                input.setId(null);
+                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
 
+            }else {
+
+                //Recogida datos de sesión e insertarlos en el modelo
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String correo = auth.getName();
+                Cliente datos = loginService.cogeridcliente(correo);
+                input.setId(datos.getId());
+ //               input.setEmail(new Login());
+                input.getEmail().setPassword(datos.getEmail().getPassword());
+                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
+                input.getEmail().setEmail(datos.getEmail().getEmail());
+            }
 
 
             //Introduccion de datos a Service para meter en ddbb
