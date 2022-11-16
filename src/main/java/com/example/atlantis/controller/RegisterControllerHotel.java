@@ -56,7 +56,8 @@ public class RegisterControllerHotel {
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
                 && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
                 && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
-                && hotel.getEmail() != null && hotel.getEmail().getPassword() != null) {
+                && hotel.getEmail() != null && hotel.getEmail().getPassword() != null && hotel.getLatitud() != null
+                && hotel.getLongitud() != null) {
 
             //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
             if(hotelService.siEsApartaHotel(hotel) != true){

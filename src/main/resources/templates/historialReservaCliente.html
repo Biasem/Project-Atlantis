@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title th:each="h: ${hotelfinal}" th:text="${h.getNombre()}"></title>
+  <title>Atlantis - Tus reservas</title>
 
   <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
@@ -25,22 +25,21 @@
 <br>
 <br>
 <br>
-<button onclick="location.href = '/perfilcliente';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
 <br>
 <br>
 
 
 <form method="post" >
 
-  <div th:each="a:${todas}" class="carddd col-md-10 mx-auto" style="background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.9)), url('${a.getUrl_imagen_general()}');">
+  <div th:each="a:${todas}" class="carddd col-md-10 mx-auto" th:style="'background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.9)), url(' + ${a.getNombreHotel().getUrl_imagen_general()} + '); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
 
-    <div class="carddd-category"><h1 style="margin-top: 100px; margin-left: 30px;" th:text="${a.getNombreHotel()}"></h1></div>
+    <div class="carddd-category"><h1 style="margin-top: 100px; margin-left: 30px;" th:text="${a.getNombreHotel().getNombre()}"></h1></div>
     <div class="carddd-description">
-      <h2 style="margin-left: 30px;">Del día <b th:text="${a.getFecha_entrada()}"></b> al día <b th:if="${a.getFecha_salida()}"></b> </h2>
-      <p style="margin-left: 30px;">Con un regimen de <b th:if="${a.getCategoria()}"></b> y un precio total de <b th:text="${a.getPrecio_total()}"></b> </p>
+      <h2 style="margin-left: 30px;">Del día <b th:text="${a.getFecha_entrada()}"></b> al día <b th:text="${a.getFecha_salida()}"></b> </h2>
+      <p style="margin-left: 30px;">Con un total de <b th:text="${a.getNum_clientes()}"></b> <span th:if="${a.getNum_clientes()==1}"> viajero </span><span th:if="${a.getNum_clientes()>1}"> viajeros </span> y un precio total de <b th:text="${a.getPrecio_total()}"></b> € </p>
     </div>
     <img class="carddd-user avatar avatar-large" style="height: 40px; width: 40px;" th:src="${a.getNombreHotel().getUrl_icono()}">
-    <a class="carddd-link" href="#" ></a>
+    <a class="carddd-link" th:href="@{/hoteles/item?id={id}(id=${a.getNombreHotel().getId})}" ></a>
   </div>
   </div>
 
