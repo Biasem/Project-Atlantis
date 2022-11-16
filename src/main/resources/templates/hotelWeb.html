@@ -62,8 +62,8 @@
               <tbody>
                 <tr>
                   <script>setfecha()</script>
-                  <td><input th:id="fecha_inicio"  class="inputbox textmuted" type="date" th:field="*{fechainicio}" th:min="${fechamin}"></td>
-                  <td><input th:id="fecha_final" class="inputbox textmuted " type="date" th:field="*{fechafin}" th:min="${fechamin}" th:onclick="cambiofecha()"></td>
+                  <td><input th:id="fecha_inicio"  class="inputbox textmuted" type="date" th:field="*{fechainicio}" th:min="${fechamin}" required></td>
+                  <td><input th:id="fecha_final" class="inputbox textmuted " type="date" th:field="*{fechafin}" th:min="${fechamin}" th:onclick="cambiofecha()" required></td>
                 </tr>
               </tbody>
             </table>
