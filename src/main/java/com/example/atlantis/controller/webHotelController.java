@@ -105,10 +105,16 @@ public class webHotelController {
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
-        objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
-        objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
+        if((session.getAttribute("fecha_inicial")!=null)&&(session.getAttribute("fecha_final")!=null)){
+            objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
+            objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
+        }
         model.addObject("objeto_integer",objetoInteger);
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
+        Integer comprobante = 0;
+
+
+        model.addObject("comprobante", comprobante);
 
         return model;
     }
