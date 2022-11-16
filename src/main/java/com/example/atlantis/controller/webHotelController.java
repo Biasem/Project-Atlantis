@@ -92,9 +92,12 @@ public class webHotelController {
         model.addObject("fechamin", LocalDate.now());
 
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
+        objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
+        objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
         model.addObject("objeto_integer",objetoInteger);
 
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
+
         return model;
     }
 
@@ -125,7 +128,6 @@ public class webHotelController {
                                                      @RequestParam("dislike") Integer dislike,
                                                      @RequestParam("idhotelreserva") Integer idhotelreserva){
 
-        System.out.println(idhotelreserva);
         comentarioService.likedislike(idcliente,idcomentario,idhotelreserva,like,dislike);
         comentarioService.sumalikes(idcomentario);
         ModelAndView model = new ModelAndView("comentarioHecho");

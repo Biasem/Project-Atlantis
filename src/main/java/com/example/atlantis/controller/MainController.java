@@ -102,6 +102,8 @@ public class MainController{
         }
         model.addObject("fechamin", LocalDate.now());
         model.addObject("lista", lista);
+        session.setAttribute("fecha_final", busqueda.getFechaFinal());
+        session.setAttribute("fecha_inicial", busqueda.getFechaInicial());
         return model ;
     }
 

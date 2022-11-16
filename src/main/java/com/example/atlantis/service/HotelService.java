@@ -184,7 +184,6 @@ public class HotelService {
             Integer media = comentarioService.mediaPuntuacion(id);
             mapa.put(media, x);
         }
-        System.out.println(mapa);
     return mapa;
     }
 
