@@ -16,7 +16,7 @@ public class HistorialReservaClientes {
 
     private Integer id;
 
-    private String nombreHotel;
+    private Hotel nombreHotel;
 
     private Integer num_clientes;
 

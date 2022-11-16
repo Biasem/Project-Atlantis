@@ -43,6 +43,12 @@ public class Cliente {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Comentario> comentarios;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_cliente")
+    private List<ComentarioLike> comentarioslike;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<ComentarioHotel> comentarioHotel;
+
     public Cliente(String nombre, String apellidos, String dni, String pais, String telefono, Login email) {
         this.nombre = nombre;
         this.apellidos = apellidos;
