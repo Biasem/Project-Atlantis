@@ -90,9 +90,11 @@
               </tr>
               </tbody>
             </table>
-            <button class="btn btn-primary form-control text-center">Reservar</button>
+            <button th:if="${idCliente > 0}" class="btn btn-primary form-control text-center">Reservar</button>
           </form>
         </form>
+          <a th:if="${idCliente == 0 && idHotel == 0}" class="btn btn-primary form-control text-center" href="/login">Inicia sesión para reservar</a>
+          <button th:if="${idCliente == 0 && idHotel > 0}" class="btn btn-primary form-control text-center">No puedes reservar siendo hotel.</button>
         </div>
       </div>
     </div>
@@ -197,10 +199,20 @@
     </div>
   </div>
 
+<br>
+<br>
+<br>
+
 <div id="map"></div>
+<input type="hidden" id="latitud" th:value="${latitud}"/>
+<input type="hidden" id="longitud" th:value="${longitud}"/>
 <script>
   function initMap() {
-    var myLatlng = new google.maps.LatLng(37.39156497548303,-5.990686686508299);
+    var latitud2 = document.getElementById("latitud").value;
+    var longitud2 = document.getElementById("longitud").value;
+    console.log(latitud2);
+    console.log(longitud2);
+    var myLatlng = new google.maps.LatLng(latitud2,longitud2);
     var options = {
       zoom: 20,
       center: myLatlng
