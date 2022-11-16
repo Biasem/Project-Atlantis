@@ -94,8 +94,11 @@ public class webHotelController {
         Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
-
+        Double latitud = definitivo.getLatitud();
+        Double longitud = definitivo.getLongitud();
         Integer estrellas = definitivo.getNum_estrellas();
+        model.addObject("latitud", latitud);
+        model.addObject("longitud", longitud);
         model.addObject("listaComentariosHotel", listaComentariosHotel);
         model.addObject("idCliente", idCliente);
         model.addObject("texto", new Comentario());
