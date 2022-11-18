@@ -107,7 +107,7 @@ public class webHotelController {
         model.addObject("texto", new Comentario());
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().sorted(Comparator.comparing(Habitaciones::getTipo_hab)).collect(Collectors.toList()));
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().filter(h -> h.getHab_ocupadas()<h.getNum_hab()).collect(Collectors.toList()));
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
@@ -118,8 +118,6 @@ public class webHotelController {
         model.addObject("objeto_integer",objetoInteger);
         model.addObject("comentarios",comentarioService.conseguirComentarios(id));
         Integer comprobante = 0;
-
-
         model.addObject("comprobante", comprobante);
 
         return model;
@@ -176,7 +174,6 @@ public class webHotelController {
     public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer idhotel){
 
-
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -199,10 +196,14 @@ public class webHotelController {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
 
+
         //objeto Reserva_para_bbdd
         reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
         reserva_para_bbdd.setIdCliente(idCliente);
         List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
+        for (Ob_mostrar_reserva omr :listamostrar){
+            if(omr.getCantHab()>omr.getHabitaciones().getNum_hab()-omr.getHabitaciones().getHab_ocupadas()) return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+        }
         Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
 
         model.addObject("dias",dias);
