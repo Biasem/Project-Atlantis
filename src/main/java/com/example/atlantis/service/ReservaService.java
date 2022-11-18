@@ -110,7 +110,6 @@ public class ReservaService {
         reserva_para_bbdd.setListIdRegimen(regimenList1);
         reserva_para_bbdd.setListHabitacion(listaHabitaciones);
         reserva_para_bbdd.setIdHotel(idHotel);
-        reserva_para_bbdd.setNumClientes(1);
         reserva_para_bbdd.setFechaEntrada(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()));
         reserva_para_bbdd.setFechasalida(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()));
         reserva_para_bbdd.setPrecioTotal(precioTotal);
@@ -166,7 +165,6 @@ public class ReservaService {
                     reservas.setId(listareserva.get(i).getId());
                     reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
                     reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
-                    reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                     reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                     reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
                     reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
@@ -189,7 +187,6 @@ public class ReservaService {
                         reservas.setId(listareserva.get(i).getId());
                         reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
                         reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
-                        reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                         reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                         reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
                         reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
@@ -236,7 +233,6 @@ public class ReservaService {
                     reservas.setNombreCliente(listareserva.get(i).getId_cliente().getNombre());
                     reservas.setApellidosCliente(listareserva.get(i).getId_cliente().getApellidos());
                     reservas.setEmailCliente(listareserva.get(i).getId_cliente().getEmail().getEmail());
-                    reservas.setNum_clientes(listahabre.get(a).getReserva().getNum_clientes());
                     reservas.setFecha_entrada(listahabre.get(a).getReserva().getFecha_entrada());
                     reservas.setFecha_salida(listahabre.get(a).getReserva().getFecha_salida());
                     reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
@@ -262,7 +258,6 @@ public class ReservaService {
                         reservas.setNombreCliente(listareserva.get(i).getId_cliente().getNombre());
                         reservas.setApellidosCliente(listareserva.get(i).getId_cliente().getApellidos());
                         reservas.setEmailCliente(listareserva.get(i).getId_cliente().getEmail().getEmail());
-                        reservas.setNum_clientes(listahabre.get(a).getReserva().getNum_clientes());
                         reservas.setFecha_entrada(listahabre.get(a).getReserva().getFecha_entrada());
                         reservas.setFecha_salida(listahabre.get(a).getReserva().getFecha_salida());
                         reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());

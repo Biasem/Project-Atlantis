@@ -2,6 +2,7 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioHotelRepository;
 import com.example.atlantis.repository.ComentarioLikeRepository;
+import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class webHotelController {
     private ClienteService clienteService;
     @Autowired
     private ReservaService reservaService;
+    @Autowired
+    private HabitacionesRepository habitacionesRepository;
 
     @Autowired
     private Habitacion_Reserva_HotelService habitacionReservaHotelService;
@@ -215,7 +218,7 @@ public class webHotelController {
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
         reserva.setId_hotel(hotelService.getById(reserva_para_bbdd.getIdHotel()));
-        reserva.setId_cliente(clienteService.getById(reserva_para_bbdd.getNumClientes()));
+        reserva.setId_cliente(clienteService.getById(reserva_para_bbdd.getIdCliente()));
         reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
         reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
         reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
@@ -226,10 +229,13 @@ public class webHotelController {
             Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
             habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
             habReservaHotel.setId_regimen(reserva_para_bbdd.getListIdRegimen().get(i));
-
             habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(reserva_para_bbdd.getIdCliente())));
             habReservaHotel.setNumhab(reserva_para_bbdd.getNumhab().get(i));
             habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
+            Habitaciones hab = reserva_para_bbdd.getListHabitacion().get(i);
+            hab.setHab_ocupadas(hab.getHab_ocupadas()+reserva_para_bbdd.getNumhab().get(i));
+            habitacionesRepository.save(hab);
+
         }
         reserva_para_bbdd = null;
         return "redirect:/main";
