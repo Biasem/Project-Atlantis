@@ -77,14 +77,21 @@
               </tr>
               </thead>
               <tbody>
-              <tr th:each="a:${listaHabitaciones}">
+              <tr th:if="${listaHabitaciones.size()>0}" th:each="a:${listaHabitaciones}">
                 <td th:text="${a.getTipo_hab()}"></td>
                 <td th:text="${a.getMax_cliente()}"></td>
-                <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+                <td th:text="${a.getNum_hab() - a.getHab_ocupadas()}"></td>
                 <td> <input type="number" th:field="*{cantidadHabitaciones}"></td>
                 <td><select th:field="*{tipo_regimen}">
                   <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
                 </select></td>
+              </tr>
+              <tr th:if="${listaHabitaciones.size()==0}">
+                <td>No hay habitaciones disponibles.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
               </tbody>
             </table>
