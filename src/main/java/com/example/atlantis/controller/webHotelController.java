@@ -173,6 +173,7 @@ public class webHotelController {
     public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
                                @RequestParam("idhotel") Integer idhotel){
 
+
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -186,10 +187,16 @@ public class webHotelController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
+        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()))||
+                LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).equals(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
+        if (objeto_aux_reservaHtml.getCantidadHabitaciones()==null||(objeto_aux_reservaHtml.getCantidadHabitaciones().size()<objeto_aux_reservaHtml.getTipo_regimen().size())){
+            return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
+
+        }
+
         //objeto Reserva_para_bbdd
         reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
         reserva_para_bbdd.setIdCliente(idCliente);
@@ -205,7 +212,6 @@ public class webHotelController {
 
     @PostMapping("/pago")
     public String confirmarReserva(){
-
         ////////////////////////////////////////////////////////////////////////
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
