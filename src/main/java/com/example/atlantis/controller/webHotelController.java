@@ -192,10 +192,11 @@ public class webHotelController {
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
-        if (objeto_aux_reservaHtml.getCantidadHabitaciones()==null||(objeto_aux_reservaHtml.getCantidadHabitaciones().size()<objeto_aux_reservaHtml.getTipo_regimen().size())){
-            return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
+        for (Integer i:objeto_aux_reservaHtml.getCantidadHabitaciones()){
+            if (i==null){
+                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+            }
         }
-
 
         //objeto Reserva_para_bbdd
         reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
@@ -204,6 +205,7 @@ public class webHotelController {
         for (Ob_mostrar_reserva omr :listamostrar){
             if(omr.getCantHab()>omr.getHabitaciones().getNum_hab()-omr.getHabitaciones().getHab_ocupadas()) return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
         }
+
         Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
 
         model.addObject("dias",dias);
