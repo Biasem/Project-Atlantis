@@ -28,9 +28,6 @@ public class Reserva {
     @ManyToOne
     private Cliente id_cliente;
 
-    @JoinColumn(name = "num_clientes")
-    private Integer num_clientes;
-
     @JoinColumn(name = "fecha_entrada")
     private LocalDate fecha_entrada;
 

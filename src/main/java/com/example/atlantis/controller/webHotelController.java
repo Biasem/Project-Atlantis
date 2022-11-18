@@ -194,7 +194,6 @@ public class webHotelController {
         }
         if (objeto_aux_reservaHtml.getCantidadHabitaciones()==null||(objeto_aux_reservaHtml.getCantidadHabitaciones().size()<objeto_aux_reservaHtml.getTipo_regimen().size())){
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
-
         }
 
         //objeto Reserva_para_bbdd
@@ -216,17 +215,10 @@ public class webHotelController {
         //hacemos la query de la reserva
         Reserva reserva = new Reserva();
         reserva.setId_hotel(hotelService.getById(reserva_para_bbdd.getIdHotel()));
-        System.out.println("1" + reserva);
         reserva.setId_cliente(clienteService.getById(reserva_para_bbdd.getNumClientes()));
-        System.out.println("2" +reserva);
         reserva.setFecha_entrada(reserva_para_bbdd.getFechaEntrada());
-        System.out.println("3" +reserva);
         reserva.setFecha_salida(reserva_para_bbdd.getFechasalida());
-        System.out.println("4" +reserva);
         reserva.setPrecio_total(reserva_para_bbdd.getPrecioTotal());
-        System.out.println("5" +reserva);
-        reserva.setNum_clientes(1);
-        System.out.println("6" +reserva);
         reservaService.guardarReserva(reserva);
 
         //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
