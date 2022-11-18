@@ -32,7 +32,8 @@ public class MainController{
     private ClienteService clienteService;
 
     @GetMapping("/main")
-    public ModelAndView listaHotel(@ModelAttribute Busqueda busqueda, HttpSession session) {
+    @SchemaMapping(typeName = "Query", value = "listaHotel")
+    public ModelAndView listaHotel(@Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
         ModelAndView model = new ModelAndView("main");
 
         // Gestión sesión
@@ -56,7 +57,7 @@ public class MainController{
             Collections.shuffle(listaprimera);
             List<Hotel> listaHotel = listaprimera.subList(0, 3);
             azar.addObject("fechamin", LocalDate.now());
-            azar.addObject("busqueda", busqueda);
+            azar.addObject("busqueda", input);
             azar.addObject("listaHotel", listaHotel);
             model.addObject("idHotel", idHotel);
             model.addObject("idCliente", idCliente);
@@ -66,7 +67,7 @@ public class MainController{
         else{
             model.addObject("lista", lista);
             model.addObject("fechamin", LocalDate.now());
-            model.addObject("busqueda", busqueda);
+            model.addObject("busqueda", input);
             return model;
         }
     }

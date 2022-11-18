@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
+import java.util.List;
 
 public class GraphqlInput {
 
@@ -78,6 +79,17 @@ public class GraphqlInput {
         private String url_icono;
         private String url_imagen_general;
     }
+
+    @Data
+    @AllArgsConstructor
+   public class Objeto_Aux_Reserva_htmlInput{
+        private List<Integer> cantidadHabitaciones;
+        private List<String> tipo_regimen;
+        private String fechainicio;
+        private String fechafin;
+
+    }
+
 
     @AllArgsConstructor
     public enum RolInput{

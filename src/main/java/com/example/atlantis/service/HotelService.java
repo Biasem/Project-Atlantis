@@ -40,7 +40,7 @@ public class HotelService {
     //Convertir el Hotel de un modelo de obtención de datos  al modelo real para meter en bbdd
     public Hotel convertirAHotel(GraphqlInput.RegisHotFechInput hotel){
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 //        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
 //        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.sound.sampled.ReverbType;
 import java.time.LocalDate;
@@ -63,17 +64,23 @@ public class ReservaService {
 
 
     }
-    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
+    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml){
 
         List<Regimen> regimenList = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
         List<Double> listaPreciosRegimenHab = new ArrayList<>();
         List<Integer> listaIdRegimen= new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate fechap =  LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
+
+
         //precios para los regimenes por dia y cantidad de habitaciones
         for(int i = 0; i< objeto_aux_reservaHtml.getCantidadHabitaciones().size(); i++){
             for (Regimen r : regimenList){
                 if(TipoRegimen.valueOf(objeto_aux_reservaHtml.getTipo_regimen().get(i)).equals(r.getCategoria())){
                     listaPreciosRegimenHab.add(r.getPrecio()* objeto_aux_reservaHtml.getCantidadHabitaciones().get(i)*
-                            DAYS.between(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()),LocalDate.parse(objeto_aux_reservaHtml.getFechafin())));
+                            DAYS.between(fechap,fechap1));
                     listaIdRegimen.add(r.getId());
                 }
             }
@@ -102,42 +109,50 @@ public class ReservaService {
         reserva_para_bbdd.setIdHotel(idHotel);
 //        reserva_para_bbdd.setIdHotel(idCliente);
 //        reserva_para_bbdd.setNumClientes(numclientes);
-        reserva_para_bbdd.setFechaEntrada(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()));
-        reserva_para_bbdd.setFechasalida(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()));
+        reserva_para_bbdd.setFechaEntrada(fechap);
+        reserva_para_bbdd.setFechasalida(fechap1);
         reserva_para_bbdd.setPrecioTotal(precioTotal);
         return reserva_para_bbdd;
 
 
     }
 
-    private Double preciosPorHab (List<Precio_Hab> listapreciohab, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
+    private Double preciosPorHab (List<Precio_Hab> listapreciohab, GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml){
         Double totalprecio =0.0;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate fechap =  LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
+
+
+
         for (Precio_Hab ph:listapreciohab){
             //reserva en una hab-precio
-            if((LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(ph.getFecha_inicio())||
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).equals(ph.getFecha_inicio())))&&(
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isBefore(ph.getFecha_fin()))||
-                            (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).equals(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()*DAYS.between(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()),LocalDate.parse(objeto_aux_reservaHtml.getFechafin()));
+            if((fechap1.isAfter(fechap)||
+                    (fechap.equals(ph.getFecha_inicio())))&&(
+                    (fechap1.isBefore(ph.getFecha_fin()))||
+                            (fechap1.equals(ph.getFecha_fin())))){
+                totalprecio = totalprecio + ph.getPrecio()*DAYS.between(fechap,fechap1);
             }
             //coger el incio
-            if ((LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(ph.getFecha_inicio())&&
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isBefore(ph.getFecha_fin()))&&
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isAfter(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()* DAYS.between(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()),ph.getFecha_fin());
+            if ((fechap.isAfter(ph.getFecha_inicio())&&
+                    (fechap.isBefore(ph.getFecha_fin()))&&
+                    (fechap1.isAfter(ph.getFecha_fin())))){
+                totalprecio = totalprecio + ph.getPrecio()* DAYS.between(fechap,ph.getFecha_fin());
 
             }//coger el fin
-            if (LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isBefore(ph.getFecha_inicio())&&
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isAfter(ph.getFecha_inicio())||
-                            LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isEqual(ph.getFecha_inicio()))&&
-                    (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isBefore(ph.getFecha_fin())||
-                            (LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isEqual(ph.getFecha_fin())))){
-                totalprecio = totalprecio + ph.getPrecio()*(DAYS.between(ph.getFecha_inicio(),LocalDate.parse(objeto_aux_reservaHtml.getFechafin()))+1);
+            if (fechap.isBefore(ph.getFecha_inicio())&&
+                    (fechap1.isAfter(ph.getFecha_inicio())||
+                            fechap1.isEqual(ph.getFecha_inicio()))&&
+                    (fechap1.isBefore(ph.getFecha_fin())||
+                            (fechap1.isEqual(ph.getFecha_fin())))){
+                totalprecio = totalprecio + ph.getPrecio()*(DAYS.between(ph.getFecha_inicio(),fechap1)+1);
 
             }
             //fechas de hab-precio entre otras hab-precio
-            if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isBefore(ph.getFecha_inicio())&&
-                    LocalDate.parse(objeto_aux_reservaHtml.getFechafin()).isAfter(ph.getFecha_fin())){
+            if(fechap.isBefore(ph.getFecha_inicio())&&
+                    fechap1.isAfter(ph.getFecha_fin())){
                 totalprecio = totalprecio + ph.getPrecio()* (DAYS.between(ph.getFecha_inicio(), ph.getFecha_fin())+1);
 
             }

@@ -3,6 +3,8 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,11 +28,18 @@ public class perfilController {
     private ComentarioService comentarioService;
 
     @RequestMapping("/perfilcliente")
-    public ModelAndView perfil(HttpSession session){
+    @SchemaMapping(typeName = "Query", value = "perfil")
+    public ModelAndView perfil(@Argument(name = "correo") String correo){
         ModelAndView model = new ModelAndView("perfilCliente");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
+        String correo1 = auth.getName();
+        if(correo!=null){
+            correo = correo;
+        }else{
+            correo = correo1;
+        }
+
         Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null){
@@ -51,6 +60,7 @@ public class perfilController {
         return model;
     }
     @RequestMapping("/perfilhotel")
+    @SchemaMapping(typeName = "Query", value = "perfilHotel")
     public ModelAndView perfilhotel(HttpSession session){
         ModelAndView model = new ModelAndView("perfilHotel");
         // Gestión sesión

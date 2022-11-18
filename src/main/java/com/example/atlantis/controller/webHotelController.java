@@ -3,6 +3,7 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -45,9 +46,8 @@ public class webHotelController {
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
-    public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
-                                                     @RequestParam(value = "id")@PathVariable @Argument Integer id,
-                                                     HttpSession session) {
+    @SchemaMapping(typeName = "Query", value = "resultadoHotel")
+    public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id) {
 
         ModelAndView model = new ModelAndView("hotelWeb");
         // Gestión sesión
@@ -104,13 +104,20 @@ public class webHotelController {
         return model;
     }
     @PostMapping("/reservar")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
-                               @RequestParam("idhotel") Integer idhotel){
+    @SchemaMapping(typeName = "Query", value = "reservarHab")
+    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
+                               @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
+                               @PathVariable @Argument(name = "correo") String correo){
+
 
         ModelAndView model = new ModelAndView();
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
+        String correo1 = auth.getName();
+        if(correo1!=null){
+            correo = correo1;
+        }
+
         Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null){
@@ -121,10 +128,10 @@ public class webHotelController {
         model.addObject("idCliente", idCliente);
         // Gestión sesión
 
-        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
-        {
-            return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
-        }
+//        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
+//        {
+//            return "redirect:/hoteles/item?id="+idhotel; //siento esta fechoria xd
+//        }
         //objeto Reserva_para_bbdd
        Reserva_Para_BBDD reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
 

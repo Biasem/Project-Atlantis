@@ -3,14 +3,13 @@ scalar Date
 
 type Query{
 
-    perfil :String
+    perfil(correo : String) :String
+
     perfilHotel :String
 
-    irAMain(
-        busqueda : BusquedaInput
-    ):String
+    irAMain(busqueda : BusquedaInput):String
 
-    listaHoteles(
+    listaHotel(
         busqueda : BusquedaInput
     ):String
 
@@ -20,6 +19,16 @@ type Query{
 
     historialVigenteHotel(
         hotel : HotelInput
+    ):String
+
+    resultadoHotel(
+        id : ID
+    ):String
+
+    reservarHab(
+        objeto :Objeto_Aux_Reserva_htmlInput
+        idhotel : ID
+        correo : String
     ):String
 
 
@@ -241,4 +250,10 @@ input HotelInput{
     url_imagen_general : String
 }
 
+input Objeto_Aux_Reserva_htmlInput{
+    cantidadHabitaciones : [Int]
+    tipo_regimen : [String]
+    fechainicio : String
+    fechafin : String
 
+}
