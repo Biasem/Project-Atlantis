@@ -65,7 +65,7 @@ public class webHotelController {
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     @SchemaMapping(typeName = "Query", value = "resultadoHotel")
-    public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id) {
+    public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id, HttpSession session) {
 
         ModelAndView model = new ModelAndView("hotelWeb");
         // Gestión sesión
