@@ -37,7 +37,6 @@ public class PruebaController{
             if (correo != null){
                 idCliente = clienteService.conseguirId(correo);
                 idHotel = hotelService.conseguirId(correo);
-                System.out.println(idCliente);
             }
             model.addObject("idHotel", idHotel);
             model.addObject("idCliente", idCliente);

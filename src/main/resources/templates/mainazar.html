@@ -18,6 +18,8 @@
     <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
     <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
     <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+    <script type="text/javascript" th:src="@{/js/fecha.js}" ></script>
+
 </head>
 
 <body class="bg-white">
@@ -40,15 +42,15 @@
                         </div>
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Fecha Entrada</label>
-                            <input type="date" class="form-control shadow-none" th:field="*{fechaInicial}" th:min="${fechamin}">
+                            <input th:id="fecha_inicio" type="date" class="form-control shadow-none" value="2022-11-14" th:field="*{fechaInicial}" th:min="${fechamin}" required>
                         </div>
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Fecha Salida</label>
-                            <input type="date" class="form-control shadow-none"  th:field="*{fechaFinal}" th:min="${fechamin}">
+                            <input  id="fecha_final" type="date" class="form-control shadow-none"  th:field="*{fechaFinal}" th:min="${fechamin}" th:onclick="cambiofecha()" required>
                         </div>
                         <div class="col-lg-2 mb-3">
                             <label class="form-label" style="font-weight: 500;">Nº Huespedes</label>
-                            <input type="number" min="1" max="7" class="form-control shadow-none" th:field="*{numHuespedes}" >
+                            <input type="number" min="1" max="7" class="form-control shadow-none" th:field="*{numHuespedes}" required>
                         </div>
                         <div class="col-lg-1 mb-lg-3 mt-2">
                             <input class="icon btn btn-primary form-control text-center" type="submit" value="">

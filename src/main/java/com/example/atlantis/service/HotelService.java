@@ -61,8 +61,12 @@ public class HotelService {
         hotel1.setTipo_hotel(hotel.getTipo_hotel());
         hotel1.setUrl_icono(hotel.getUrl_icono());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
+        hotel1.setEmail(hotel.getEmail());
+        hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
         hotel1.getEmail().setEmail(hotel.getEmail().getEmail());
         hotel1.getEmail().setRol(hotel1.getEmail().getRol());
+        hotel1.setLatitud(hotel.getLatitud());
+        hotel1.setLongitud(hotel.getLongitud());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
         hotel1.setId(hotel.getId());
         return hotel1;
@@ -182,6 +186,16 @@ public class HotelService {
         }
 
 
+    }
+
+    public Map<Integer, Hotel> filtrarHotel (List<Hotel> hoteles){
+        Map<Integer, Hotel> mapa = new TreeMap<>(Collections.reverseOrder());
+        for (Hotel x: hoteles){
+            Integer id = x.getId();
+            Integer media = comentarioService.mediaPuntuacion(id);
+            mapa.put(media, x);
+        }
+    return mapa;
     }
 
 

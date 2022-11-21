@@ -63,10 +63,15 @@ public class ReservaService {
         return buscadas;
 
 
-    }
-    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml){
+    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
+        Reserva_Para_BBDD reserva_para_bbdd = new Reserva_Para_BBDD();
 
-        List<Regimen> regimenList = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
+        List<Regimen> regimenList = new ArrayList<>();
+        for(Regimen regimen:regimenService.getAll()){
+            if(regimen.getId_hotel().getId().equals(idHotel))regimenList.add(regimen);
+        }
+
+
         List<Double> listaPreciosRegimenHab = new ArrayList<>();
         List<Integer> listaIdRegimen= new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -85,6 +90,7 @@ public class ReservaService {
                 }
             }
         }
+
         //filtramos las habitaciones
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll().stream().filter(h -> h.getId_hotel().getId().equals(idHotel)).collect(Collectors.toList());
         List<Double> precioporhab = new ArrayList<>();
@@ -95,18 +101,26 @@ public class ReservaService {
         }
         //precio final para cada tipo de habitacion por cantidad de hab y fechas
         List<Double> precioPorHabFinal = new ArrayList<>();
+        List<Double> auxreservabbddpreciohab = new ArrayList<>();
         for(int i = 0; i< objeto_aux_reservaHtml.getCantidadHabitaciones().size(); i++){
+            auxreservabbddpreciohab.add(objeto_aux_reservaHtml.getCantidadHabitaciones().get(i)*precioporhab.get(i));
             precioPorHabFinal.add(objeto_aux_reservaHtml.getCantidadHabitaciones().get(i)*precioporhab.get(i)+listaPreciosRegimenHab.get(i));
         }
+        reserva_para_bbdd.setPreciohab(auxreservabbddpreciohab);
         Double precioTotal = 0.0;
         for(Double p:precioPorHabFinal){
             precioTotal = precioTotal+ p;
         }
         //preparamos el objeto para la confirmacion de reserva del html
-        Reserva_Para_BBDD reserva_para_bbdd = new Reserva_Para_BBDD();
-        reserva_para_bbdd.setListIdRegimen(listaIdRegimen);
+        List<Regimen> regimenList1 = new ArrayList<>();
+        for(Integer i:listaIdRegimen){
+            regimenList1.add(regimenService.getById(i));
+        }
+        reserva_para_bbdd.setListIdRegimen(regimenList1);
         reserva_para_bbdd.setListHabitacion(listaHabitaciones);
         reserva_para_bbdd.setIdHotel(idHotel);
+        reserva_para_bbdd.setFechaEntrada(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()));
+        reserva_para_bbdd.setFechasalida(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()));
 //        reserva_para_bbdd.setIdHotel(idCliente);
 //        reserva_para_bbdd.setNumClientes(numclientes);
         reserva_para_bbdd.setFechaEntrada(fechap);
@@ -174,14 +188,13 @@ public class ReservaService {
                     reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                     reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                     reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
-                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                    reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
                     cambiados.add(reservas);
                 }
             }
         }
         return cambiados;
     }
-
 
     public List<HistorialReservaClientes> cambiomodelohistorialvigente(List<Reserva> listareserva, List<Hab_Reserva_Hotel> listahabre, List<Regimen> listaregimen){
 
@@ -195,10 +208,9 @@ public class ReservaService {
                         reservas.setId(listareserva.get(i).getId());
                         reservas.setFecha_entrada(listareserva.get(i).getFecha_entrada());
                         reservas.setFecha_salida(listareserva.get(i).getFecha_salida());
-                        reservas.setNum_clientes(listareserva.get(i).getNum_clientes());
                         reservas.setPrecio_total(listareserva.get(i).getPrecio_total());
                         reservas.setCategoria(listahabre.get(a).getId_regimen().getCategoria());
-                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel().getNombre());
+                        reservas.setNombreHotel(listahabre.get(a).getReserva().getId_hotel());
                         cambiados.add(reservas);
                     }
                 }
@@ -209,6 +221,20 @@ public class ReservaService {
 
     public void guardarReserva(Reserva reserva){
         reservaRepository.save(reserva);
+    }
+
+    public List<Ob_mostrar_reserva> obtenerlistareserva(Reserva_Para_BBDD reserva_para_bbdd){
+        List<Ob_mostrar_reserva> lista_reserva_mostrar = new ArrayList<>();
+
+        for(int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
+            Ob_mostrar_reserva ob_mostrar_reserva= new Ob_mostrar_reserva();
+            ob_mostrar_reserva.setHabitaciones(reserva_para_bbdd.getListHabitacion().get(i));
+            ob_mostrar_reserva.setRegimen(reserva_para_bbdd.getListIdRegimen().get(i));
+            ob_mostrar_reserva.setCantHab(reserva_para_bbdd.getNumhab().get(i));
+            ob_mostrar_reserva.setPrecioHab(reserva_para_bbdd.getPreciohab().get(i));
+            lista_reserva_mostrar.add(ob_mostrar_reserva);
+        }
+        return lista_reserva_mostrar;
     }
 
 

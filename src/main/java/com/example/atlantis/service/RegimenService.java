@@ -88,4 +88,27 @@ public class RegimenService {
         regimenRepository.delete(regimen);
     }
 
+    public List<TipoRegimen> checkRegimen (List<Regimen> regimen){
+        List<Regimen> lista = new ArrayList<>();
+        List<TipoRegimen> crear = todoRegimen();
+        for (Regimen x: regimen){
+            if (x.getCategoria() == TipoRegimen.DESAYUNO){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.SIN_PENSION){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.PENSION_COMPLETA){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.MEDIA_PENSION){
+                crear.remove(x.getCategoria());
+            }
+            if (x.getCategoria() == TipoRegimen.TODO_INCLUIDO){
+                crear.remove(x.getCategoria());
+            }
+        }
+        return crear;
+    }
+
 }

@@ -3,6 +3,8 @@ package com.example.atlantis.controller;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.*;
+import com.example.atlantis.repository.ReservaRepository;
+import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ClienteHistorialController {
@@ -24,16 +27,20 @@ public class ClienteHistorialController {
     @Autowired
     private ReservaService reservaService;
     @Autowired
-    private LoginService loginService;
-
+    private ReservaRepository reservaRepository;
     @Autowired
-    private ClienteService clienteService;
+    private LoginService loginService;
 
     @Autowired
     private RegimenService regimenService;
 
     @Autowired
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
+    @Autowired
+    private ClienteService clienteService;
+
+    @Autowired
+    private HotelService hotelService;
 
 
     //Todas las reservas
@@ -42,6 +49,17 @@ public class ClienteHistorialController {
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null){
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+            System.out.println(idCliente);
+            System.out.println(idHotel);
+        }
+
+        Integer finalIdCliente = idCliente;
+        List<Reserva> reservas = reservaRepository.findAll().stream().filter(x-> x.getId_cliente().getId().equals(finalIdCliente)).collect(Collectors.toList());
         //Obtención de listas para metodo
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
         List<Reserva> todas = reservaService.todasReservas(cliente1.getId());

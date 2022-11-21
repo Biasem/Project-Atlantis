@@ -1,5 +1,6 @@
 package com.example.atlantis.service;
 import com.example.atlantis.model.Busqueda;
+import com.example.atlantis.model.Habitaciones;
 import com.example.atlantis.model.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -19,9 +20,17 @@ public class BusquedaService {
         strBusqueda = busqueda.getHotelBuscar().toLowerCase();
         for( Hotel hotel:listaHoteles){             //buscar en la lista de hoteles
             if(estaAbierto(hotel,busqueda)){        //si el hotel esta abierto
-                if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))|| //igualamos a minusculas los string
-                        (hotel.getNombre().toLowerCase().contains(strBusqueda))){ //y añadimos las coincidencias
-                    coincidencias.add(hotel);
+                int libres = 0;
+                for (Habitaciones hab :hotel.getHabitaciones()){
+                    if (hab.getHab_ocupadas()< hab.getNum_hab()){
+                        libres += ((hab.getNum_hab()-hab.getHab_ocupadas()) * hab.getMax_cliente());
+                    }
+                }
+                if (libres>= busqueda.getNumHuespedes()){
+                    if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))|| //igualamos a minusculas los string
+                            (hotel.getNombre().toLowerCase().contains(strBusqueda))){ //y añadimos las coincidencias
+                        coincidencias.add(hotel);
+                    }
                 }
             }
         }

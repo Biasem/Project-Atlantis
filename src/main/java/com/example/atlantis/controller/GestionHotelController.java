@@ -1,6 +1,10 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioHotelRepository;
+import com.example.atlantis.repository.ComentarioLikeRepository;
+import com.example.atlantis.repository.ComentarioRepository;
+import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class GestionHotelController {
 
@@ -29,6 +35,17 @@ public class GestionHotelController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ComentarioService comentarioService;
+
+    @Autowired
+    private ComentarioLikeRepository comentarioLikeRepository;
+
+    @Autowired
+    private ComentarioHotelRepository comentarioHotelRepository;
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
 
 
@@ -54,6 +71,12 @@ public class GestionHotelController {
         Hotel hotel1 = hotelService.copiartodohotel(hotel);
 
         if(hotel1.getEmail().getEmail().equals(hotel.getEmail().getEmail()) && encoder.matches(hotel.getEmail().getPassword(), hotel1.getEmail().getPassword())){
+            List<ComentarioLike> comentarioLike = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_hotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            List<ComentarioHotel> comentarioHotels = comentarioHotelRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            List<Comentario> comentarios = comentarioRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            comentarioLike.stream().forEach(x-> comentarioLikeRepository.delete(x));
+            comentarioHotels.stream().forEach(x-> comentarioHotelRepository.delete(x));
+            comentarios.stream().forEach(x-> comentarioRepository.delete(x));
             hotelService.borrarHotel(hotel1);
             return "redirect:/logout";
         }

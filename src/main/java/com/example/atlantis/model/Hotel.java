@@ -59,6 +59,12 @@ public class Hotel {
     @JoinColumn(name = "url_imagen_general")
     private String url_imagen_general;
 
+    @JoinColumn(name = "latitud")
+    private Double latitud ;
+
+    @JoinColumn(name = "longitud")
+    private Double longitud ;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
     private List<Comentario> comentarios;
 

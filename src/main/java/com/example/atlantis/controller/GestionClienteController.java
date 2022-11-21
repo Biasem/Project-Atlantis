@@ -1,6 +1,8 @@
 package com.example.atlantis.controller;
 
 import com.example.atlantis.model.*;
+import com.example.atlantis.repository.ComentarioHotelRepository;
+import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -37,6 +39,13 @@ public class GestionClienteController {
     @Autowired
     private ReservaService reservaService;
 
+    @Autowired
+    private ComentarioLikeRepository comentarioLikeRepository;
+    @Autowired
+    private ComentarioHotelRepository comentarioHotelRepository;
+
+
+
     @GetMapping("/todos")
     @QueryMapping
     public List<Cliente> getAll() {
@@ -58,6 +67,7 @@ public class GestionClienteController {
 
     public String deleteCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
         Cliente cliente2 = new Cliente();
+        //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         if(input.getEmail().getEmail()!=null){

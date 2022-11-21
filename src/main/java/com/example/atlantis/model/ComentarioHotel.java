@@ -7,14 +7,14 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "comentario")
+@Table(name = "comentariohotel")
 @Getter
 @Setter
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Comentario {
+public class ComentarioHotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "id")
@@ -26,19 +26,15 @@ public class Comentario {
     @JoinColumn(name = "fecha")
     private LocalDate fecha;
 
-    @JoinColumn(name = "puntuacion")
-    private Integer puntuacion;
-
-    @JoinColumn(name = "likes")
-    private Integer likes;
-
     @ManyToOne()
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    @JoinColumn(name = "id_comentario")
+    private Comentario comentario;
 
     @JoinColumn(name = "id_hotel")
     @ManyToOne()
     private Hotel hotel;
 
-
+    @JoinColumn(name = "id_cliente")
+    @ManyToOne()
+    private Cliente cliente;
 }

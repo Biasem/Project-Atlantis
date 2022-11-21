@@ -63,7 +63,7 @@ public class AdminController{
         // Gestión sesión
         List<TipoHab> tipohab = habitacionesService.todoHab();
         List<Regimen> regimenes = regimenService.regimenHotel(idHotel);
-        List<TipoRegimen> regimen = regimenService.todoRegimen();
+        List<TipoRegimen> regimen = regimenService.checkRegimen(regimenes);
         model.addObject("regimen", regimen);
         model.addObject("regimenes", regimenes);
         model.addObject("tipohab",tipohab);

@@ -33,6 +33,10 @@ public class RegisHotFech {
 
     private TipoHotel tipo_hotel;
 
+    private Double latitud;
+
+    private Double longitud;
+
     private String telefono;
 
     @JoinColumn(name = "email")
