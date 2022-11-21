@@ -174,7 +174,7 @@ public class webHotelController {
     }
     @PostMapping("/reservar")
     @SchemaMapping(typeName = "Query", value = "reservarHab")
-    public String reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
+    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
                                @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
                                @PathVariable @Argument(name = "correo") String correo){
 
@@ -182,7 +182,11 @@ public class webHotelController {
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
+        String correo1 = auth.getName();
+        if(correo1!=null){
+            correo = correo1;
+        }
+
         Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null){
