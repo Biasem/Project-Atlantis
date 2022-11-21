@@ -61,7 +61,6 @@ public class HotelService {
         hotel1.setTipo_hotel(hotel.getTipo_hotel());
         hotel1.setUrl_icono(hotel.getUrl_icono());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
-        hotel1.setEmail(hotel.getEmail());
         hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
         hotel1.getEmail().setEmail(hotel.getEmail().getEmail());
         hotel1.getEmail().setRol(hotel1.getEmail().getRol());

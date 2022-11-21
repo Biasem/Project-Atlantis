@@ -103,6 +103,8 @@ type Hotel{
     num_estrellas : Int
     tipo_hotel : [Tipo_hotel]
     telefono : String
+    latitud : Float
+    longitud : Float
     email : Login
     url_icono : String
     url_imagen_general : String
@@ -227,8 +229,8 @@ input RegisHotFech{
     num_estrellas : Int
     tipo_hotel : Tipo_hotel
     telefono : String
-    latitud : Int
-    longitud : Int
+    latitud : Float
+    longitud : Float
     email : LoginInput
     url_icono : String
     url_imagen_general : String
@@ -247,8 +249,8 @@ input HotelInput{
     num_estrellas : Int
     tipo_hotel : [Tipo_hotel]
     telefono : String
-    latitud : Int
-    longitud : Int
+    latitud : Float
+    longitud : Float
     email : LoginInput
     url_icono : String
     url_imagen_general : String
