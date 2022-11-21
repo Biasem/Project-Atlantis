@@ -62,6 +62,8 @@ public class webHotelController {
     @Autowired
     private HotelRepository hotelRepository;
 
+    protected static Reserva_Para_BBDD reserva_para_bbdd = null;
+
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
     @SchemaMapping(typeName = "Query", value = "resultadoHotel")
