@@ -57,6 +57,8 @@ public class GraphqlInput {
         private Integer num_estrellas;
         private TipoHotel tipo_hotel;
         private String telefono;
+        private Integer latitud;
+        private Integer longitud;
         private LoginInput email;
         private String url_icono;
         private String url_imagen_general;
@@ -75,6 +77,8 @@ public class GraphqlInput {
         private Integer num_estrellas;
         private TipoHotel tipoHotel;
         private String telefono;
+        private Integer latitud;
+        private Integer longitud;
         private LoginInput email;
         private String url_icono;
         private String url_imagen_general;
