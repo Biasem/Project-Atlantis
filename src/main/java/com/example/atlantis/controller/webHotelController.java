@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -178,12 +179,18 @@ public class webHotelController {
                                @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
                                @PathVariable @Argument(name = "correo") String correo){
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate fechap =  LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
 
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo1 = auth.getName();
-        if(correo1!=null){
+        if(correo!= null){
+            correo = correo;
+        }else {
             correo = correo1;
         }
 
@@ -196,8 +203,8 @@ public class webHotelController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()))||
-                LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).equals(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
+        if(fechap.isAfter(fechap1)||
+                fechap.equals(fechap1))
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
