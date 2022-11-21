@@ -51,19 +51,19 @@ public class ReservaService {
 
     }
 
-    public List<Reserva> todasReservasHotel(int id){
+    public List<Reserva> todasReservasHotel(int id) {
         List<Reserva> todas = reservaRepository.findAll();
         List<Reserva> buscadas = new ArrayList<>();
 
-        for(int i = 0; i < todas.size(); i++ ){
-            if(todas.get(i).getId_hotel().getId().equals(id)){
+        for (int i = 0; i < todas.size(); i++) {
+            if (todas.get(i).getId_hotel().getId().equals(id)) {
                 buscadas.add(todas.get(i));
             }
         }
         return buscadas;
+    }
 
-
-    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, Objeto_Aux_Reserva_html objeto_aux_reservaHtml){
+    public Reserva_Para_BBDD precioHabReservada(Integer idHotel, GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml){
         Reserva_Para_BBDD reserva_para_bbdd = new Reserva_Para_BBDD();
 
         List<Regimen> regimenList = new ArrayList<>();
