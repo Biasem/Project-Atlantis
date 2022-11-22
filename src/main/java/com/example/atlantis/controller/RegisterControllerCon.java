@@ -50,37 +50,24 @@ public class RegisterControllerCon {
     }
 
     @PostMapping("/registrocliente")
-
-    @SchemaMapping(typeName = "Mutation", value = "registerForm")
-    public String registerForm(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
+    public String registerForm(@ModelAttribute("cliente") Cliente cliente) {
 
         try {
             //If para verificar que los datos introducidos sean tal cual se necesite
-            if (input.getNombre() != null && input.getApellidos() != null
-                    && input.getEmail().getEmail() != null &&
-                    input.getEmail().getPassword() != null && input.getDni() != null
-                    && clienteService.validarDNI(input.getDni()) != false) {
+            if (cliente.getNombre() != null && cliente.getApellidos() != null
+                    && cliente.getEmail().getEmail() != null &&
+                    cliente.getEmail().getPassword() != null && cliente.getDni() != null
+                    && clienteService.validarDNI(cliente.getDni()) != false) {
 
                 //Selección de Rol Cliente para el nuevo cliente
-                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
-                input.getEmail().setPassword(bCryptPasswordEncoder.encode(input.getEmail().getPassword()));
-
-                Cliente cliente = new Cliente();
-                cliente.setApellidos(input.getApellidos());
-                cliente.setNombre(input.getNombre());
-                cliente.setDni(input.getDni());
-                cliente.setPais(input.getPais());
-                cliente.setTelefono(input.getTelefono());
-                Login login = new Login();
-                cliente.setEmail(login);
-                cliente.getEmail().setEmail(input.getEmail().getEmail());
-                cliente.getEmail().setPassword(input.getEmail().getPassword());
                 cliente.getEmail().setRol(Rol.CLIENTE);
+                cliente.getEmail().setPassword(bCryptPasswordEncoder.encode(cliente.getEmail().getPassword()));
+
 
 
                 //Guardado del cliente en base de datos
                 clienteService.guardarCliente(cliente);
-                System.out.println(input);
+                System.out.println(cliente);
 
                 return "redirect:/main";
 
@@ -91,6 +78,9 @@ public class RegisterControllerCon {
             return "redirect:/register";
         }
     }
+
+
+
 
 
 

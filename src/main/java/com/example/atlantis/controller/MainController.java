@@ -112,8 +112,7 @@ public class MainController{
     }
 
     @GetMapping("/")
-    @SchemaMapping(typeName = "Query", value = "irAMain")
-    public String irAMain(@PathVariable @Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
+    public String irAMain(@ModelAttribute Busqueda busqueda) {
         return "redirect:/main";
     }
 }

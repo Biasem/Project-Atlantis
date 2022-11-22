@@ -57,19 +57,12 @@ public class HotelHistorialController {
 
     //Reservas Vigentes
     @GetMapping("/historialReservaHotelVigentes")
-    @SchemaMapping(typeName = "Query", value = "historialVigenteHotel")
-    public ModelAndView historialVigenteHotel(@RequestBody @Argument(name = "hotel") GraphqlInput.HotelInput hotel) {
-
-        Hotel hotel1 = new Hotel();
+    public ModelAndView historialVigente(@ModelAttribute Hotel hotel) {
         ModelAndView model = new ModelAndView("historialReservaHotel");
-        if(hotel.getEmail().getEmail()!=null){
-            hotel1 = hotelService.copiartodohotel(hotel);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Hotel hotel1 = loginService.cogerid(correo);
 
-        }else {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-            hotel1 = loginService.cogerid(correo);
-        }
         //Obtención de listas para metodo
         List<Reserva> todas = reservaService.todasReservasHotel(hotel1.getId());
         List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();

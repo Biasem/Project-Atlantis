@@ -39,18 +39,11 @@ public class perfilController {
     private ComentarioHotelRepository comentarioHotelRepository;
 
     @RequestMapping("/perfilcliente")
-    @SchemaMapping(typeName = "Query", value = "perfil")
-    public ModelAndView perfil(@Argument(name = "correo") String correo){
+    public ModelAndView perfil(HttpSession session){
         ModelAndView model = new ModelAndView("perfilCliente");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo1 = auth.getName();
-        if(correo!=null){
-            correo = correo;
-        }else{
-            correo = correo1;
-        }
-
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null){
@@ -70,6 +63,7 @@ public class perfilController {
         model.addObject("comentarios",comentarioService.conseguirComentariosCliente(idCliente));
         return model;
     }
+
     @RequestMapping("/perfilhotel")
     @SchemaMapping(typeName = "Query", value = "perfilHotel")
     public ModelAndView perfilhotel(HttpSession session){

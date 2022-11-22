@@ -53,7 +53,7 @@ public class ClienteService {
     }
 
 
-    public Cliente copiartodocliente(GraphqlInput.ClienteInput cliente){
+    public Cliente copiartodoclienteApi(GraphqlInput.ClienteInput cliente){
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
@@ -65,7 +65,30 @@ public class ClienteService {
         return cliente1;
     }
 
-    public void borrarCliente(GraphqlInput.ClienteInput cliente){
+    public Cliente copiartodocliente(Cliente cliente){
+        List<Cliente> todos = clienteRepository.findAll();
+        Cliente cliente1 = new Cliente();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(cliente.getEmail().getEmail())){
+                cliente1 = todos.get(i);
+            }
+        }
+        return cliente1;
+    }
+
+    public void borrarClienteApi(GraphqlInput.ClienteInput cliente){
+        List<Cliente> todos = clienteRepository.findAll();
+        Cliente cliente1 = copiartodoclienteApi(cliente);
+        for(int i = 0; i < todos.size(); i++ ){
+
+            if(todos.get(i).getEmail().equals(cliente1.getEmail())){
+                clienteRepository.delete(cliente1);
+            }
+        }
+    }
+
+    public void borrarCliente(Cliente cliente){
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = copiartodocliente(cliente);
         for(int i = 0; i < todos.size(); i++ ){
@@ -76,10 +99,17 @@ public class ClienteService {
         }
     }
 
-    public void editarCliente(@RequestBody GraphqlInput.ClienteInput input){
+    public void editarClienteApi(@RequestBody GraphqlInput.ClienteInput input){
 
         clienteRepository.editarCliente(input.getNombre(),input.getApellidos(),input.getDni(), input.getPais(),
                input.getTelefono(), input.getEmail().getEmail());
+
+    }
+
+    public void editarCliente(Cliente cliente){
+
+        clienteRepository.editarCliente(cliente.getNombre(),cliente.getApellidos(),cliente.getDni(), cliente.getPais(),
+                cliente.getTelefono(), cliente.getEmail().getEmail());
 
     }
 

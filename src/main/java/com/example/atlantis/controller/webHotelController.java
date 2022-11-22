@@ -67,8 +67,9 @@ public class webHotelController {
 
 
     @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
-    @SchemaMapping(typeName = "Query", value = "resultadoHotel")
-    public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id, HttpSession session) {
+    public @ResponseBody ModelAndView resultadoHotel(@PathVariable(value="item") String numerito,
+                                                     @RequestParam(value = "id") Integer id,
+                                                     HttpSession session) {
 
         ModelAndView model = new ModelAndView("hotelWeb");
         // Gestión sesión
@@ -125,7 +126,6 @@ public class webHotelController {
 
         return model;
     }
-
     @PostMapping("/comentario")
     public @ResponseBody ModelAndView comentarioHotel(HttpSession session,
                                                       @ModelAttribute Comentario comentario,
@@ -174,26 +174,13 @@ public class webHotelController {
         return model;
     }
     @PostMapping("/reservar")
-    @SchemaMapping(typeName = "Query", value = "reservarHab")
-    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
-                               @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
-                               @PathVariable @Argument(name = "correo") String correo){
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        LocalDate fechap =  LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
-        LocalDate fechap1 =  LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
+    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer") Objeto_Aux_Reserva_html objeto_aux_reservaHtml,
+                                     @RequestParam("idhotel") Integer idhotel){
 
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo1 = auth.getName();
-        if(correo!= null){
-            correo = correo;
-        }else {
-            correo = correo1;
-        }
-
+        String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null){
@@ -203,8 +190,8 @@ public class webHotelController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-        if(fechap.isAfter(fechap1)||
-                fechap.equals(fechap1))
+        if(LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).isAfter(LocalDate.parse(objeto_aux_reservaHtml.getFechafin()))||
+                LocalDate.parse(objeto_aux_reservaHtml.getFechainicio()).equals(LocalDate.parse(objeto_aux_reservaHtml.getFechafin())))
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }

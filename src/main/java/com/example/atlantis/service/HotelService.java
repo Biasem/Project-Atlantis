@@ -38,7 +38,7 @@ public class HotelService {
 
 
     //Convertir el Hotel de un modelo de obtención de datos  al modelo real para meter en bbdd
-    public Hotel convertirAHotel(GraphqlInput.RegisHotFechInput hotel){
+    public Hotel convertirAHotelApi(GraphqlInput.RegisHotFechInput hotel){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -72,8 +72,49 @@ public class HotelService {
     }
 
 
+    public Hotel convertirAHotel(RegisHotFech hotel){
+
+        //Selección de ROL Hotel para el nuevo Hotel
+        hotel.getEmail().setRol(Rol.HOTEL);
+
+        Hotel hotel1 = new Hotel();
+
+        //Introducción  de datos en el modelo real para insertar en bbdd
+        hotel1.setNombre(hotel.getNombre());
+        hotel1.setPais(hotel.getPais());
+        hotel1.setLocalidad(hotel.getLocalidad());
+        hotel1.setDireccion(hotel.getDireccion());
+        hotel1.setFecha_apertura(LocalDate.parse(hotel.getFecha_apertura()));
+        hotel1.setFecha_cierre(LocalDate.parse(hotel.getFecha_cierre()));
+        hotel1.setNum_estrellas(hotel.getNum_estrellas());
+        hotel1.setTelefono(hotel.getTelefono());
+        hotel1.setTipo_hotel(hotel.getTipo_hotel());
+        hotel1.setUrl_icono(hotel.getUrl_icono());
+        hotel1.setUrl_imagen_general(hotel.getUrl_imagen_general());
+        hotel1.setEmail(hotel.getEmail());
+        hotel1.setLatitud(hotel.getLatitud());
+        hotel1.setLongitud(hotel.getLongitud());
+        hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
+        hotel1.setId(hotel.getId());
+        return hotel1;
+    }
+
+
     //Función para verificar si el Hotel es Apartamento o no, devuelve un boolean según sea
-    public boolean siEsApartaHotel(GraphqlInput.RegisHotFechInput hotel){
+    public boolean siEsApartaHotelApi(GraphqlInput.RegisHotFechInput hotel){
+
+        boolean i = false;
+
+        if(hotel.getTipo_hotel().equals(TipoHotel.APARTAMENTO)){
+            i = false;
+        }else{
+            i = true;
+        }
+        return i;
+    }
+
+
+    public boolean siEsApartaHotel(RegisHotFech hotel){
 
         boolean i = false;
 
@@ -126,7 +167,7 @@ public class HotelService {
         }
     }
 
-    public Hotel copiartodohotel(GraphqlInput.HotelInput hotel){
+    public Hotel copiartodohotelApi(GraphqlInput.HotelInput hotel){
         List<Hotel> todos = hotelRepository.findAll();
         Hotel hotel1 = new Hotel();
 
@@ -137,6 +178,19 @@ public class HotelService {
         }
         return hotel1;
     }
+
+    public Hotel copiartodohotel(Hotel hotel){
+        List<Hotel> todos = hotelRepository.findAll();
+        Hotel hotel1 = new Hotel();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(hotel.getEmail().getEmail())){
+                hotel1 = todos.get(i);
+            }
+        }
+        return hotel1;
+    }
+
 
 
     public void editarHotel(Hotel hotel){

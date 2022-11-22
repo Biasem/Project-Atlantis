@@ -63,27 +63,19 @@ public class GestionClienteController {
     }
 
     @PostMapping("/borrarcliente")
-    @SchemaMapping(typeName = "Mutation", value = "deleteCliente2")
+    public String deleteCliente2(@ModelAttribute Cliente cliente) {
 
-    public String deleteCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
-        Cliente cliente2 = new Cliente();
         //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
 
-        if(input.getEmail().getEmail()!=null){
-            cliente2 = clienteService.copiartodocliente(input);
-
-        }else {
-            //Encriptado y recogida de datos de al sesión para copiar todo el modelo
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-
-             cliente2 = loginService.copiartodoclienteconsession(correo);
-        }
+        Cliente cliente2 = loginService.copiartodoclienteconsession(correo);
 
         //If para saber si los datos estan correctos y pueden borrar o no
-        if (cliente2.getEmail().getEmail().equals(input.getEmail().getEmail()) && encoder.matches(input.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
-            clienteService.borrarCliente(input);
+        if (cliente2.getEmail().getEmail().equals(cliente.getEmail().getEmail()) && encoder.matches(cliente.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
+
+            clienteService.borrarCliente(cliente);
 
             return "redirect:/logout";
         }
@@ -112,32 +104,25 @@ public class GestionClienteController {
 
 
     @PostMapping("/editarcliente")
-    @SchemaMapping(typeName = "Mutation", value = "editarCliente2")
-    public String editarCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
+    public String editarCliente2(@ModelAttribute Cliente cliente) {
         //If para verificar que los datos introducidos sean tal cual se necesite
-        if(input.getNombre() != null && input.getApellidos() != null
-                && clienteService.validarDNI(input.getDni()) != false) {
+        if(cliente.getNombre() != null && cliente.getApellidos() != null
+                && clienteService.validarDNI(cliente.getDni()) != false) {
 
-            if(input.getEmail().getEmail()!=null){
-                input.setId(null);
-                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
+            //Recogida datos de sesión e insertarlos en el modelo
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Cliente datos = loginService.cogeridcliente(correo);
+            cliente.setId(datos.getId());
+            cliente.setEmail(new Login());
+            cliente.getEmail().setPassword(datos.getEmail().getPassword());
+            cliente.getEmail().setRol(datos.getEmail().getRol());
+            cliente.getEmail().setEmail(datos.getEmail().getEmail());
 
-            }else {
-
-                //Recogida datos de sesión e insertarlos en el modelo
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                String correo = auth.getName();
-                Cliente datos = loginService.cogeridcliente(correo);
-                input.setId(datos.getId());
- //               input.setEmail(new Login());
-                input.getEmail().setPassword(datos.getEmail().getPassword());
-                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
-                input.getEmail().setEmail(datos.getEmail().getEmail());
-            }
 
 
             //Introduccion de datos a Service para meter en ddbb
-        clienteService.editarCliente(input);
+            clienteService.editarCliente(cliente);
             return "redirect:/main";
 
         }else{

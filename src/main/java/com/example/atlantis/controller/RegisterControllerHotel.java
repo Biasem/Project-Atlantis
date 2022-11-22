@@ -49,34 +49,31 @@ public class RegisterControllerHotel {
 
 
     @PostMapping("/registrohotel")
-    @SchemaMapping(typeName = "Mutation", value = "registerhotelForm")
-    public String registerhotelForm(@RequestBody @Argument(name = "input") GraphqlInput.RegisHotFechInput input) {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+    public String registerhotelForm(@ModelAttribute("hotel") RegisHotFech hotel) {
 
         try {
-        //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
-        if (input.getNombre() != null && input.getDireccion() != null && input.getPais() != null
-                && input.getLocalidad() != null && input.getFecha_apertura() != null
-                && input.getFecha_cierre() != null && input.getTipo_hotel() != null
-//                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
-                && input.getEmail() != null && input.getEmail().getPassword() != null && input.getLatitud() != null
-                && input.getLongitud() != null) {
+            //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
+            if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
+                    && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
+                    && hotel.getFecha_cierre() != null && hotel.getTipo_hotel() != null
+                    && LocalDate.parse(hotel.getFecha_cierre()).isAfter(LocalDate.parse(hotel.getFecha_apertura()))
+                    && hotel.getEmail() != null && hotel.getEmail().getPassword() != null && hotel.getLatitud() != null
+                    && hotel.getLongitud() != null) {
 
-            //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
-            if(hotelService.siEsApartaHotel(input) != true){
-                input.setNum_estrellas(0);
+                //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
+                if(hotelService.siEsApartaHotel(hotel) != true){
+                    hotel.setNum_estrellas(0);
+                }
+
+                //Funcion que guarda hotel
+                hotelService.guardarHotel(hotelService.convertirAHotel(hotel));
+                System.out.println(hotelService.convertirAHotel(hotel));
+
+                return "redirect:/main";
+            } else {
+
+                return "redirect:/registrohotel";
             }
-
-            //Funcion que guarda hotel
-            hotelService.guardarHotel(hotelService.convertirAHotel(input));
-            System.out.println(hotelService.convertirAHotel(input));
-
-            return "redirect:/main";
-        } else {
-
-            return "redirect:/registrohotel";
-        }
         }catch (Exception e){
             return "redirect:/registrohotel";
         }
