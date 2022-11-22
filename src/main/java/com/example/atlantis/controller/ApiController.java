@@ -145,7 +145,7 @@ public class ApiController {
 
 
 
-    @PostMapping("/borrarcliente")
+    @PostMapping("/deletecliente")
     @MutationMapping
 
     public String deleteCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
@@ -177,7 +177,7 @@ public class ApiController {
 
 
 
-    @PostMapping("/borrarhotel")
+    @PostMapping("/deletehotel")
     @MutationMapping
     public String deleteHotel2(@RequestBody @Argument(name = "input") GraphqlInput.HotelInput hotel) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -196,15 +196,15 @@ public class ApiController {
             comentarioHotels.stream().forEach(x-> comentarioHotelRepository.delete(x));
             comentarios.stream().forEach(x-> comentarioRepository.delete(x));
             hotelService.borrarHotel(hotel1);
-            return "redirect:/logout";
+            return "Hotel borrado con éxito";
         }
         else{
-            return "redirect:/borrarhotel";
+            return "Hotel no pudo ser borrado";
         }
 
     }
 
-    @PostMapping("/editarcliente")
+    @PostMapping("/editcliente")
     @SchemaMapping(typeName = "Mutation", value = "editarCliente2")
     public String editarCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
         //If para verificar que los datos introducidos sean tal cual se necesite
@@ -231,16 +231,16 @@ public class ApiController {
 
             //Introduccion de datos a Service para meter en ddbb
             clienteService.editarClienteApi(input);
-            return "redirect:/main";
+            return "Cliente editado con éxito";
 
         }else{
 
-            return "redirect:/editarcliente";
+            return "El cliente no se pudo editar";
         }
     }
 
 
-    @PostMapping("/editarhotel")
+    @PostMapping("/edithotel")
     @SchemaMapping(typeName = "Mutation", value = "editarHotel2")
     public String editarhotel2(@RequestBody @Argument(name = "input") GraphqlInput.RegisHotFechInput input) {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
@@ -270,23 +270,23 @@ public class ApiController {
             }
             //Método para meter el hotel ya convertido en el modelo para ddbb
             hotelService.editarHotel(hotelService.convertirAHotelApi(input));
-            return "redirect:/main";
+            return "Hotel editado con éxito";
         } else {
 
-            return "redirect:/editarhotel";
+            return "El hotel no se pudo editar";
         }
     }
 
 
 
 
-    @GetMapping("/")
+    @GetMapping("/irMain")
     @MutationMapping
     public String irAMain(@PathVariable @Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
         return "redirect:/main";
     }
 
-    @RequestMapping("/perfilcliente")
+    @RequestMapping("/perfcliente")
     @MutationMapping
     public Cliente perfil(@Argument(name = "correo") String correo){
         ModelAndView model = new ModelAndView("perfilCliente");
@@ -319,7 +319,7 @@ public class ApiController {
         return cliente;
     }
 
-    @GetMapping("/historialReservaHotelVigentes")
+    @GetMapping("/historialReservaHotelVigentess")
     @MutationMapping
     public List<HistorialReservaHotel> historialVigenteHotel(@RequestBody @Argument(name = "hotel") GraphqlInput.HotelInput hotel) {
 
@@ -346,7 +346,7 @@ public class ApiController {
     }
 
 
-    @GetMapping("/historialReservaClienteVigentes")
+    @GetMapping("/historialReservaClienteVigentess")
     @MutationMapping
     public List<HistorialReservaClientes> historialVigente(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput cliente) {
         ModelAndView model = new ModelAndView("historialReservaCliente");
@@ -371,7 +371,7 @@ public class ApiController {
 
     }
 
-    @RequestMapping(value = "/hoteles/{item}", method = RequestMethod.GET)
+    @RequestMapping(value = "/hoteless/{item}", method = RequestMethod.GET)
     @MutationMapping
     public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id, HttpSession session) {
 
@@ -431,7 +431,7 @@ public class ApiController {
         return model;
     }
 
-    @PostMapping("/reservar")
+    @PostMapping("/reservarr")
     @MutationMapping
     public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
                                      @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
