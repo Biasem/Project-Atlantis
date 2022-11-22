@@ -1,0 +1,265 @@
+scalar Date
+
+
+type Query{
+
+    perfil(correo : String) :String
+
+    perfilHotel :String
+
+    irAMain(busqueda : BusquedaInput):String
+
+    listaHotel(
+        busqueda : BusquedaInput
+    ):String
+
+    historialVigente(
+        cliente : ClienteInput
+    ):String
+
+    historialVigenteHotel(
+        hotel : HotelInput
+    ):String
+
+    resultadoHotel(
+        id : ID
+    ):String
+
+    reservarHab(
+        objeto :Objeto_Aux_Reserva_htmlInput
+        idhotel : ID
+        correo : String
+    ):String
+
+
+}
+
+
+type Mutation{
+    registroCliente(
+        input : ClienteInput
+    ):String
+
+    editarCliente2(
+        input : ClienteInput
+    ):String
+
+    registerhotelForm(
+        input : RegisHotFech
+    ):String
+
+    deleteCliente2(
+        input : ClienteInput
+    ):String
+
+
+    deleteHotel2(
+        input : HotelInput
+    ):String
+
+
+    editarHotel2(
+        input : RegisHotFech
+    ):String
+
+
+}
+
+
+
+type Cliente{
+
+    id : ID
+    nombre : String
+    apellidos : String
+    dni : String
+    pais : String
+    telefono : String
+    email :  Login
+
+}
+
+
+type Login{
+    email : String
+    password : String
+    rol : [Rol]
+}
+
+enum Rol{
+    ADMIN
+    CLIENTE
+    HOTEL
+}
+
+type Hotel{
+    id : ID
+    nombre : String
+    pais : String
+    localidad : String
+    direccion : String
+    fecha_apertura : Date
+    fecha_cierre : Date
+    num_estrellas : Int
+    tipo_hotel : [Tipo_hotel]
+    telefono : String
+    latitud : Float
+    longitud : Float
+    email : Login
+    url_icono : String
+    url_imagen_general : String
+}
+
+type Reserva{
+    id : ID
+    id_hotel : Hotel
+    id_cliente : Cliente
+    num_clientes : Int
+    fecha_entrada : Date
+    fecha_salida : Date
+    precio_total : Float
+
+}
+
+type Hab_Reserva_Hotel{
+    id : ID
+    reserva : Reserva
+    id_regimen : Regimen
+    id_hab : Habitaciones
+}
+
+type Regimen{
+    id : ID
+    id_hotel : Hotel
+    categoria : TipoRegimen
+    precio : Float
+}
+
+type Habitaciones{
+    id : ID
+    id_hotel : Hotel
+    tipo_hab : TipoHab
+    num_hab : Int
+    hab_ocupadas : Int
+    max_cliente : Int
+
+}
+
+type HistorialReservaClientes{
+    id : ID
+    nombreHotel : String
+    num_clientes : Int
+    categoria : TipoRegimen
+    fecha_entrada : Date
+    fecha_salida : Date
+    precio_total : Float
+}
+
+
+type HistorialReservaHotel{
+    id : ID
+    nombreCliente : String
+    apellidosCliente : String
+    dniCliente : String
+    emailCliente : String
+    num_clientes : Int
+    categoria : TipoRegimen
+    fecha_entrada : Date
+    fecha_salida : Date
+    precio_total : Float
+
+}
+
+input BusquedaInput{
+    hotelBuscar : String
+    fechaInicial : String
+    fechaFinal : String
+    numHuespedes : Int
+}
+
+
+enum TipoHab{
+    SIMPLE
+    DOBLE
+    TRIPLE
+    SUITE
+}
+
+enum Tipo_hotel{
+    HOSTAL
+    HOTEL
+    APARTAHOTEL
+    APARTAMENTO
+}
+
+enum TipoRegimen{
+    SIN_PENSION
+    DESAYUNO
+    MEDIA_PENSION
+    PENSION_COMPLETA
+    TODO_INCLUIDO
+}
+
+input ClienteInput{
+    id : ID
+    nombre : String
+    apellidos : String
+    dni : String
+    pais : String
+    telefono : String
+    email : LoginInput
+
+}
+
+input LoginInput{
+    email : String
+    password : String
+    rol : Rol
+}
+
+
+input RegisHotFech{
+    id : ID
+    nombre : String
+    pais : String
+    localidad : String
+    direccion : String
+    fecha_apertura : String
+    fecha_cierre : String
+    num_estrellas : Int
+    tipo_hotel : Tipo_hotel
+    telefono : String
+    latitud : Float
+    longitud : Float
+    email : LoginInput
+    url_icono : String
+    url_imagen_general : String
+
+}
+
+
+input HotelInput{
+    id : ID
+    nombre : String
+    pais : String
+    localidad : String
+    direccion : String
+    fecha_apertura : Date
+    fecha_cierre : Date
+    num_estrellas : Int
+    tipo_hotel : [Tipo_hotel]
+    telefono : String
+    latitud : Float
+    longitud : Float
+    email : LoginInput
+    url_icono : String
+    url_imagen_general : String
+}
+
+input Objeto_Aux_Reserva_htmlInput{
+    cantidadHabitaciones : [Int]
+    tipo_regimen : [String]
+    fechainicio : String
+    fechafin : String
+
+}
