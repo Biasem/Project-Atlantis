@@ -20,7 +20,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -51,6 +53,9 @@ public class ApiController {
     private ComentarioService comentarioService;
 
     @Autowired
+    private BusquedaService busquedaService;
+
+    @Autowired
     private ComentarioLikeRepository comentarioLikeRepository;
 
     @Autowired
@@ -78,31 +83,31 @@ public class ApiController {
     public String registerForm(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
 
         try {
-                //Selección de Rol Cliente para el nuevo cliente
-                input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
-                input.getEmail().setPassword(bCryptPasswordEncoder.encode(input.getEmail().getPassword()));
+            //Selección de Rol Cliente para el nuevo cliente
+            input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
+            input.getEmail().setPassword(bCryptPasswordEncoder.encode(input.getEmail().getPassword()));
 
-                Cliente cliente = new Cliente();
-                cliente.setApellidos(input.getApellidos());
-                cliente.setNombre(input.getNombre());
-                cliente.setDni(input.getDni());
-                cliente.setPais(input.getPais());
-                cliente.setTelefono(input.getTelefono());
-                Login login = new Login();
-                cliente.setEmail(login);
-                cliente.getEmail().setEmail(input.getEmail().getEmail());
-                cliente.getEmail().setPassword(input.getEmail().getPassword());
-                cliente.getEmail().setRol(Rol.CLIENTE);
-
-
-                //Guardado del cliente en base de datos
-                clienteService.guardarCliente(cliente);
-                System.out.println(input);
-
-                return "Datos guardados correctamente";
+            Cliente cliente = new Cliente();
+            cliente.setApellidos(input.getApellidos());
+            cliente.setNombre(input.getNombre());
+            cliente.setDni(input.getDni());
+            cliente.setPais(input.getPais());
+            cliente.setTelefono(input.getTelefono());
+            Login login = new Login();
+            cliente.setEmail(login);
+            cliente.getEmail().setEmail(input.getEmail().getEmail());
+            cliente.getEmail().setPassword(input.getEmail().getPassword());
+            cliente.getEmail().setRol(Rol.CLIENTE);
 
 
-        }catch (Exception e){
+            //Guardado del cliente en base de datos
+            clienteService.guardarCliente(cliente);
+            System.out.println(input);
+
+            return "Datos guardados correctamente";
+
+
+        } catch (Exception e) {
             return "Ha habido un problema al guardar cliente";
         }
     }
@@ -124,7 +129,7 @@ public class ApiController {
                     && input.getLongitud() != null) {
 
                 //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
-                if(hotelService.siEsApartaHotelApi(input) != true){
+                if (hotelService.siEsApartaHotelApi(input) != true) {
                     input.setNum_estrellas(0);
                 }
 
@@ -137,12 +142,11 @@ public class ApiController {
 
                 return "Ha habido un problema al guardar cliente";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Ha habido un problema al guardar cliente";
         }
 
     }
-
 
 
     @PostMapping("/deletecliente")
@@ -153,10 +157,10 @@ public class ApiController {
         //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        if(input.getEmail().getEmail()!=null){
+        if (input.getEmail().getEmail() != null) {
             cliente2 = clienteService.copiartodoclienteApi(input);
 
-        }else {
+        } else {
             //Encriptado y recogida de datos de al sesión para copiar todo el modelo
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
@@ -169,12 +173,10 @@ public class ApiController {
             clienteService.borrarClienteApi(input);
 
             return "Cliente borrado con éxito";
-        }
-        else {
+        } else {
             return "Fallo al borrar cliente";
         }
     }
-
 
 
     @PostMapping("/deletehotel")
@@ -188,17 +190,16 @@ public class ApiController {
 
         Hotel hotel1 = hotelService.copiartodohotelApi(hotel);
 
-        if(hotel1.getEmail().getEmail().equals(hotel.getEmail().getEmail()) && encoder.matches(hotel.getEmail().getPassword(), hotel1.getEmail().getPassword())){
-            List<ComentarioLike> comentarioLike = comentarioLikeRepository.findAll().stream().filter(x-> x.getId_hotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
-            List<ComentarioHotel> comentarioHotels = comentarioHotelRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
-            List<Comentario> comentarios = comentarioRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
-            comentarioLike.stream().forEach(x-> comentarioLikeRepository.delete(x));
-            comentarioHotels.stream().forEach(x-> comentarioHotelRepository.delete(x));
-            comentarios.stream().forEach(x-> comentarioRepository.delete(x));
+        if (hotel1.getEmail().getEmail().equals(hotel.getEmail().getEmail()) && encoder.matches(hotel.getEmail().getPassword(), hotel1.getEmail().getPassword())) {
+            List<ComentarioLike> comentarioLike = comentarioLikeRepository.findAll().stream().filter(x -> x.getId_hotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            List<ComentarioHotel> comentarioHotels = comentarioHotelRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            List<Comentario> comentarios = comentarioRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
+            comentarioLike.stream().forEach(x -> comentarioLikeRepository.delete(x));
+            comentarioHotels.stream().forEach(x -> comentarioHotelRepository.delete(x));
+            comentarios.stream().forEach(x -> comentarioRepository.delete(x));
             hotelService.borrarHotel(hotel1);
             return "Hotel borrado con éxito";
-        }
-        else{
+        } else {
             return "Hotel no pudo ser borrado";
         }
 
@@ -208,14 +209,14 @@ public class ApiController {
     @SchemaMapping(typeName = "Mutation", value = "editarCliente2")
     public String editarCliente2(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
         //If para verificar que los datos introducidos sean tal cual se necesite
-        if(input.getNombre() != null && input.getApellidos() != null
+        if (input.getNombre() != null && input.getApellidos() != null
                 && clienteService.validarDNI(input.getDni()) != false) {
 
-            if(input.getEmail().getEmail()!=null){
+            if (input.getEmail().getEmail() != null) {
                 input.setId(null);
                 input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
 
-            }else {
+            } else {
 
                 //Recogida datos de sesión e insertarlos en el modelo
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -233,7 +234,7 @@ public class ApiController {
             clienteService.editarClienteApi(input);
             return "Cliente editado con éxito";
 
-        }else{
+        } else {
 
             return "El cliente no se pudo editar";
         }
@@ -251,11 +252,10 @@ public class ApiController {
         ) {
 
 
-            if(input.getEmail().getEmail()!= null){
+            if (input.getEmail().getEmail() != null) {
                 input.setId(null);
                 input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
-            }
-            else {
+            } else {
                 //Recogida de datos con sesión y copia del modelo entero
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 String correo = auth.getName();
@@ -278,8 +278,6 @@ public class ApiController {
     }
 
 
-
-
     @GetMapping("/irMain")
     @MutationMapping
     public String irAMain(@PathVariable @Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
@@ -287,21 +285,21 @@ public class ApiController {
     }
 
     @RequestMapping("/perfcliente")
-    @MutationMapping
-    public Cliente perfil(@Argument(name = "correo") String correo){
+    @SchemaMapping(typeName = "Query", value = "perfil")
+    public Cliente perfil(@Argument(name = "correo") String correo) {
         ModelAndView model = new ModelAndView("perfilCliente");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo1 = auth.getName();
-        if(correo!=null){
+        if (correo != null) {
             correo = correo;
-        }else{
+        } else {
             correo = correo1;
         }
 
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (correo != null){
+        if (correo != null) {
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
             System.out.println(idCliente);
@@ -315,20 +313,55 @@ public class ApiController {
         model.addObject("idCliente", idCliente);
         model.addObject("cliente", cliente);
         model.addObject("correo", correo);
-        model.addObject("comentarios",comentarioService.conseguirComentariosCliente(idCliente));
+        model.addObject("comentarios", comentarioService.conseguirComentariosCliente(idCliente));
         return cliente;
     }
 
+    @RequestMapping("/perfilhotel")
+    @SchemaMapping(typeName = "Query", value = "perfilHotel")
+    public Hotel perfilhotel(@Argument(name = "correo") String correo) {
+        ModelAndView model = new ModelAndView("perfilHotel");
+        // Gestión sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo1 = auth.getName();
+        if (correo != null) {
+            correo = correo;
+        } else {
+            correo = correo1;
+        }
+
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null) {
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+            System.out.println(idCliente);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        // Gestión sesión
+
+        Hotel hotel = hotelService.getById(idHotel);
+        List<Comentario> comentarios = new ArrayList<>();
+        model.addObject("hotel", hotel);
+        model.addObject("correo", correo);
+        model.addObject("comentarios", comentarioService.conseguirComentariosHotel(idHotel));
+        model.addObject("media", comentarioService.mediaPuntuacion(idHotel));
+        model.addObject("estrellas", hotel.getNum_estrellas());
+        return hotel;
+    }
+
+
     @GetMapping("/historialReservaHotelVigentess")
-    @MutationMapping
+    @SchemaMapping(typeName = "Query", value = "historialVigenteHotel")
     public List<HistorialReservaHotel> historialVigenteHotel(@RequestBody @Argument(name = "hotel") GraphqlInput.HotelInput hotel) {
 
         Hotel hotel1 = new Hotel();
         ModelAndView model = new ModelAndView("historialReservaHotel");
-        if(hotel.getEmail().getEmail()!=null){
+        if (hotel.getEmail().getEmail() != null) {
             hotel1 = hotelService.copiartodohotelApi(hotel);
 
-        }else {
+        } else {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
             hotel1 = loginService.cogerid(correo);
@@ -347,13 +380,13 @@ public class ApiController {
 
 
     @GetMapping("/historialReservaClienteVigentess")
-    @MutationMapping
+    @SchemaMapping(typeName = "Query", value = "historialVigente")
     public List<HistorialReservaClientes> historialVigente(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput cliente) {
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Cliente cliente1 = new Cliente();
-        if(cliente.getEmail().getEmail()!=null){
+        if (cliente.getEmail().getEmail() != null) {
             cliente1 = clienteService.copiartodoclienteApi(cliente);
-        }else {
+        } else {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String correo = auth.getName();
@@ -372,8 +405,8 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/hoteless/{item}", method = RequestMethod.GET)
-    @MutationMapping
-    public @ResponseBody ModelAndView resultadoHotel(@RequestParam(value = "id")@PathVariable @Argument(name = "id") Integer id, HttpSession session) {
+    @SchemaMapping(typeName = "Query", value = "resultadoHotel")
+    public @ResponseBody Hotel resultadoHotel(@RequestParam(value = "id") @PathVariable @Argument(name = "id") Integer id) {
 
         ModelAndView model = new ModelAndView("hotelWeb");
         // Gestión sesión
@@ -381,15 +414,15 @@ public class ApiController {
         String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
-        if (correo != null){
+        if (correo != null) {
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
         }
         Integer idHotelreserva = id;
 
-        if (idHotel>0){
+        if (idHotel > 0) {
             Integer finalIdHotel = idHotel;
-            Hotel hotelConectado = hotelRepository.findAll().stream().filter(x-> x.getId().equals(finalIdHotel)).collect(Collectors.toList()).get(0);
+            Hotel hotelConectado = hotelRepository.findAll().stream().filter(x -> x.getId().equals(finalIdHotel)).collect(Collectors.toList()).get(0);
             model.addObject("hotelConectado", hotelConectado);
         }
         model.addObject("idHotel", idHotel);
@@ -400,9 +433,9 @@ public class ApiController {
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-        List<ComentarioHotel> listaComentariosHotel = comentarioHotelRepository.findAll().stream().filter(x-> x.getHotel().getId().equals(idHotelreserva)).collect(Collectors.toList());
+        List<ComentarioHotel> listaComentariosHotel = comentarioHotelRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(idHotelreserva)).collect(Collectors.toList());
         BuscadorID numero = new BuscadorID(id);
-        Hotel definitivo = buscadorService.Comparar(numero,listaHoteles);
+        Hotel definitivo = buscadorService.Comparar(numero, listaHoteles);
         hotelfinal.add(definitivo);
         List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
         Double latitud = definitivo.getLatitud();
@@ -415,40 +448,125 @@ public class ApiController {
         model.addObject("texto", new Comentario());
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().filter(h -> h.getHab_ocupadas()<h.getNum_hab()).collect(Collectors.toList()));
-        model.addObject("estrellas",estrellas);
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(id, listaHabitaciones).stream().filter(h -> h.getHab_ocupadas() < h.getNum_hab()).collect(Collectors.toList()));
+        model.addObject("estrellas", estrellas);
         model.addObject("fechamin", LocalDate.now());
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
-        if((session.getAttribute("fecha_inicial")!=null)&&(session.getAttribute("fecha_final")!=null)){
-            objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
-            objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
-        }
-        model.addObject("objeto_integer",objetoInteger);
-        model.addObject("comentarios",comentarioService.conseguirComentarios(id));
+//        if((session.getAttribute("fecha_inicial")!=null)&&(session.getAttribute("fecha_final")!=null)){
+//            objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
+//            objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
+//        }
+        model.addObject("objeto_integer", objetoInteger);
+        model.addObject("comentarios", comentarioService.conseguirComentarios(id));
         Integer comprobante = 0;
         model.addObject("comprobante", comprobante);
 
-        return model;
+        return definitivo;
     }
 
     @PostMapping("/reservarr")
     @MutationMapping
-    public ModelAndView reservarHab (@RequestBody @ModelAttribute("objeto_integer")@PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
-                                     @RequestParam("idhotel")@PathVariable @Argument(name = "idhotel") Integer idhotel,
-                                     @PathVariable @Argument(name = "correo") String correo){
+    public ModelAndView reservarHab(@RequestBody @ModelAttribute("objeto_integer") @PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
+                                    @RequestParam("idhotel") @PathVariable @Argument(name = "idhotel") Integer idhotel,
+                                    @PathVariable @Argument(name = "correo") String correo) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        LocalDate fechap =  LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
-        LocalDate fechap1 =  LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
+        LocalDate fechap = LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
+        LocalDate fechap1 = LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
 
         ModelAndView model = new ModelAndView("pagarReserva");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo1 = auth.getName();
-        if(correo!= null){
+        if (correo != null) {
             correo = correo;
-        }else {
+        } else {
+            correo = correo1;
+        }
+
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null) {
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        // Gestión sesión
+        if (fechap.isAfter(fechap1) ||
+                fechap.equals(fechap1)) {
+            return new ModelAndView("redirect:/hoteles/item?id=" + idhotel); //siento esta fechoria xd
+        }
+        for (Integer i : objeto_aux_reservaHtml.getCantidadHabitaciones()) {
+            if (i == null) {
+                return new ModelAndView("redirect:/hoteles/item?id=" + idhotel);
+            }
+        }
+
+        //objeto Reserva_para_bbdd
+        reserva_para_bbdd = reservaService.precioHabReservadaApi(idhotel, objeto_aux_reservaHtml);
+        reserva_para_bbdd.setIdCliente(idCliente);
+        List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
+        for (Ob_mostrar_reserva omr : listamostrar) {
+            if (omr.getCantHab() > omr.getHabitaciones().getNum_hab() - omr.getHabitaciones().getHab_ocupadas())
+                return new ModelAndView("redirect:/hoteles/item?id=" + idhotel);
+        }
+
+        Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(), reserva_para_bbdd.getFechasalida());
+
+        model.addObject("dias", dias);
+        model.addObject("total", reserva_para_bbdd.getPrecioTotal());
+        model.addObject("listareserva", listamostrar);
+
+        return model;
+    }
+
+
+    @GetMapping("/main")
+    @SchemaMapping(typeName = "Query", value = "listaHotelAzar")
+    public List<Hotel> listaHotel(@Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
+        ModelAndView model = new ModelAndView("main");
+
+        // Gestión sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo = auth.getName();
+        Integer idCliente = 0;
+        Integer idHotel = 0;
+        if (correo != null) {
+            idCliente = clienteService.conseguirId(correo);
+            idHotel = hotelService.conseguirId(correo);
+        }
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        // Gestión sesión
+
+        List<Hotel> listaprimera = hotelService.getAll();
+        Map<Hotel, Integer> lista = hotelService.filtrarmejores(listaprimera);
+
+        ModelAndView azar = new ModelAndView("mainazar");
+        Collections.shuffle(listaprimera);
+        List<Hotel> listaHotel = listaprimera.subList(0, 3);
+        azar.addObject("fechamin", LocalDate.now());
+        azar.addObject("busqueda", input);
+        azar.addObject("listaHotel", listaHotel);
+        model.addObject("idHotel", idHotel);
+        model.addObject("idCliente", idCliente);
+        return listaHotel;
+    }
+
+
+    @PostMapping("/main")
+    @SchemaMapping(typeName = "Query", value = "listaHotelBusqueda")
+    public ModelAndView listaHoteles(@Argument(name = "busqueda") GraphqlInput.BusquedaInput busqueda, @Argument(name = "correo") String correo) {
+        ModelAndView model = new ModelAndView("resultado");
+
+        // Gestión sesión
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String correo1 = auth.getName();
+        if (correo != null) {
+            correo = correo;
+        } else {
             correo = correo1;
         }
 
@@ -461,34 +579,23 @@ public class ApiController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-        if(fechap.isAfter(fechap1)||
-                fechap.equals(fechap1))
+
+
+        List<Hotel> listaHoteles = hotelService.getAll();
+        List<Hotel> filtro = busquedaService.AccionBuscarApi(busqueda,listaHoteles);
+        Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
+        if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
         {
-            return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
+            return new ModelAndView("redirect:main");
         }
-        for (Integer i:objeto_aux_reservaHtml.getCantidadHabitaciones()){
-            if (i==null){
-                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
-            }
-        }
-
-        //objeto Reserva_para_bbdd
-        reserva_para_bbdd = reservaService.precioHabReservadaApi(idhotel, objeto_aux_reservaHtml);
-        reserva_para_bbdd.setIdCliente(idCliente);
-        List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
-        for (Ob_mostrar_reserva omr :listamostrar){
-            if(omr.getCantHab()>omr.getHabitaciones().getNum_hab()-omr.getHabitaciones().getHab_ocupadas()) return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
-        }
-
-        Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(),reserva_para_bbdd.getFechasalida());
-
-        model.addObject("dias",dias);
-        model.addObject("total",reserva_para_bbdd.getPrecioTotal());
-        model.addObject("listareserva",listamostrar);
-
-        return model;
+        model.addObject("fechamin", LocalDate.now());
+        model.addObject("lista", lista);
+        return model ;
     }
 
 
 }
+
+
+
 

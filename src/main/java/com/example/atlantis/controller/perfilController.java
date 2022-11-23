@@ -65,7 +65,6 @@ public class perfilController {
     }
 
     @RequestMapping("/perfilhotel")
-    @SchemaMapping(typeName = "Query", value = "perfilHotel")
     public ModelAndView perfilhotel(HttpSession session){
         ModelAndView model = new ModelAndView("perfilHotel");
         // Gestión sesión
