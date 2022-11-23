@@ -10,10 +10,16 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.github.javafaker.Faker;
+
 
 
 @Service
 public class HotelService {
+    private static Faker faker = new Faker();
+    private Rol rol;
+    private TipoHotel tipoHotel;
+
 
     @Autowired
     private HotelRepository hotelRepository;
@@ -187,6 +193,31 @@ public class HotelService {
             mapa.put(media, x);
         }
     return mapa;
+    }
+
+    public Hotel crearHotel(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Login login = new Login();
+        Hotel hotel = new Hotel();
+
+        login.setEmail(faker.internet().emailAddress());
+        login.setPassword(passwordEncoder.encode("1234"));
+        login.setRol(rol.HOTEL);
+        hotel.setEmail(login);
+        hotel.setTipo_hotel(Arrays.stream(TipoHotel.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,4)));
+        hotel.setDireccion(faker.address().fullAddress());
+        hotel.setNombre("Hotel "+faker.starTrek().character());
+        hotel.setPais(faker.country().name());
+        hotel.setLocalidad(faker.country().capital());
+        hotel.setLatitud(Double.valueOf(faker.address().latitude()));
+        hotel.setLongitud(Double.valueOf(faker.address().longitude()));
+        hotel.setTelefono(faker.phoneNumber().subscriberNumber(9));
+        hotel.setNum_estrellas(faker.number().numberBetween(0,6));
+        hotel.setFecha_apertura();
+        hotel.setFecha_cierre();
+
+
+        return hotel;
     }
 
 
