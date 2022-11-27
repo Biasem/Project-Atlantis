@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -54,20 +55,12 @@ public class ClienteRepositoryTest {
         assertEquals("Los productos no coinciden",clienteEsperado.getDni(),clienteObtenido.getDni());
     }
 
-    @Test
-    public void crearHotel(){
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Login login = new Login();
-        Hotel hotel = new Hotel();
+//    @Test
+//    public void metodoPruebaTest(){
+//        System.out.println(Double.valueOf(faker.address().latitude().replace(",",".")));
+//    }
+    
 
-        login.setEmail(faker.internet().emailAddress());
-        login.setPassword(passwordEncoder.encode("1234"));
-        login.setRol(rol.HOTEL);
-        hotel.setEmail(login);
-
-        System.out.println(faker.phoneNumber().subscriberNumber(9));
-
-    }
 
 
 }

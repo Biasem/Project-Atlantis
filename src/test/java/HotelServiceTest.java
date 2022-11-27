@@ -32,21 +32,19 @@ public class HotelServiceTest {
     HotelService hotelService;
 
     @Before
-    public void setCliente(){
+    public void setHotel(){
         hotel = hotelService.crearHotel();
     }
 
-//    @Test
-//    public void guardarClienteTest(){
-//        //when
-//        Mockito.when(clienteRepository.save(any())).thenReturn(cliente);
-//        //then
-//        Cliente clienteGuardado = clienteService.guardarCliente(cliente);
-//        //expected
-//        assertNotNull(clienteGuardado);
-//        assertEquals(clienteGuardado,cliente);
-//
-//
-//    }
+    @Test
+    public void guardarHotelTest(){
+        //when
+        Mockito.when(hotelRepository.save(any())).thenReturn(hotel);
+        //then
+        Hotel hotelGuardado = hotelService.guardarHotel(hotel);
+        //expected
+        assertNotNull(hotelGuardado);
+        assertEquals(hotelGuardado,hotel);
+    }
 
 }

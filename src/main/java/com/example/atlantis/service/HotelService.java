@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,8 +85,8 @@ public class HotelService {
     }
 
 
-    public void guardarHotel(Hotel hotel){
-        hotelRepository.save(hotel);
+    public Hotel guardarHotel(Hotel hotel){
+        return hotelRepository.save(hotel);
     }
 
     public List<TipoRegimen> todoregimen(){
@@ -209,15 +210,26 @@ public class HotelService {
         hotel.setNombre("Hotel "+faker.starTrek().character());
         hotel.setPais(faker.country().name());
         hotel.setLocalidad(faker.country().capital());
-        hotel.setLatitud(Double.valueOf(faker.address().latitude()));
-        hotel.setLongitud(Double.valueOf(faker.address().longitude()));
+        hotel.setLatitud(Double.valueOf(faker.address().latitude().replace(",",".")));
+        hotel.setLongitud(Double.valueOf(faker.address().longitude().replace(",",".")));
         hotel.setTelefono(faker.phoneNumber().subscriberNumber(9));
         hotel.setNum_estrellas(faker.number().numberBetween(0,6));
-        hotel.setFecha_apertura();
-        hotel.setFecha_cierre();
-
-
+        hotel.setFecha_apertura(fechaAzar2022());
+        hotel.setFecha_cierre(fechaAzar2022());
         return hotel;
+    }
+
+    public LocalDate fechaAzar2022(){
+        LocalDate fecha ;
+        int anyo = 2022;
+        int mes = faker.number().numberBetween(1,13);
+        int dia = 1;
+        if (mes ==2) dia = faker.number().numberBetween(1,28);
+        else if (mes ==1||mes==3||mes==5||mes==7||mes==8||mes==10||mes==12) dia = faker.number().numberBetween(1,32);
+        else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
+        fecha = LocalDate.of(anyo,mes,dia);
+
+        return fecha;
     }
 
 
