@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
-import com.github.javafaker.Faker;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class HotelServiceTest {
