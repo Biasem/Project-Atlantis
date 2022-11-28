@@ -77,6 +77,10 @@ public class ApiController {
     @Autowired
     private BuscadorIDService buscadorService;
 
+    @Autowired
+    private Precio_HabitacionService precio_habitacionService;
+
+
 
     @PostMapping("/register")
     @MutationMapping
@@ -523,7 +527,7 @@ public class ApiController {
     }
 
 
-    @GetMapping("/main")
+    @GetMapping("/listaHotelAzar")
     @SchemaMapping(typeName = "Query", value = "listaHotelAzar")
     public List<Hotel> listaHotel(@Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
         ModelAndView model = new ModelAndView("main");
@@ -556,7 +560,7 @@ public class ApiController {
     }
 
 
-    @PostMapping("/main")
+    @PostMapping("/listaHotelBusqueda")
     @SchemaMapping(typeName = "Query", value = "listaHotelBusqueda")
     public ModelAndView listaHoteles(@Argument(name = "busqueda") GraphqlInput.BusquedaInput busqueda, @Argument(name = "correo") String correo) {
         ModelAndView model = new ModelAndView("resultado");
@@ -579,8 +583,6 @@ public class ApiController {
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-
-
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> filtro = busquedaService.AccionBuscarApi(busqueda,listaHoteles);
         Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
@@ -591,6 +593,147 @@ public class ApiController {
         model.addObject("fechamin", LocalDate.now());
         model.addObject("lista", lista);
         return model ;
+    }
+
+
+    @PostMapping("/CrearHabitacion")
+    @SchemaMapping(typeName = "Mutation", value = "crearHabitacion")
+    public String habitaciones(@Argument(name = "habitaciones") GraphqlInput.HabitacionesInput habitaciones,
+                                     @Argument(name = "id") Integer idhotel) {
+        habitaciones.setHab_ocupadas(0);
+        Habitaciones habitaciones1 = new Habitaciones();
+
+        habitaciones1.setHab_ocupadas(habitaciones.getHab_ocupadas());
+        habitaciones1.setNum_hab(habitaciones.getNum_hab());
+        habitaciones1.setTipo_hab(habitaciones.getTipo_hab());
+        Hotel nuevo = new Hotel();
+        habitaciones1.setId_hotel(nuevo);
+        habitaciones1.getId_hotel().setId(idhotel);
+        habitaciones1.setMax_cliente(habitaciones.getMax_cliente());
+
+        habitacionesService.guardarHabitacion(habitaciones1);
+        ModelAndView model = new ModelAndView("adminHecho");
+        return "Guardado correctamente";
+    }
+
+
+    @RequestMapping("/admin/habitacioness/editar/hecho/{item}")
+    @SchemaMapping(typeName = "Mutation", value = "editarHabitacion")
+    public @ResponseBody String editarHabitacionhecho(@Argument(name = "id") Integer id,
+                                                            @Argument(name = "habitaciones") GraphqlInput.HabitacionesInput habitaciones) {
+        habitacionesService.editarHabitacionApi(id, habitaciones);
+        ModelAndView model = new ModelAndView("adminHecho");
+        return "Editado correctamente";
+    }
+
+
+    @RequestMapping("/admin/habitacioness/borrar/{item}")
+    @SchemaMapping(typeName = "Mutation", value = "borrarHabitacion")
+    public @ResponseBody String borrarHabitacion(@Argument(value = "id") Integer id) {
+
+        List<Habitaciones> habitaciones = habitacionesService.getAll();
+        Habitaciones habitacion = new Habitaciones();
+        habitacion = habitacionesService.conseguirHabitacion(id, habitaciones);
+        List<Precio_Hab> precios = precio_habitacionService.getAll();
+        precio_habitacionService.borrarLista(precios, habitacion);
+        habitacionesService.borrarHabitacion(id);
+        ModelAndView model = new ModelAndView("adminHecho");
+        return "Borrado correctamente";
+    }
+
+    @RequestMapping(value = "/admin/habitacioness/crear/regimen/hecho/")
+    @SchemaMapping(typeName = "Mutation", value = "crearRegimen")
+    public String crearRegimen(@Argument(name = "regimen") GraphqlInput.RegimenInput regimen,
+                                     @Argument("idhotel") Integer idhotel,
+                                     @Argument("categoria") TipoRegimen categoria,
+                                     @Argument("precio") Double precio) {
+
+        ModelAndView model = new ModelAndView();
+        List<Regimen> regimenes = regimenService.getAll();
+
+        regimen.setId(idhotel);
+        boolean bool = true;
+
+        for(Regimen r : regimenes) {
+
+            if (r.getCategoria().equals(regimen.getCategoria()) && r.getId_hotel().getId().equals(regimen.getId())) {
+
+                model = new ModelAndView("adminHecho");
+                bool = false;
+                break;
+            }
+        }
+        if(bool !=false) {
+            model = new ModelAndView("adminHecho");
+            Regimen nuevoRegimen = new Regimen();
+            nuevoRegimen.setCategoria(categoria);
+            nuevoRegimen.setPrecio(precio);
+            List<Hotel> hotel = regimenService.conseguirHotel(idhotel);
+            Hotel hotelfinal = new Hotel();
+            for (Hotel x : hotel) {
+                if (x.getId().equals(idhotel)) ;
+                hotelfinal = x;
+            }
+            nuevoRegimen.setId_hotel(hotelfinal);
+            regimenService.guardarRegimen(nuevoRegimen);
+        }
+        return "Guardado regimen correctamente";
+    }
+
+
+    @RequestMapping("/admin/habitacioness/regimen/borrar/{item}")
+    @SchemaMapping(typeName = "Mutation", value = "borrarRegimen")
+    public @ResponseBody String borrarRegimen(@Argument(value = "id") Integer id, @Argument(value = "idhotel") Integer idhotel) {
+
+        ModelAndView model = new ModelAndView("adminHecho");
+
+
+        Integer preciofinal = regimenService.conseguirRegimenIDHotel(id);
+
+        if (preciofinal == idhotel){
+            Integer comprobar = habitacion_reserva_hotelService.checkearReserva(id);
+            if (comprobar.equals(0)){
+                regimenService.borrarRegimen(id);
+                return "Borrado con éxito";
+            }
+            else{
+                ModelAndView error = new ModelAndView("errorAdmin");
+                return "Fallo al borrar";
+            }
+
+        }
+
+        else{
+            ModelAndView error = new ModelAndView("error/403");
+            return "Fallo al borrar";
+        }
+    }
+
+
+    @RequestMapping("/admin/habitacioness/editar/precio/hecho/{item}")
+    @SchemaMapping(typeName = "Mutation", value = "crearPrecio")
+    public @ResponseBody String crearPrecio(@Argument(value = "id") Integer id,
+                                                  @Argument("precio_hab") GraphqlInput.Precio_HabInput nuevoprecio,
+                                                  @Argument("fechainicio") String fechainicio,
+                                                  @Argument("fechafin") String fechafin,
+                                                  @Argument("idhotel") Integer idhotel) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate fechap =  LocalDate.parse(fechainicio, formatter);
+        LocalDate fechap1 =  LocalDate.parse(fechafin, formatter);
+
+        Precio_Hab precio_hab = new Precio_Hab();
+
+        ModelAndView model = new ModelAndView("adminHecho");
+        precio_hab.setFecha_inicio(LocalDate.parse(fechainicio));
+        precio_hab.setFecha_fin(LocalDate.parse(fechafin));
+        Hotel hotel = precio_habitacionService.conseguirIDHotelprecio(idhotel);
+        Habitaciones habitacion = precio_habitacionService.conseguirIDHabitacionprecio(id);
+        precio_hab.setId_hotel(hotel);
+        precio_hab.setId_hab(habitacion);
+        precio_habitacionService.guardarPrecio(precio_hab);
+        return "Creado correctamente";
     }
 
 

@@ -2,6 +2,7 @@ package com.example.atlantis.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.checkerframework.checker.units.qual.A;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
@@ -93,6 +94,39 @@ public class GraphqlInput {
         private String fechafin;
 
     }
+
+    @Data
+    @AllArgsConstructor
+    public class HabitacionesInput{
+       private HotelInput id_hotel;
+       private TipoHab tipo_hab;
+       private Integer num_hab;
+       private Integer max_cliente;
+       private Integer hab_ocupadas;
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    public class RegimenInput{
+       private Integer id;
+       private HotelInput id_hotel;
+       private TipoRegimen categoria;
+       private Float precio;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class Precio_HabInput{
+       private HabitacionesInput id_hab;
+       private HotelInput id_hotel;
+       private String  fecha_inicio;
+       private String  fecha_fin;
+       private Double precio;
+    }
+
+
 
 
     @AllArgsConstructor

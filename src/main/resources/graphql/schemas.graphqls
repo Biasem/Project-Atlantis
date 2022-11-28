@@ -68,6 +68,39 @@ type Mutation{
         input : RegisHotFech
     ):String
 
+    crearHabitacion(
+        habitaciones : HabitacionesInput
+        id : ID
+    ):String
+
+    editarHabitacion(
+        habitaciones : HabitacionesInput
+        id : ID
+    ):String
+
+    borrarHabitacion(
+        id : ID
+    ):String
+
+    crearRegimen(
+        regimen : RegimenInput
+        idhotel : Int
+        categoria : TipoRegimen
+        precio : Float
+    ):String
+
+    borrarRegimen(
+        id : ID
+        idhotel : ID
+    ):String
+
+    crearPrecio(
+        id : ID
+        precio_hab : Precio_HabInput
+        fechainicio : String
+        fechafin : String
+        idhotel : ID
+    ):String
 
 }
 
@@ -279,5 +312,29 @@ input Objeto_Aux_Reserva_htmlInput{
     tipo_regimen : [String]
     fechainicio : String
     fechafin : String
+
+}
+
+input HabitacionesInput{
+    id_hotel : HotelInput
+    tipo_hab : TipoHab
+    num_hab : Int
+    max_cliente : Int
+    hab_ocupadas : Int
+}
+
+input RegimenInput{
+    id : ID
+    id_hotel : HotelInput
+    categoria : TipoRegimen
+    precio : Float
+}
+
+input Precio_HabInput{
+    id_hab : HabitacionesInput
+    id_hotel: HotelInput
+    fecha_inicio : Date
+    fecha_fin : Date
+    precio : Float
 
 }

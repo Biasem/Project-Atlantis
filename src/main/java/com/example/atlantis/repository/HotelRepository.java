@@ -17,6 +17,8 @@ import java.util.List;
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     List<Hotel> findAll();
 
+
+
     @Modifying
     @Transactional
     @Query("update Hotel h set h.nombre = :nombre, h.pais = :pais, h.localidad = :localidad, h.direccion = :direccion," +

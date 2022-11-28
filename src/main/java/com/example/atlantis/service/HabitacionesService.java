@@ -65,6 +65,7 @@ public class HabitacionesService {
     public void guardarHabitacion(Habitaciones habitacion){
         habitacionesRepository.save(habitacion);
     }
+
     public void borrarHabitacion(Integer id){
         habitacionesRepository.deleteAllById(Collections.singleton(id));
     }
@@ -80,6 +81,17 @@ public class HabitacionesService {
        }
     }
 
+    public void editarHabitacionApi(Integer id, GraphqlInput.HabitacionesInput habitacion){
+        List<Habitaciones> lista = habitacionesRepository.getHabitacionesById(id);
+        for (Habitaciones x: lista){
+            x.setNum_hab(habitacion.getNum_hab());
+            x.setTipo_hab(habitacion.getTipo_hab());
+            x.setHab_ocupadas(habitacion.getHab_ocupadas());
+            x.setMax_cliente(habitacion.getMax_cliente());
+            habitacionesRepository.save(x);
+        }
+    }
+
     public Habitaciones conseguirIDHotel (Integer idhotel, Habitaciones habitacion){
         List<Hotel> hoteles = hotelRepository.findAll();
         Hotel hotel = new Hotel();
@@ -92,6 +104,36 @@ public class HabitacionesService {
 
         return habitacion;
     }
+
+    public GraphqlInput.HabitacionesInput conseguirIDHotelApi (Integer idhotel, GraphqlInput.HabitacionesInput habitacion){
+        List<Hotel> hoteles = hotelRepository.findAll();
+        Hotel hotel = new Hotel();
+        for (Hotel x: hoteles){
+            if(x.getId()==idhotel){
+                hotel = x;
+            }
+        }
+        Hotel nuevo = new Hotel();
+
+        habitacion.getId_hotel().setId(hotel.getId());
+        habitacion.getId_hotel().setNombre(hotel.getNombre());
+        habitacion.getId_hotel().setPais(hotel.getPais());
+        habitacion.getId_hotel().setLocalidad(hotel.getLocalidad());
+        habitacion.getId_hotel().setDireccion(hotel.getDireccion());
+        habitacion.getId_hotel().setFecha_apertura(hotel.getFecha_apertura());
+        habitacion.getId_hotel().setFecha_cierre(hotel.getFecha_cierre());
+        habitacion.getId_hotel().setNum_estrellas(hotel.getNum_estrellas());
+        habitacion.getId_hotel().setTelefono(hotel.getTelefono());
+        habitacion.getId_hotel().getEmail().setEmail(hotel.getEmail().getEmail());
+        habitacion.getId_hotel().getEmail().setPassword(hotel.getEmail().getPassword());
+        habitacion.getId_hotel().setUrl_icono(hotel.getUrl_icono());
+        habitacion.getId_hotel().setUrl_imagen_general(hotel.getUrl_imagen_general());
+        habitacion.getId_hotel().setLatitud(hotel.getLatitud());
+        habitacion.getId_hotel().setLongitud(hotel.getLongitud());
+
+        return habitacion;
+    }
+
 
     public Integer puedeEntrar (Integer idhotel, Integer idhabitacion){
         List<Habitaciones> habitacion = habitacionesRepository.getHabitacionesById(idhabitacion);
