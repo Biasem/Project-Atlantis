@@ -5,6 +5,7 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.*;
 import com.example.atlantis.service.*;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -36,6 +37,9 @@ public class ApiController {
 
     @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    ClienteRepository clienteRepository;
 
     @Autowired
     HotelService hotelService;
@@ -726,18 +730,107 @@ public class ApiController {
         Precio_Hab precio_hab = new Precio_Hab();
 
         ModelAndView model = new ModelAndView("adminHecho");
-        precio_hab.setFecha_inicio(LocalDate.parse(fechainicio));
-        precio_hab.setFecha_fin(LocalDate.parse(fechafin));
+        precio_hab.setFecha_inicio(fechap);
+        precio_hab.setFecha_fin(fechap1);
         Hotel hotel = precio_habitacionService.conseguirIDHotelprecio(idhotel);
         Habitaciones habitacion = precio_habitacionService.conseguirIDHabitacionprecio(id);
         precio_hab.setId_hotel(hotel);
         precio_hab.setId_hab(habitacion);
+        precio_hab.setPrecio(nuevoprecio.getPrecio());
+        precio_hab.getId_hab().setId(nuevoprecio.getId_hotel().getId());
         precio_habitacionService.guardarPrecio(precio_hab);
         return "Creado correctamente";
     }
 
 
-}
+    @RequestMapping("/admin/habitacioness/precio/borrar/{item}")
+    @SchemaMapping(typeName = "Mutation", value = "borrarPrecio")
+    public @ResponseBody String borrarPrecio(@Argument(value = "id") Integer id,
+                                             @Argument(value = "idhotel")Integer idHotel) {
+        ModelAndView model = new ModelAndView("adminHecho");
+
+
+        Integer preciofinal = precio_habitacionService.conseguirPrecioHabitacion(id);
+
+        if (preciofinal == idHotel){
+            precio_habitacionService.borrarPrecio(id);
+            return "Borrado correctamente";
+        }
+
+        else{
+            ModelAndView error = new ModelAndView("error/403");
+            return "Error al borrar";
+        }
+    }
+
+    @PostMapping("/listarClientes")
+    @SchemaMapping(typeName = "Query", value = "listarClientes")
+    public @ResponseBody List<Cliente> listarClientes(@Argument(value = "email") String email) {
+
+
+        List<Cliente> todos = clienteRepository.findAll();
+        List<Hotel> hoteles = hotelRepository.findAll();
+        List<Cliente> falsisimo = new ArrayList<>();
+        Boolean cierto = false;
+
+
+        for (Hotel x : hoteles) {
+            if (x.getEmail().getEmail().equals(email)) {
+                cierto = true;
+                break;
+            } else {
+                cierto = false;
+            }
+        }
+        if (cierto=true){
+            return todos;
+        }else {
+            return falsisimo;
+        }
+    }
+
+
+    @PostMapping("/listarHoteles")
+    @SchemaMapping(typeName = "Query", value = "listarHoteles")
+    public @ResponseBody List<Hotel> listarHoteles(@Argument(value = "email") String email) {
+
+
+        List<Cliente> todos = clienteRepository.findAll();
+        List<Hotel> hoteles = hotelRepository.findAll();
+        List<Hotel> falsisimo = new ArrayList<>();
+        Boolean cierto = false;
+
+
+        for (Cliente x : todos) {
+            if (x.getEmail().getEmail().equals(email)) {
+                cierto = true;
+                break;
+            } else {
+                cierto = false;
+            }
+        }
+        if (cierto=true){
+            return hoteles;
+        }else {
+            return falsisimo;
+        }
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

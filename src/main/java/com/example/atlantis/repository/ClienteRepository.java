@@ -1,6 +1,7 @@
 package com.example.atlantis.repository;
 
 import com.example.atlantis.model.Cliente;
+import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,6 +17,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query(value = "select id, nombre, apellidos, dni, pais, telefono, email, from cliente ", nativeQuery = true)
     List<Cliente> obtenerCliente();
+
+    List<Cliente> findAll();
 
     @Modifying
     @Transactional

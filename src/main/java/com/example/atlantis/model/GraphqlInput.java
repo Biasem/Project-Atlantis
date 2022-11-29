@@ -98,6 +98,7 @@ public class GraphqlInput {
     @Data
     @AllArgsConstructor
     public class HabitacionesInput{
+       private Integer id;
        private HotelInput id_hotel;
        private TipoHab tipo_hab;
        private Integer num_hab;
