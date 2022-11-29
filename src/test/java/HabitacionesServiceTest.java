@@ -37,7 +37,7 @@ public class HabitacionesServiceTest {
     public void guardarHabitacionReservaHotelTest(){
         Mockito.when(habitacionesRepository.save(any())).thenReturn(habitaciones);
         Habitaciones habitacionGuardada = habitacionesService.guardarHabitacion(habitaciones);
-        assertNotNull(habReservaHotelGuardada);
-        assertEquals(habReservaHotelGuardada,habReservaHotel);
+        assertNotNull(habitacionGuardada);
+        assertEquals(habitacionGuardada,habitaciones);
     }
 }
