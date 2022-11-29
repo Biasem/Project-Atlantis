@@ -1,14 +1,19 @@
 package com.example.atlantis.service;
 
-import com.example.atlantis.model.Hab_Reserva_Hotel;
+import com.example.atlantis.model.*;
 import com.example.atlantis.repository.Habitacion_Reserva_HotelRepository;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class Habitacion_Reserva_HotelService {
+    private static Faker faker = new Faker();
+
 
     @Autowired
     private Habitacion_Reserva_HotelRepository habitacion_reserva_hotelRepository;
@@ -37,5 +42,15 @@ public class Habitacion_Reserva_HotelService {
         }
         return comprobar;
     }
+
+    public Hab_Reserva_Hotel crearHab_Reserva_Hotel(Hotel hotel, Habitaciones habitaciones, Reserva reserva,Regimen regimen){
+        Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
+        habReservaHotel.setId_hab(habitaciones);
+        habReservaHotel.setReserva(reserva);
+        habReservaHotel.setNumhab(Long.valueOf(faker.number().randomNumber()).intValue());
+        habReservaHotel.setId_regimen(regimen);
+        return habReservaHotel;
+    }
+
 
 }

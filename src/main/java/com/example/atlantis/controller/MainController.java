@@ -96,7 +96,9 @@ public class MainController{
         session.setAttribute(busqueda.getFechaInicial(),busqueda.getFechaFinal());
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
+        System.out.println(filtro.size());
         Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
+        System.out.println(lista.size());
         if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
         {
             return new ModelAndView("redirect:main");
