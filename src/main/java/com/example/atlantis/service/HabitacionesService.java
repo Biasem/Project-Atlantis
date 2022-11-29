@@ -4,15 +4,19 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.repository.HotelRepository;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HabitacionesService {
+    private static Faker faker = new Faker();
 
 
     @Autowired
@@ -62,8 +66,8 @@ public class HabitacionesService {
         return hab;
     }
 
-    public void guardarHabitacion(Habitaciones habitacion){
-        habitacionesRepository.save(habitacion);
+    public Habitaciones guardarHabitacion(Habitaciones habitacion){
+        return habitacionesRepository.save(habitacion);
     }
     public void borrarHabitacion(Integer id){
         habitacionesRepository.deleteAllById(Collections.singleton(id));
@@ -105,5 +109,19 @@ public class HabitacionesService {
             }
         }
         return puede;
+    }
+
+    public Habitaciones crearHabitacion(Hotel hotel){
+        Habitaciones habitacion = new Habitaciones();
+        habitacion.setId_hotel(hotel);
+        habitacion.setHab_ocupadas(faker.number().numberBetween(1,201));
+        habitacion.setNum_hab(faker.number().numberBetween(1,201));
+        while(habitacion.getHab_ocupadas()>habitacion.getNum_hab()){
+            habitacion.setHab_ocupadas(faker.number().numberBetween(1,201));
+            habitacion.setNum_hab(faker.number().numberBetween(1,201));
+        }
+        habitacion.setTipo_hab(Arrays.stream(TipoHab.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,4)));
+
+       return habitacion;
     }
 }

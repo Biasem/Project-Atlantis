@@ -63,8 +63,8 @@ public class RegimenService {
         return hotel;
     }
 
-    public void guardarRegimen (Regimen regimen){
-        regimenRepository.save(regimen);
+    public Regimen guardarRegimen (Regimen regimen){
+        return regimenRepository.save(regimen);
     }
 
     public Integer conseguirRegimenIDHotel (Integer id){

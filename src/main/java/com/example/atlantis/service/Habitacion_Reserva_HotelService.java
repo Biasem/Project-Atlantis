@@ -22,8 +22,8 @@ public class Habitacion_Reserva_HotelService {
         return habitacion_reserva_hotelRepository.findAll();
     }
 
-    public void guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
-        habitacion_reserva_hotelRepository.save(habReservaHotel);
+    public Hab_Reserva_Hotel guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
+       return habitacion_reserva_hotelRepository.save(habReservaHotel);
     }
     public Integer UltimoIdReservadelCliente(Integer idcliente){
         return habitacion_reserva_hotelRepository.UltimoIdReservadelCliente(idcliente);
