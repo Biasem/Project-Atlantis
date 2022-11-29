@@ -43,15 +43,15 @@ public class HabReservaHotelServiceTest {
         cliente = clienteService.crearCliente();
         reserva = reservaService.crearReserva(cliente,hotel);
         regimen = regimenService.crearRegimen(hotel);
-//        habitaciones = habitacionesService
-//        habitacionReservaHotelService = habitacionReservaHotelService.crearHab_Reserva_Hotel(hotel,habitaciones,reserva,regimen);
+        habitaciones = habitacionesService.crearHabitacion(hotel);
+        habReservaHotel = habitacionReservaHotelService.crearHab_Reserva_Hotel(hotel,habitaciones,reserva,regimen);
     }
     @Test
     public void guardarHabitacionReservaHotelTest(){
-//        Mockito.when(habitacion_reserva_hotelRepository.save(any())).thenReturn(habReservaHotel);
-//        Hab_Reserva_Hotel habReservaHotelGuardada = habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
-//        assertNotNull(habReservaHotelGuardada);
-//        assertEquals(habReservaHotelGuardada,habReservaHotel);
+        Mockito.when(habitacion_reserva_hotelRepository.save(any())).thenReturn(habReservaHotel);
+        Hab_Reserva_Hotel habReservaHotelGuardada = habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
+        assertNotNull(habReservaHotelGuardada);
+        assertEquals(habReservaHotelGuardada,habReservaHotel);
     }
 
 }
