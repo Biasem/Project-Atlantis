@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(MockitoJUnitRunner.class)
 public class HabReservaHotelServiceTest {
 
-    Hab_Reserva_Hotel habReservaHotel
+    Hab_Reserva_Hotel habReservaHotel;
 
     @Mock
     Habitacion_Reserva_HotelRepository habitacion_reserva_hotelRepository;

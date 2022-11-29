@@ -19,20 +19,13 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
-@RunWith(SpringJUnit4ClassRunner.class)
-@ComponentScan(
-        basePackageClasses = {
-                HotelService.class
-        })
-@EnableAutoConfiguration
+
 public class ClienteRepositoryTest {
 
 
 
     private static Faker faker = new Faker();
-    private ReservaService reservaService;
-    private HotelService hotelService;
-    private ClienteService clienteService;
+
     private Rol rol;
     private TipoHotel tipoHotel;
 
@@ -68,9 +61,7 @@ public class ClienteRepositoryTest {
 
     @Test
     public void metodoPruebaTest(){
-        hotelService.crearHotel();
 
-//        System.out.println(reservaService.crearReserva(clienteService.crearCliente(),hotelService.crearHotel()));
 
 
     }
