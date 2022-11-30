@@ -539,7 +539,7 @@ public class ApiController {
 
     @PostMapping("/listaHotelBusqueda")
     @SchemaMapping(typeName = "Query", value = "listaHotelBusqueda")
-    public ModelAndView listaHoteles(@Argument(name = "busqueda") GraphqlInput.BusquedaInput busqueda, @Argument(name = "correo") String correo) {
+    public List<Hotel> listaHoteles(@Argument(name = "busqueda") GraphqlInput.BusquedaInput busqueda, @Argument(name = "correo") String correo) {
         ModelAndView model = new ModelAndView("resultado");
 
         // Gestión sesión
@@ -557,19 +557,11 @@ public class ApiController {
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
         }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
         // Gestión sesión
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> filtro = busquedaService.AccionBuscarApi(busqueda,listaHoteles);
-        Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
-        if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
-        {
-            return new ModelAndView("redirect:main");
-        }
-        model.addObject("fechamin", LocalDate.now());
-        model.addObject("lista", lista);
-        return model ;
+        return filtro;
+
     }
 
 
