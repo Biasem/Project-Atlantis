@@ -89,7 +89,6 @@ public class RegimenService {
     }
 
     public List<TipoRegimen> checkRegimen (List<Regimen> regimen){
-        List<Regimen> lista = new ArrayList<>();
         List<TipoRegimen> crear = todoRegimen();
         for (Regimen x: regimen){
             if (x.getCategoria() == TipoRegimen.DESAYUNO){
