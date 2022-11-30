@@ -23,7 +23,8 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
 public class ClienteRepositoryTest {
 
 
-
+@Autowired
+ClienteService clienteService;
     private static Faker faker = new Faker();
 
     private Rol rol;
@@ -62,7 +63,7 @@ public class ClienteRepositoryTest {
     @Test
     public void metodoPruebaTest(){
 
-
+//        System.out.println(this.clienteService.crearCliente().getNombre());
 
     }
     
