@@ -179,13 +179,15 @@ public class HotelService {
 
     }
 
-    public Map<Integer, Hotel> filtrarHotel (List<Hotel> hoteles){
-        Map<Integer, Hotel> mapa = new TreeMap<>(Collections.reverseOrder());
+    public Map<Hotel, Integer> filtrarHotel (List<Hotel> hoteles){
+        Map<Hotel, Integer> mapa = new HashMap<>();
         for (Hotel x: hoteles){
             Hotel nuevo = x;
             Integer media = comentarioService.mediaPuntuacion(x.getId());
-            mapa.put(media, nuevo);
+            mapa.put(nuevo, media);
         }
+
+        mapa.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
     return mapa;
     }
 

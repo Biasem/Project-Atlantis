@@ -98,7 +98,7 @@ public class MainController{
         System.out.println(listaHoteles.size());
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
         System.out.println(filtro.size());
-        Map<Integer, Hotel> lista = hotelService.filtrarHotel(filtro);
+        Map<Hotel, Integer> lista = hotelService.filtrarHotel(filtro);
         if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
         {
             return new ModelAndView("redirect:main");
