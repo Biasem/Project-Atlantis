@@ -3931,7 +3931,7 @@
   .nav-link {
     display: block;
     padding: 0.5rem 1rem;
-    color: #0d6efd;
+    color: whitesmoke;
     text-decoration: none;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
   }
@@ -3941,7 +3941,7 @@
     }
   }
   .nav-link:hover, .nav-link:focus {
-    color: #0a58ca;
+    color: white;
   }
   .nav-link.disabled {
     color: #6c757d;
@@ -4468,7 +4468,7 @@
     color: #fff;
   }
   .navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.55);
+    color: whitesmoke;
   }
   .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
     color: rgba(255, 255, 255, 0.75);
@@ -5976,7 +5976,7 @@
   }
 
   .carousel {
-    position: relative;
+
   }
 
   .carousel.pointer-event {
@@ -5984,7 +5984,7 @@
   }
 
   .carousel-inner {
-    position: relative;
+
     width: 100%;
     overflow: hidden;
   }
@@ -5995,7 +5995,7 @@
   }
 
   .carousel-item {
-    position: relative;
+
     display: none;
     float: left;
     width: 100%;
@@ -11585,5 +11585,82 @@
     font-weight: lighter;
   }
 
+  #gradient {
+    background: #999955;
+    background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 100%;
+    height: 150px;
+  }
+
+  #gradient:after {
+    content: "";
+    position: absolute;
+    background: #E9E2D0;
+    left: 50%;
+    margin-top: -67.5px;
+    margin-left: -270px;
+    padding-left: 20px;
+    border-radius: 5px;
+    width: 520px;
+    height: 275px;
+    z-index: -1;
+  }
+
+  }
+
+  .navbar {
+    position: fixed;
+    transition: 1s;
+  }
+
+  .navbar-brand {
+    color: #fff;
+    font-size: 45px;
+    font-family: Germania;
+    cursor: pointer;
+  }
+
+  .icon-bar {
+    background-color: #000;
+
+  }
+
+  .nav {
+    font-family: Lithos Pro;
+    color: #fff;
+    padding: 10px 20px;
+  }
+
+  .nav li {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .nav li:after {
+    content: '';
+    display: block;
+    border-bottom: 2px solid #38fd07;
+    transform: scaleX(0);
+    transition: .2s ease-in-out;
+  }
+
+  .nav li:hover:after {
+    transform: scaleX(1);
+  }
+
+  .para {
+    min-height: 500px;
+  }
+
+  .para h3 {
+    text-align: center;
+    margin-top: 15%;
+    color: #fff;
+    font-family: nyala;
+    font-size: 44px;
+  }
 
 
