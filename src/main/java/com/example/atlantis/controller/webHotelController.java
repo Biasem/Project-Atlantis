@@ -192,11 +192,17 @@ public class webHotelController {
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel); //siento esta fechoria xd
         }
+
+        List<Integer> listaAux = new ArrayList<>();
         for (Integer i:objeto_aux_reservaHtml.getCantidadHabitaciones()){
             if (i==null){
-                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+                listaAux.add(0);
+//                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+            }else {
+                listaAux.add(i);
             }
         }
+        objeto_aux_reservaHtml.setCantidadHabitaciones(listaAux);
 
         //objeto Reserva_para_bbdd
         reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
