@@ -398,7 +398,6 @@ public class ApiController {
     @GetMapping("/historialReservaClienteVigentess")
     @SchemaMapping(typeName = "Query", value = "historialVigente")
     public List<HistorialReservaClientes> historialVigente(@RequestBody @Argument(name = "cliente") GraphqlInput.ClienteInput cliente) {
-        ModelAndView model = new ModelAndView("historialReservaCliente");
         Cliente cliente1 = new Cliente();
         if (cliente.getEmail().getEmail() != null) {
             cliente1 = clienteService.copiartodoclienteApi(cliente);
@@ -414,7 +413,6 @@ public class ApiController {
         List<Regimen> todosregimen = regimenService.getAll();
         //Lista que se devuelve con método de búsqueda
         List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorialvigente(todas, todasReservaporHab, todosregimen);
-        model.addObject("todas", todasmodelohistorial);
 
         return todasmodelohistorial;
 
@@ -424,26 +422,6 @@ public class ApiController {
     @SchemaMapping(typeName = "Query", value = "resultadoHotel")
     public @ResponseBody Hotel resultadoHotel(@RequestParam(value = "id") @PathVariable @Argument(name = "id") Integer id) {
 
-        ModelAndView model = new ModelAndView("hotelWeb");
-        // Gestión sesión
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Integer idCliente = 0;
-        Integer idHotel = 0;
-        if (correo != null) {
-            idCliente = clienteService.conseguirId(correo);
-            idHotel = hotelService.conseguirId(correo);
-        }
-        Integer idHotelreserva = id;
-
-        if (idHotel > 0) {
-            Integer finalIdHotel = idHotel;
-            Hotel hotelConectado = hotelRepository.findAll().stream().filter(x -> x.getId().equals(finalIdHotel)).collect(Collectors.toList()).get(0);
-            model.addObject("hotelConectado", hotelConectado);
-        }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
-        model.addObject("idHotelreserva", idHotelreserva);
         // Gestión sesión
 
         List<Hotel> listaHoteles = hotelService.getAll();
@@ -454,6 +432,7 @@ public class ApiController {
         hotelfinal.add(definitivo);
         return definitivo;
     }
+
 
     @PostMapping("/reservarr")
     @SchemaMapping(typeName = "Mutation", value = "reservarHab")
@@ -507,32 +486,11 @@ public class ApiController {
     @GetMapping("/listaHotelAzar")
     @SchemaMapping(typeName = "Query", value = "listaHotelAzar")
     public List<Hotel> listaHotel(@Argument(name = "busqueda") GraphqlInput.BusquedaInput input) {
-        ModelAndView model = new ModelAndView("main");
 
         // Gestión sesión
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-        Integer idCliente = 0;
-        Integer idHotel = 0;
-        if (correo != null) {
-            idCliente = clienteService.conseguirId(correo);
-            idHotel = hotelService.conseguirId(correo);
-        }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
-        // Gestión sesión
-
         List<Hotel> listaprimera = hotelService.getAll();
-        Map<Hotel, Integer> lista = hotelService.filtrarmejores(listaprimera);
-
-        ModelAndView azar = new ModelAndView("mainazar");
         Collections.shuffle(listaprimera);
         List<Hotel> listaHotel = listaprimera.subList(0, 3);
-        azar.addObject("fechamin", LocalDate.now());
-        azar.addObject("busqueda", input);
-        azar.addObject("listaHotel", listaHotel);
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
         return listaHotel;
     }
 
@@ -540,7 +498,6 @@ public class ApiController {
     @PostMapping("/listaHotelBusqueda")
     @SchemaMapping(typeName = "Query", value = "listaHotelBusqueda")
     public List<Hotel> listaHoteles(@Argument(name = "busqueda") GraphqlInput.BusquedaInput busqueda, @Argument(name = "correo") String correo) {
-        ModelAndView model = new ModelAndView("resultado");
 
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
