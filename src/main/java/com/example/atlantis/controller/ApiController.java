@@ -36,7 +36,13 @@ public class ApiController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
+    Habitacion_Reserva_HotelService habitacionReservaHotelService;
+
+    @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    HabitacionesRepository habitacionesRepository;
 
     @Autowired
     ClienteRepository clienteRepository;
@@ -52,6 +58,8 @@ public class ApiController {
 
     @Autowired
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     @Autowired
     private ComentarioService comentarioService;
@@ -440,95 +448,60 @@ public class ApiController {
 
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
-        List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
-        List<ComentarioHotel> listaComentariosHotel = comentarioHotelRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(idHotelreserva)).collect(Collectors.toList());
-        BuscadorID numero = new BuscadorID(id);
+
+          BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero, listaHoteles);
         hotelfinal.add(definitivo);
-        List<TipoRegimen> regimen = regimenService.getAll().stream().filter(r -> r.getId_hotel().getId().equals(id)).collect(Collectors.toList()).stream().map(Regimen::getCategoria).collect(Collectors.toList());
-        Double latitud = definitivo.getLatitud();
-        Double longitud = definitivo.getLongitud();
-        Integer estrellas = definitivo.getNum_estrellas();
-        model.addObject("latitud", latitud);
-        model.addObject("longitud", longitud);
-        model.addObject("listaComentariosHotel", listaComentariosHotel);
-        model.addObject("idCliente", idCliente);
-        model.addObject("texto", new Comentario());
-        model.addObject("hotelfinal", hotelfinal);
-        model.addObject("regimen", regimen);
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id, listaHabitaciones).stream().filter(h -> h.getHab_ocupadas() < h.getNum_hab()).collect(Collectors.toList()));
-        model.addObject("estrellas", estrellas);
-        model.addObject("fechamin", LocalDate.now());
-        Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
-//        if((session.getAttribute("fecha_inicial")!=null)&&(session.getAttribute("fecha_final")!=null)){
-//            objetoInteger.setFechainicio(session.getAttribute("fecha_inicial").toString());
-//            objetoInteger.setFechafin(session.getAttribute("fecha_final").toString());
-//        }
-        model.addObject("objeto_integer", objetoInteger);
-        model.addObject("comentarios", comentarioService.conseguirComentarios(id));
-        Integer comprobante = 0;
-        model.addObject("comprobante", comprobante);
-
         return definitivo;
     }
 
     @PostMapping("/reservarr")
-    @MutationMapping
-    public ModelAndView reservarHab(@RequestBody @ModelAttribute("objeto_integer") @PathVariable @Argument(name = "objeto") GraphqlInput.Objeto_Aux_Reserva_htmlInput objeto_aux_reservaHtml,
-                                    @RequestParam("idhotel") @PathVariable @Argument(name = "idhotel") Integer idhotel,
-                                    @PathVariable @Argument(name = "correo") String correo) {
+    @SchemaMapping(typeName = "Mutation", value = "reservarHab")
+    public String confirmarReserva(@Argument(name = "reserva") GraphqlInput.Reserva_Input reservainput,
+                                   @Argument(name = "habreser") GraphqlInput.Hab_Reserva_HotelInput habres){
 
+
+        Reserva reserva = new Reserva();
+        //Formateo de fechas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fechap =  LocalDate.parse(reservainput.getFecha_entrada(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(reservainput.getFecha_salida(), formatter);
 
-        LocalDate fechap = LocalDate.parse(objeto_aux_reservaHtml.getFechainicio(), formatter);
-        LocalDate fechap1 = LocalDate.parse(objeto_aux_reservaHtml.getFechafin(), formatter);
+        Integer idhotel = reservainput.getId_hotel().getId();
+        Integer idcliente = reservainput.getId_cliente().getId();
 
-        ModelAndView model = new ModelAndView("pagarReserva");
-        // Gestión sesión
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo1 = auth.getName();
-        if (correo != null) {
-            correo = correo;
-        } else {
-            correo = correo1;
-        }
+        reserva.setId(0);
+        Hotel hotel =  hotelService.getById(idhotel);
+        reserva.setId_hotel(hotel);
 
-        Integer idCliente = 0;
-        Integer idHotel = 0;
-        if (correo != null) {
-            idCliente = clienteService.conseguirId(correo);
-            idHotel = hotelService.conseguirId(correo);
-        }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
-        // Gestión sesión
-        if (fechap.isAfter(fechap1) ||
-                fechap.equals(fechap1)) {
-            return new ModelAndView("redirect:/hoteles/item?id=" + idhotel); //siento esta fechoria xd
-        }
-        for (Integer i : objeto_aux_reservaHtml.getCantidadHabitaciones()) {
-            if (i == null) {
-                return new ModelAndView("redirect:/hoteles/item?id=" + idhotel);
-            }
-        }
+        Cliente cliente = clienteService.getById(idcliente);
+        reserva.setId_cliente(cliente);
+        reserva.getId_cliente().setId(idcliente);
+        reserva.setFecha_entrada(fechap);
+        reserva.setFecha_salida(fechap1);
+        reserva.setPrecio_total(reservainput.getPrecio_total());
+        reservaService.guardarReserva(reserva);
 
-        //objeto Reserva_para_bbdd
-        reserva_para_bbdd = reservaService.precioHabReservadaApi(idhotel, objeto_aux_reservaHtml);
-        reserva_para_bbdd.setIdCliente(idCliente);
-        List<Ob_mostrar_reserva> listamostrar = reservaService.obtenerlistareserva(reserva_para_bbdd);
-        for (Ob_mostrar_reserva omr : listamostrar) {
-            if (omr.getCantHab() > omr.getHabitaciones().getNum_hab() - omr.getHabitaciones().getHab_ocupadas())
-                return new ModelAndView("redirect:/hoteles/item?id=" + idhotel);
-        }
+        //guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
 
-        Long dias = DAYS.between(reserva_para_bbdd.getFechaEntrada(), reserva_para_bbdd.getFechasalida());
+            Habitaciones habitaciones = habitacionesService.getById(habres.getId_habitaciones().getId());
+            Regimen regimen = regimenService.getById(habres.getId_regimen().getId());
+            Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
+            habReservaHotel.setId_hab(habitaciones);
+            habReservaHotel.setId_regimen(regimen);
+            Reserva ultireserva = reservaService.obtenerUltima();
+            habReservaHotel.setReserva(ultireserva);
+            habReservaHotel.setNumhab(habres.getNumhab());
+            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
 
-        model.addObject("dias", dias);
-        model.addObject("total", reserva_para_bbdd.getPrecioTotal());
-        model.addObject("listareserva", listamostrar);
+            Habitaciones hab = habitacionesService.getById(habres.getId_habitaciones().getId());
+            hab.setHab_ocupadas(hab.getHab_ocupadas()+habres.getNumhab());
+            habitacionesRepository.save(hab);
 
-        return model;
+        return "Reserva concretada";
     }
+
+
 
 
     @GetMapping("/listaHotelAzar")
@@ -603,20 +576,20 @@ public class ApiController {
     @PostMapping("/CrearHabitacion")
     @SchemaMapping(typeName = "Mutation", value = "crearHabitacion")
     public String habitaciones(@Argument(name = "habitaciones") GraphqlInput.HabitacionesInput habitaciones,
-                                     @Argument(name = "id") Integer idhotel) {
+                               @Argument(name = "id") Integer idhotel) {
+
         habitaciones.setHab_ocupadas(0);
         Habitaciones habitaciones1 = new Habitaciones();
-
+        Hotel nuevo = new Hotel();
+        //Seteo en del input en modelo Habitacion y guardado
         habitaciones1.setHab_ocupadas(habitaciones.getHab_ocupadas());
         habitaciones1.setNum_hab(habitaciones.getNum_hab());
         habitaciones1.setTipo_hab(habitaciones.getTipo_hab());
-        Hotel nuevo = new Hotel();
         habitaciones1.setId_hotel(nuevo);
         habitaciones1.getId_hotel().setId(idhotel);
         habitaciones1.setMax_cliente(habitaciones.getMax_cliente());
-
         habitacionesService.guardarHabitacion(habitaciones1);
-        ModelAndView model = new ModelAndView("adminHecho");
+
         return "Guardado correctamente";
     }
 
@@ -624,9 +597,8 @@ public class ApiController {
     @RequestMapping("/admin/habitacioness/editar/hecho/{item}")
     @SchemaMapping(typeName = "Mutation", value = "editarHabitacion")
     public @ResponseBody String editarHabitacionhecho(@Argument(name = "id") Integer id,
-                                                            @Argument(name = "habitaciones") GraphqlInput.HabitacionesInput habitaciones) {
+                                                      @Argument(name = "habitaciones") GraphqlInput.HabitacionesInput habitaciones) {
         habitacionesService.editarHabitacionApi(id, habitaciones);
-        ModelAndView model = new ModelAndView("adminHecho");
         return "Editado correctamente";
     }
 
@@ -634,14 +606,13 @@ public class ApiController {
     @RequestMapping("/admin/habitacioness/borrar/{item}")
     @SchemaMapping(typeName = "Mutation", value = "borrarHabitacion")
     public @ResponseBody String borrarHabitacion(@Argument(value = "id") Integer id) {
-
+        //Obtiene todas las habitaciones, consigue la habitación con el id dado y borra de la lista la habitacion
         List<Habitaciones> habitaciones = habitacionesService.getAll();
         Habitaciones habitacion = new Habitaciones();
         habitacion = habitacionesService.conseguirHabitacion(id, habitaciones);
         List<Precio_Hab> precios = precio_habitacionService.getAll();
         precio_habitacionService.borrarLista(precios, habitacion);
         habitacionesService.borrarHabitacion(id);
-        ModelAndView model = new ModelAndView("adminHecho");
         return "Borrado correctamente";
     }
 
@@ -652,23 +623,18 @@ public class ApiController {
                                      @Argument("categoria") TipoRegimen categoria,
                                      @Argument("precio") Double precio) {
 
-        ModelAndView model = new ModelAndView();
         List<Regimen> regimenes = regimenService.getAll();
-
         regimen.setId(idhotel);
         boolean bool = true;
-
+        //Mira si la categoría del regimen y el id_hotel son iguales entre ambos en el bucle, devolviendo false en boolean
         for(Regimen r : regimenes) {
-
             if (r.getCategoria().equals(regimen.getCategoria()) && r.getId_hotel().getId().equals(regimen.getId())) {
-
-                model = new ModelAndView("adminHecho");
                 bool = false;
                 break;
             }
         }
+        //Si el boolean es true crea nuevo regimen, consigue la lista de hoteles con el idhotel del regimen y guarda el regimen
         if(bool !=false) {
-            model = new ModelAndView("adminHecho");
             Regimen nuevoRegimen = new Regimen();
             nuevoRegimen.setCategoria(categoria);
             nuevoRegimen.setPrecio(precio);
@@ -689,9 +655,7 @@ public class ApiController {
     @SchemaMapping(typeName = "Mutation", value = "borrarRegimen")
     public @ResponseBody String borrarRegimen(@Argument(value = "id") Integer id, @Argument(value = "idhotel") Integer idhotel) {
 
-        ModelAndView model = new ModelAndView("adminHecho");
-
-
+        //Consigue id del hotel del precio final y si es igual, borra o da error si es distinto
         Integer preciofinal = regimenService.conseguirRegimenIDHotel(id);
 
         if (preciofinal == idhotel){
@@ -701,14 +665,10 @@ public class ApiController {
                 return "Borrado con éxito";
             }
             else{
-                ModelAndView error = new ModelAndView("errorAdmin");
                 return "Fallo al borrar";
             }
-
         }
-
         else{
-            ModelAndView error = new ModelAndView("error/403");
             return "Fallo al borrar";
         }
     }
@@ -721,15 +681,14 @@ public class ApiController {
                                                   @Argument("fechainicio") String fechainicio,
                                                   @Argument("fechafin") String fechafin,
                                                   @Argument("idhotel") Integer idhotel) {
-
+        //Formateo de fechas
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         LocalDate fechap =  LocalDate.parse(fechainicio, formatter);
         LocalDate fechap1 =  LocalDate.parse(fechafin, formatter);
 
         Precio_Hab precio_hab = new Precio_Hab();
 
-        ModelAndView model = new ModelAndView("adminHecho");
+        //Traslado del input al precio_hab y guardado
         precio_hab.setFecha_inicio(fechap);
         precio_hab.setFecha_fin(fechap1);
         Hotel hotel = precio_habitacionService.conseguirIDHotelprecio(idhotel);
@@ -747,18 +706,14 @@ public class ApiController {
     @SchemaMapping(typeName = "Mutation", value = "borrarPrecio")
     public @ResponseBody String borrarPrecio(@Argument(value = "id") Integer id,
                                              @Argument(value = "idhotel")Integer idHotel) {
-        ModelAndView model = new ModelAndView("adminHecho");
 
-
+        //Consigue el id del Hotel del precio final y devuelve el borrado o el error
         Integer preciofinal = precio_habitacionService.conseguirPrecioHabitacion(id);
-
         if (preciofinal == idHotel){
             precio_habitacionService.borrarPrecio(id);
             return "Borrado correctamente";
         }
-
         else{
-            ModelAndView error = new ModelAndView("error/403");
             return "Error al borrar";
         }
     }
@@ -767,13 +722,12 @@ public class ApiController {
     @SchemaMapping(typeName = "Query", value = "listarClientes")
     public @ResponseBody List<Cliente> listarClientes(@Argument(value = "email") String email) {
 
-
         List<Cliente> todos = clienteRepository.findAll();
         List<Hotel> hoteles = hotelRepository.findAll();
         List<Cliente> falsisimo = new ArrayList<>();
-        Boolean cierto = false;
+        boolean cierto = false;
 
-
+        //Busca cada hotel para ver si el email es igual que el email dado
         for (Hotel x : hoteles) {
             if (x.getEmail().getEmail().equals(email)) {
                 cierto = true;
@@ -782,6 +736,7 @@ public class ApiController {
                 cierto = false;
             }
         }
+        //Devuelve según sea el email real una lista con datos o sin datos
         if (cierto=true){
             return todos;
         }else {
@@ -794,13 +749,12 @@ public class ApiController {
     @SchemaMapping(typeName = "Query", value = "listarHoteles")
     public @ResponseBody List<Hotel> listarHoteles(@Argument(value = "email") String email) {
 
-
         List<Cliente> todos = clienteRepository.findAll();
         List<Hotel> hoteles = hotelRepository.findAll();
         List<Hotel> falsisimo = new ArrayList<>();
-        Boolean cierto = false;
+        boolean cierto = false;
 
-
+        //Busca cada hotel para ver si el email es igual que el email dado
         for (Cliente x : todos) {
             if (x.getEmail().getEmail().equals(email)) {
                 cierto = true;
@@ -809,6 +763,7 @@ public class ApiController {
                 cierto = false;
             }
         }
+        //Devuelve según sea el email real una lista con datos o sin datos
         if (cierto=true){
             return hoteles;
         }else {

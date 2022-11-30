@@ -19,7 +19,8 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
 
 
 
-    @Modifying
+
+@Modifying
     @Transactional
     @Query("update Hotel h set h.nombre = :nombre, h.pais = :pais, h.localidad = :localidad, h.direccion = :direccion," +
             "h.fecha_apertura = :fecha_apertura, h.fecha_cierre = :fecha_cierre, h.num_estrellas = :num_estrellas," +

@@ -127,7 +127,24 @@ public class GraphqlInput {
        private Double precio;
     }
 
+    @Data
+    @AllArgsConstructor
+    public class Reserva_Input {
+        private Integer id;
+        private HotelInput id_hotel;
+        private ClienteInput id_cliente;
+        private String fecha_entrada;
+        private String fecha_salida;
+        private Double precio_total;
+    }
 
+    @Data
+    @AllArgsConstructor
+    public class Hab_Reserva_HotelInput {
+        private RegimenInput id_regimen;
+        private HabitacionesInput id_habitaciones;
+        private Integer numhab;
+    }
 
 
     @AllArgsConstructor

@@ -12,4 +12,8 @@ import java.util.List;
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     List<Reserva> findAll();
+
+
+    @Query(value = "SELECT * FROM Reserva ORDER BY ID DESC LIMIT 1 ", nativeQuery = true)
+    Reserva obtenerUltima();
 }

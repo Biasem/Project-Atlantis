@@ -31,11 +31,6 @@ type Query{
         id : ID
     ):Hotel
 
-    reservarHab(
-        objeto :Objeto_Aux_Reserva_htmlInput
-        idhotel : ID
-        correo : String
-    ):String
 
     listarClientes(
         email : String
@@ -111,6 +106,11 @@ type Mutation{
     borrarPrecio(
         id : ID
         idhotel : ID
+    ):String
+
+    reservarHab(
+        reserva : Reserva_Input
+        habreser : Hab_Reserva_HotelInput
     ):String
 
 }
@@ -348,5 +348,22 @@ input Precio_HabInput{
     fecha_inicio : Date
     fecha_fin : Date
     precio : Float
+
+}
+
+input Reserva_Input{
+    id : ID
+    id_hotel : HotelInput
+    id_cliente : ClienteInput
+    fecha_entrada : String
+    fecha_salida : String
+    precio_total : Float
+}
+
+input Hab_Reserva_HotelInput{
+    id_regimen : RegimenInput
+    id_habitaciones : HabitacionesInput
+    numhab : Int
+
 
 }

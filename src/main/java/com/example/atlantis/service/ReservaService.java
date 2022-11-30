@@ -312,7 +312,12 @@ public class ReservaService {
     }
 
     public void guardarReserva(Reserva reserva){
-        reservaRepository.save(reserva);
+         reservaRepository.save(reserva);
+    }
+
+    public Reserva obtenerUltima(){
+        Reserva reserva = reservaRepository.obtenerUltima();
+        return reserva;
     }
 
     public List<Ob_mostrar_reserva> obtenerlistareserva(Reserva_Para_BBDD reserva_para_bbdd){
