@@ -118,10 +118,8 @@ public class ApiController {
 
             //Guardado del cliente en base de datos
             clienteService.guardarCliente(cliente);
-            System.out.println(input);
 
             return "Datos guardados correctamente";
-
 
         } catch (Exception e) {
             return "Ha habido un problema al guardar cliente";
@@ -133,7 +131,6 @@ public class ApiController {
     @MutationMapping
     public String registerhotelForm(@RequestBody @Argument(name = "input") GraphqlInput.RegisHotFechInput input) {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 
         try {
             //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
@@ -155,7 +152,6 @@ public class ApiController {
 
                 return "Datos guardados correctamente";
             } else {
-
                 return "Ha habido un problema al guardar cliente";
             }
         } catch (Exception e) {
@@ -176,14 +172,7 @@ public class ApiController {
         if (input.getEmail().getEmail() != null) {
             cliente2 = clienteService.copiartodoclienteApi(input);
 
-        } else {
-            //Encriptado y recogida de datos de al sesión para copiar todo el modelo
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String correo = auth.getName();
-
-            cliente2 = loginService.copiartodoclienteconsession(correo);
         }
-
         //If para saber si los datos estan correctos y pueden borrar o no
         if (cliente2.getEmail().getEmail().equals(input.getEmail().getEmail()) && encoder.matches(input.getEmail().getPassword(), cliente2.getEmail().getPassword())) {
             clienteService.borrarClienteApi(input);
@@ -198,14 +187,11 @@ public class ApiController {
     @PostMapping("/deletehotel")
     @MutationMapping
     public String deleteHotel2(@RequestBody @Argument(name = "input") GraphqlInput.HotelInput hotel) {
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
-
-
         Hotel hotel1 = hotelService.copiartodohotelApi(hotel);
 
+        //Borrado del hotel
         if (hotel1.getEmail().getEmail().equals(hotel.getEmail().getEmail()) && encoder.matches(hotel.getEmail().getPassword(), hotel1.getEmail().getPassword())) {
             List<ComentarioLike> comentarioLike = comentarioLikeRepository.findAll().stream().filter(x -> x.getId_hotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
             List<ComentarioHotel> comentarioHotels = comentarioHotelRepository.findAll().stream().filter(x -> x.getHotel().getId().equals(hotel1.getId())).collect(Collectors.toList());
@@ -318,25 +304,17 @@ public class ApiController {
         if (correo != null) {
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
         }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
+
         // Gestión sesión
         Cliente cliente = clienteService.getById(idCliente);
-        List<Comentario> comentarios = new ArrayList<>();
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
-        model.addObject("cliente", cliente);
-        model.addObject("correo", correo);
-        model.addObject("comentarios", comentarioService.conseguirComentariosCliente(idCliente));
+
         return cliente;
     }
 
     @RequestMapping("/perfilhotel")
     @SchemaMapping(typeName = "Query", value = "perfilHotel")
     public Hotel perfilhotel(@Argument(name = "correo") String correo) {
-        ModelAndView model = new ModelAndView("perfilHotel");
         // Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo1 = auth.getName();
@@ -346,24 +324,13 @@ public class ApiController {
             correo = correo1;
         }
 
-        Integer idCliente = 0;
         Integer idHotel = 0;
         if (correo != null) {
-            idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
         }
-        model.addObject("idHotel", idHotel);
-        model.addObject("idCliente", idCliente);
-        // Gestión sesión
 
+        // Gestión sesión
         Hotel hotel = hotelService.getById(idHotel);
-        List<Comentario> comentarios = new ArrayList<>();
-        model.addObject("hotel", hotel);
-        model.addObject("correo", correo);
-        model.addObject("comentarios", comentarioService.conseguirComentariosHotel(idHotel));
-        model.addObject("media", comentarioService.mediaPuntuacion(idHotel));
-        model.addObject("estrellas", hotel.getNum_estrellas());
         return hotel;
     }
 
@@ -373,7 +340,6 @@ public class ApiController {
     public List<HistorialReservaHotel> historialVigenteHotel(@RequestBody @Argument(name = "hotel") GraphqlInput.HotelInput hotel) {
 
         Hotel hotel1 = new Hotel();
-        ModelAndView model = new ModelAndView("historialReservaHotel");
         if (hotel.getEmail().getEmail() != null) {
             hotel1 = hotelService.copiartodohotelApi(hotel);
 
@@ -388,7 +354,6 @@ public class ApiController {
         List<Regimen> todosregimen = regimenService.getAll();
         //Lista que se devuelve con método de búsqueda
         List<HistorialReservaHotel> todasmodelohistorial = reservaService.cambiomodelohistorialhotelvigente(todas, todasReservaporHab, todosregimen);
-        model.addObject("todas", todasmodelohistorial);
 
         return todasmodelohistorial;
 
@@ -413,7 +378,6 @@ public class ApiController {
         List<Regimen> todosregimen = regimenService.getAll();
         //Lista que se devuelve con método de búsqueda
         List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorialvigente(todas, todasReservaporHab, todosregimen);
-
         return todasmodelohistorial;
 
     }
@@ -427,7 +391,7 @@ public class ApiController {
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
 
-          BuscadorID numero = new BuscadorID(id);
+        BuscadorID numero = new BuscadorID(id);
         Hotel definitivo = buscadorService.Comparar(numero, listaHoteles);
         hotelfinal.add(definitivo);
         return definitivo;
@@ -438,7 +402,6 @@ public class ApiController {
     @SchemaMapping(typeName = "Mutation", value = "reservarHab")
     public String confirmarReserva(@Argument(name = "reserva") GraphqlInput.Reserva_Input reservainput,
                                    @Argument(name = "habreser") GraphqlInput.Hab_Reserva_HotelInput habres){
-
 
         Reserva reserva = new Reserva();
         //Formateo de fechas

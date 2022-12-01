@@ -60,7 +60,7 @@ public class AdminController{
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
-        // Gestión sesión
+        // Obtención de datos necesarios y añadidos al modelo
         List<TipoHab> tipohab = habitacionesService.todoHab();
         List<Regimen> regimenes = regimenService.regimenHotel(idHotel);
         List<TipoRegimen> regimen = regimenService.checkRegimen(regimenes);
@@ -89,6 +89,7 @@ public class AdminController{
                                      @RequestParam("categoria") TipoRegimen categoria,
                                      @RequestParam("precio") Double precio) {
 
+        //Obteción de datos y creación de modelo
         ModelAndView model = new ModelAndView();
         List<Regimen> regimenes = regimenService.getAll();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -97,6 +98,7 @@ public class AdminController{
         regimen.setId(hotel1.getId());
         boolean bool = true;
 
+        //Bucle para visualización de booleano si es falso por tener el regimen igual o no
         for(Regimen r : regimenes) {
 
             if (r.getCategoria().equals(regimen.getCategoria()) && r.getId_hotel().getId().equals(regimen.getId())) {
@@ -140,6 +142,7 @@ public class AdminController{
     public @ResponseBody ModelAndView borrarRegimen(@PathVariable(value="item") String numerito,
                                                      @RequestParam(value = "id") Integer id) {
 
+        //Gestíón sesión
         ModelAndView model = new ModelAndView("adminHecho");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -153,6 +156,7 @@ public class AdminController{
             System.out.println(idHotel);
         }
 
+        //Borrado del regimen
         Integer preciofinal = regimenService.conseguirRegimenIDHotel(id);
 
         if (preciofinal == idHotel){
@@ -178,6 +182,7 @@ public class AdminController{
     public @ResponseBody ModelAndView editarHabitacion(@PathVariable(value="item") String numerito,
                                                        @RequestParam(value = "id") Integer id) {
 
+        //Gestión sesión.
         ModelAndView model = new ModelAndView("adminHabitacionEditar");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -191,6 +196,7 @@ public class AdminController{
             System.out.println(idHotel);
         }
 
+        //Error si datos fallan o edición de hotel
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
         if (puede == 0){
             ModelAndView error = new ModelAndView("error/403");
@@ -244,6 +250,8 @@ public class AdminController{
     @RequestMapping("/admin/habitaciones/precio/borrar/{item}")
     public @ResponseBody ModelAndView borrarPrecio(@PathVariable(value="item") String numerito,
                                                   @RequestParam(value = "id") Integer id) {
+
+        //Gestión sesión
         ModelAndView model = new ModelAndView("adminHecho");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -257,6 +265,7 @@ public class AdminController{
             System.out.println(idHotel);
         }
 
+        //Borrado del precio
         Integer preciofinal = precio_habitacionService.conseguirPrecioHabitacion(id);
 
         if (preciofinal == idHotel){

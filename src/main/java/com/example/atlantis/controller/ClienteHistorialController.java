@@ -46,6 +46,8 @@ public class ClienteHistorialController {
     //Todas las reservas
     @GetMapping("/historialReservaCliente")
     public ModelAndView historial(@ModelAttribute Cliente cliente) {
+
+        //Gestión sesión
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
@@ -58,13 +60,16 @@ public class ClienteHistorialController {
             System.out.println(idHotel);
         }
 
+        //Obtención de historial completo
         Integer finalIdCliente = idCliente;
         List<Reserva> reservas = reservaRepository.findAll().stream().filter(x-> x.getId_cliente().getId().equals(finalIdCliente)).collect(Collectors.toList());
+
         //Obtención de listas para metodo
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
         List<Reserva> todas = reservaService.todasReservas(cliente1.getId());
         List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
         List<Regimen> todosregimen = regimenService.getAll();
+
         //Lista que se devuelve con método de búsqueda
         List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorial(todas, todasReservaporHab, todosregimen);
         model.addObject("todas", todasmodelohistorial);
@@ -77,14 +82,18 @@ public class ClienteHistorialController {
     //Reservas Vigentes
     @GetMapping("/historialReservaClienteVigentes")
     public ModelAndView historialVigente(@ModelAttribute Cliente cliente) {
+
+        //Gestión sesión
         ModelAndView model = new ModelAndView("historialReservaCliente");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         Cliente cliente1 = loginService.copiartodoclienteconsession(correo);
+
         //Obtención de listas para metodo
         List<Reserva> todas = reservaService.todasReservas(cliente1.getId());
         List<Hab_Reserva_Hotel> todasReservaporHab = habitacion_reserva_hotelService.getAll();
         List<Regimen> todosregimen = regimenService.getAll();
+
         //Lista que se devuelve con método de búsqueda
         List<HistorialReservaClientes> todasmodelohistorial = reservaService.cambiomodelohistorialvigente(todas, todasReservaporHab, todosregimen);
         model.addObject("todas", todasmodelohistorial);
