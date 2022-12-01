@@ -36,8 +36,6 @@ public class ClienteService {
         return clienteRepository.findById(id).orElse(null);
 
     }
-
-
     private final String dniChars="TRWAGMYFPDXBNJZSQVHLCKE";
     public boolean validarDNI(String itDNI) {
         String intPartDNI = itDNI.trim().replaceAll(" ", "").substring(0, 7);

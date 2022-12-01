@@ -17,8 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ClienteRepositoryTest {
 

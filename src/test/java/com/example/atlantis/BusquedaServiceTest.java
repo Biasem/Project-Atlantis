@@ -55,9 +55,25 @@ public class BusquedaServiceTest {
         List<Habitaciones> hotel2hab = new ArrayList<>();
         hotel2hab.add(habitacion2);
         hotel2.setHabitaciones(hotel2hab);
+        /////////////////////tercer hotel
+        Habitaciones habitacion3 = new Habitaciones();
+        habitacion3.setNum_hab(79);
+        habitacion3.setHab_ocupadas(80);
+        habitacion3.setMax_cliente(1);
+        habitacion3.setTipo_hab(TipoHab.SIMPLE);
+
+        Hotel hotel3 = new Hotel();
+        hotel3.setNombre("Ibis Hotel Sevilla");
+        hotel3.setLocalidad("Sevilla");
+        hotel3.setFecha_apertura(LocalDate.of(2020,1,1));
+        hotel3.setFecha_cierre(LocalDate.of(2025,1,1));
+        List<Habitaciones> hotel3hab = new ArrayList<>();
+        hotel3hab.add(habitacion3);
+        hotel3.setHabitaciones(hotel3hab);
 ///////////////////////////////////////
         hotelesABuscar.add(hotel1);
         hotelesABuscar.add(hotel2);
+        hotelesABuscar.add(hotel3);
         ///////////////////////////////////////
         resultadoHotelesbuscados.add(hotel1);
         //////////////////////////busqueda
