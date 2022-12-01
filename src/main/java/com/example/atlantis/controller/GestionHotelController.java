@@ -4,12 +4,9 @@ import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioHotelRepository;
 import com.example.atlantis.repository.ComentarioLikeRepository;
 import com.example.atlantis.repository.ComentarioRepository;
-import com.example.atlantis.service.ComentarioService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -29,15 +23,11 @@ import java.util.stream.Collectors;
 @Controller
 public class GestionHotelController {
 
-
     @Autowired
     private HotelService hotelService;
 
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private ComentarioService comentarioService;
 
     @Autowired
     private ComentarioLikeRepository comentarioLikeRepository;
@@ -48,23 +38,20 @@ public class GestionHotelController {
     private ComentarioRepository comentarioRepository;
 
 
-
     @GetMapping("/borrarhotel")
     public String deleteHotel(Model model, @ModelAttribute Hotel hotel) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         RegisHotFech hotel1 = loginService.copiartodohotelconsession(correo);
-
         model.addAttribute("hotel", hotel1);
+
         return "borrarhotel";
     }
 
     @PostMapping("/borrarhotel")
     public String deleteHotel2(@ModelAttribute Hotel hotel) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String correo = auth.getName();
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         Hotel hotel1 = hotelService.copiartodohotel(hotel);
 
@@ -76,22 +63,22 @@ public class GestionHotelController {
             comentarioHotels.stream().forEach(x-> comentarioHotelRepository.delete(x));
             comentarios.stream().forEach(x-> comentarioRepository.delete(x));
             hotelService.borrarHotel(hotel1);
+
             return "redirect:/logout";
         }
         else{
             return "redirect:/borrarhotel";
         }
-
     }
 
 
     @GetMapping("/editarhotel")
         public String editarHotel(Model model, @ModelAttribute Hotel hotel) {
 
+        //Gestión sesión
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         RegisHotFech hotel1 = loginService.copiartodohotelconsession(correo);
-
         model.addAttribute("hotel", hotel1);
 
         //Listas para insertar en html las opciones que queramos
@@ -114,6 +101,7 @@ public class GestionHotelController {
 
     @PostMapping("/editarhotel")
     public String editarhotel2(@ModelAttribute RegisHotFech hotel) {
+
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (hotel.getNombre() != null && hotel.getDireccion() != null && hotel.getPais() != null
                 && hotel.getLocalidad() != null && hotel.getFecha_apertura() != null
@@ -134,6 +122,7 @@ public class GestionHotelController {
 
             //Método para meter el hotel ya convertido en el modelo para ddbb
             hotelService.editarHotel(hotelService.convertirAHotel(hotel));
+
             return "redirect:/main";
         } else {
 

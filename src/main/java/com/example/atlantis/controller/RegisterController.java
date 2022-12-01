@@ -2,17 +2,12 @@ package com.example.atlantis.controller;
 
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.Hotel;
-import com.example.atlantis.model.Login;
 import com.example.atlantis.service.ClienteService;
 import com.example.atlantis.service.HotelService;
 import com.example.atlantis.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/login")

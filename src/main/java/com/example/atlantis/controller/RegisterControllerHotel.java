@@ -3,19 +3,13 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -70,12 +64,16 @@ public class RegisterControllerHotel {
                 System.out.println(hotelService.convertirAHotel(hotel));
 
                 return "redirect:/main";
+
             } else {
 
                 return "redirect:/registrohotel";
+
             }
         }catch (Exception e){
+
             return "redirect:/registrohotel";
+
         }
 
     }

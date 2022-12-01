@@ -5,7 +5,6 @@ package com.example.atlantis.controller;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.*;
 import com.example.atlantis.service.*;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,17 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @RestController
@@ -58,11 +52,6 @@ public class ApiController {
 
     @Autowired
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
-    @Autowired
-    private ReservaRepository reservaRepository;
-
-    @Autowired
-    private ComentarioService comentarioService;
 
     @Autowired
     private BusquedaService busquedaService;

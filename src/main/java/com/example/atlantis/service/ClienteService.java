@@ -2,16 +2,11 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.GraphqlInput;
-import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.repository.ClienteRepository;
-import com.example.atlantis.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
@@ -21,8 +16,7 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
-    @Autowired
-    private ComentarioRepository comentarioRepository;
+
 
 
     public List<Cliente> getAll(){
@@ -30,19 +24,25 @@ public class ClienteService {
     }
 
     public Cliente getById(int id){
+
         return clienteRepository.findById(id).orElse(null);
 
     }
 
 
     private final String dniChars="TRWAGMYFPDXBNJZSQVHLCKE";
+
     public boolean validarDNI(String itDNI) {
+
         String intPartDNI = itDNI.trim().replaceAll(" ", "").substring(0, 7);
         char ltrDNI = itDNI.charAt(8);
         int valNumDni = Integer.parseInt(intPartDNI) % 23;
+
         if (itDNI.length()!= 9 && isNumeric(intPartDNI) == false && dniChars.charAt(valNumDni)!= ltrDNI) {
+
             return false;
         } else {
+
             return true;
         }
 

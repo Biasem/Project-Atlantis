@@ -1,15 +1,13 @@
 package com.example.atlantis.controller;
+
 import com.example.atlantis.model.*;
-import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,16 +20,10 @@ public class AdminController{
     private HotelService hotelService;
 
     @Autowired
-    private BusquedaService busquedaService;
-
-    @Autowired
     private HabitacionesService habitacionesService;
 
     @Autowired
     private ClienteService clienteService;
-
-    @Autowired
-    private HabitacionesRepository habitacionesRepository;
 
     @Autowired
     private Precio_HabitacionService precio_habitacionService;
