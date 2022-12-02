@@ -7,8 +7,10 @@ import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.repository.Precio_HabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +107,23 @@ public class Precio_HabitacionService {
             }
         }
         precio_habitacionRepository.delete(precio);
+    }
+    public boolean fechasCorrectas(Habitaciones hab,String fechaFin,String fechaInicio){
+        if(fechaFin.isEmpty() || fechaInicio.isEmpty()||
+                LocalDate.parse(fechaInicio).isBefore(hab.getId_hotel().getFecha_apertura()) ||
+                LocalDate.parse(fechaFin).isAfter(hab.getId_hotel().getFecha_cierre())){
+            return false;
+        }
+        return true;
+    }
+    public void modificarPrecioHab(Habitaciones hab,Precio_Hab nuevoPrecio){
+        List<Precio_Hab> listaPrecio_hab =precio_habitacionRepository.obtenerListPreciohab(hab.getId());
+        for(Precio_Hab ph:listaPrecio_hab){
+
+        }
+
+
+
     }
 
 }
