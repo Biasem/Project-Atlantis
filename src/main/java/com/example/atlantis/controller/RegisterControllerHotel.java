@@ -66,14 +66,10 @@ public class RegisterControllerHotel {
                 return "redirect:/main";
 
             } else {
-
                 return "redirect:/registrohotel";
-
             }
         }catch (Exception e){
-
             return "redirect:/registrohotel";
-
         }
 
     }

@@ -46,6 +46,7 @@ public class ClienteHistorialController {
         String correo = auth.getName();
         Integer idCliente = 0;
         Integer idHotel = 0;
+
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);

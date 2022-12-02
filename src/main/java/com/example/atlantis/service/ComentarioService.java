@@ -2,7 +2,6 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.*;
-import com.example.atlantis.service.HotelService;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -170,13 +169,6 @@ public class ComentarioService {
     }
 
 
-    public void borrarcomentarios(Cliente cliente, List<Comentario> comentarios){
-
-        for(int i = 0; i < comentarios.size(); i++ ){
-            comentarioRepository.delete(comentarios.get(i));
-        }
-    }
-
     public void likedislike (Integer idcliente, Integer idcomentario, Integer idhotel, Integer like, Integer dislike){
 
         List<Comentario> comentario = comentarioRepository.findAll().stream().filter(x -> x.getId().equals(idcomentario)).collect(Collectors.toList());
@@ -251,6 +243,7 @@ public class ComentarioService {
     }
 
     public Comentario crearComentario(Hotel hotel,Cliente cliente){
+
         Comentario comentario = new Comentario();
         comentario.setSentencia(faker.hobbit().character()+" Fue mi favorito");
         comentario.setPuntuacion(faker.number().numberBetween(1,6));
@@ -258,6 +251,7 @@ public class ComentarioService {
         comentario.setHotel(hotel);
         comentario.setCliente(cliente);
         comentario.setFecha(LocalDate.now());
+
         return comentario;
     }
 

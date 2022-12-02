@@ -53,25 +53,13 @@ public class RegisterControllerCon {
                 //Guardado del cliente en base de datos
                 clienteService.guardarCliente(cliente);
 
-
                 return "redirect:/main";
 
             } else {
-
                 return "redirect:/register";
-
             }
         }catch (Exception e){
-
             return "redirect:/register";
-
         }
     }
-
-
-
-
-
-
-
 }

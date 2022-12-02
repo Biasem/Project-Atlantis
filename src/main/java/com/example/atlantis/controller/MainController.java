@@ -63,6 +63,7 @@ public class MainController{
         }
 
         else{
+
             model.addObject("lista", lista);
             model.addObject("fechamin", LocalDate.now());
             model.addObject("busqueda", busqueda);

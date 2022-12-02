@@ -40,6 +40,7 @@ public class GestionHotelController {
 
     @GetMapping("/borrarhotel")
     public String deleteHotel(Model model, @ModelAttribute Hotel hotel) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
         RegisHotFech hotel1 = loginService.copiartodohotelconsession(correo);
@@ -124,6 +125,7 @@ public class GestionHotelController {
             hotelService.editarHotel(hotelService.convertirAHotel(hotel));
 
             return "redirect:/main";
+
         } else {
 
             return "redirect:/editarhotel";

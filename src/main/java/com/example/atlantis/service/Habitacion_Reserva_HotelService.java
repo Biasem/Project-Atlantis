@@ -44,14 +44,14 @@ public class Habitacion_Reserva_HotelService {
         return comprobar;
     }
 
-    public Hab_Reserva_Hotel crearHab_Reserva_Hotel(Hotel hotel, Habitaciones habitaciones, Reserva reserva, Regimen regimen){
+    public Hab_Reserva_Hotel crearHab_Reserva_Hotel(Habitaciones habitaciones, Reserva reserva, Regimen regimen){
+
         Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
         habReservaHotel.setId_hab(habitaciones);
         habReservaHotel.setReserva(reserva);
         habReservaHotel.setNumhab(Long.valueOf(faker.number().randomNumber()).intValue());
         habReservaHotel.setId_regimen(regimen);
+
         return habReservaHotel;
     }
-
-
 }

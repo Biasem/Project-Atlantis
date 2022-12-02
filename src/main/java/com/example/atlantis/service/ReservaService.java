@@ -1,4 +1,5 @@
 package com.example.atlantis.service;
+
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ReservaRepository;
 import com.github.javafaker.Faker;
@@ -15,7 +16,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class ReservaService {
     private static Faker faker = new Faker();
     private HotelService hotelService;
-
     @Autowired
     private ReservaRepository reservaRepository;
     @Autowired
@@ -306,35 +306,19 @@ public class ReservaService {
         return cambiados;
     }
 
-    public Reserva crearReservaSinPrecio(Cliente cliente,Hotel hotel){
-        Reserva reserva = new Reserva();
-        LocalDate fecha1 = fechaAzar2022();
-        LocalDate fecha2 = fechaAzar2022();
-        while (fecha1.equals(fecha2)){
-            fecha1 = fechaAzar2022();
-            fecha2 = fechaAzar2022();
-        }
-        reserva.setId_cliente(cliente);
-        reserva.setId_hotel(hotel);
-        if(fecha1.isBefore(fecha2)){
-            reserva.setFecha_entrada(fecha1);
-            reserva.setFecha_salida(fecha2);
-        }else{
-            reserva.setFecha_entrada(fecha2);
-            reserva.setFecha_salida(fecha1);
-        }
-        return reserva;
-    }
     public Reserva crearReserva(Cliente cliente,Hotel hotel){
+
         Reserva reserva = new Reserva();
         LocalDate fecha1 = fechaAzar2022();
         LocalDate fecha2 = fechaAzar2022();
+
         while (fecha1.equals(fecha2)){
             fecha1 = fechaAzar2022();
             fecha2 = fechaAzar2022();
         }
         reserva.setId_cliente(cliente);
         reserva.setId_hotel(hotel);
+
         if(fecha1.isBefore(fecha2)){
             reserva.setFecha_entrada(fecha1);
             reserva.setFecha_salida(fecha2);
@@ -343,10 +327,12 @@ public class ReservaService {
             reserva.setFecha_salida(fecha1);
         }
         reserva.setPrecio_total(faker.number().randomDouble(2,1,5000));
+
         return reserva;
     }
 
     private LocalDate fechaAzar2022(){
+
         LocalDate fecha ;
         int anyo = 2022;
         int mes = faker.number().numberBetween(1,13);
@@ -355,6 +341,7 @@ public class ReservaService {
         else if (mes ==1||mes==3||mes==5||mes==7||mes==8||mes==10||mes==12) dia = faker.number().numberBetween(1,32);
         else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
         fecha = LocalDate.of(anyo,mes,dia);
+
         return fecha;
     }
 

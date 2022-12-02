@@ -40,7 +40,6 @@ public class HotelService {
 
     public Hotel getById(int id){
         return hotelRepository.findById(id).orElse(null);
-
     }
 
 
@@ -50,7 +49,7 @@ public class HotelService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
-        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
+       LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
 
         //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
@@ -78,7 +77,6 @@ public class HotelService {
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
         hotel1.getEmail().setRol(Rol.HOTEL);
         hotel1.setId(0);
-
 
         return hotel1;
     }
@@ -146,16 +144,6 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
-    public List<TipoRegimen> todoregimen(){
-        List<TipoRegimen> regimen = new ArrayList<>();
-        regimen.add(TipoRegimen.DESAYUNO);
-        regimen.add(TipoRegimen.MEDIA_PENSION);
-        regimen.add(TipoRegimen.SIN_PENSION);
-        regimen.add(TipoRegimen.PENSION_COMPLETA);
-        regimen.add(TipoRegimen.TODO_INCLUIDO);
-        return regimen;
-    }
-
     public Integer conseguirId(String correo){
 
         List<Hotel> hoteles = hotelRepository.findAll();
@@ -181,20 +169,6 @@ public class HotelService {
                 hotelRepository.delete(hotel);
             }
         }
-    }
-
-    public Hotel copiartodohotelApi(GraphqlInput.HotelInput hotel){
-
-        List<Hotel> todos = hotelRepository.findAll();
-        Hotel hotel1 = new Hotel();
-
-        for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).getEmail().getEmail().equals(hotel.getEmail().getEmail())){
-                hotel1 = todos.get(i);
-            }
-        }
-
-        return hotel1;
     }
 
     public Hotel copiartodohotel(Hotel hotel){
@@ -243,6 +217,7 @@ public class HotelService {
             return mapa;
         }
         else{
+
             //Ordenamos la lista de hoteles
             List<Hotel> topPuntacion = mapa.keySet().stream().sorted(Comparator.comparing(mapa::get)).collect(Collectors.toList());
 
@@ -295,14 +270,19 @@ public class HotelService {
 
         return hotel1;
     }
+
     public Hotel crearHotel(){
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Login login = new Login();
         Hotel hotel = new Hotel();
 
+        //Seteo login
         login.setEmail(faker.internet().emailAddress());
         login.setPassword(passwordEncoder.encode("1234"));
         login.setRol(rol.HOTEL);
+
+        //Seteo hotel
         hotel.setEmail(login);
         hotel.setTipo_hotel(Arrays.stream(TipoHotel.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,4)));
         hotel.setDireccion(faker.address().fullAddress());
@@ -315,10 +295,12 @@ public class HotelService {
         hotel.setNum_estrellas(faker.number().numberBetween(0,6));
         hotel.setFecha_apertura(fechaAzar2022());
         hotel.setFecha_cierre(fechaAzar2022());
+
         return hotel;
     }
 
     private LocalDate fechaAzar2022(){
+
         LocalDate fecha ;
         int anyo = 2022;
         int mes = faker.number().numberBetween(1,13);
@@ -327,20 +309,25 @@ public class HotelService {
         else if (mes ==1||mes==3||mes==5||mes==7||mes==8||mes==10||mes==12) dia = faker.number().numberBetween(1,32);
         else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
         fecha = LocalDate.of(anyo,mes,dia);
+
         return fecha;
     }
 
     public List<TipoHab> todoTipo (){
+
         List<TipoHab> tipo = new ArrayList<>();
         tipo.add(TipoHab.SIMPLE);
         tipo.add(TipoHab.DOBLE);
         tipo.add(TipoHab.TRIPLE);
         tipo.add(TipoHab.SUITE);
+
         return tipo;
     }
 
     public List<TipoHab> checkTipo (List<Habitaciones> lista){
+
         List<TipoHab> crear = todoTipo();
+
         for (Habitaciones x: lista){
             if ( x.getTipo_hab() == TipoHab.SIMPLE){
                 crear.remove(x.getTipo_hab());
@@ -355,6 +342,7 @@ public class HotelService {
                 crear.remove(x.getTipo_hab());
             }
         }
+
         return crear;
     }
 

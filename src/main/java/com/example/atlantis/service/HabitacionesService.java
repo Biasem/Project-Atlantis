@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class HabitacionesService {
     private static Faker faker = new Faker();
 
-
     @Autowired
     private HabitacionesRepository habitacionesRepository;
     @Autowired
@@ -133,14 +132,17 @@ public class HabitacionesService {
     }
 
     public Habitaciones crearHabitacion(Hotel hotel){
+
         Habitaciones habitacion = new Habitaciones();
         habitacion.setId_hotel(hotel);
         habitacion.setHab_ocupadas(faker.number().numberBetween(1,201));
         habitacion.setNum_hab(faker.number().numberBetween(1,201));
+
         while(habitacion.getHab_ocupadas()>habitacion.getNum_hab()){
             habitacion.setHab_ocupadas(faker.number().numberBetween(1,201));
             habitacion.setNum_hab(faker.number().numberBetween(1,201));
         }
+
         habitacion.setTipo_hab(Arrays.stream(TipoHab.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,4)));
 
        return habitacion;

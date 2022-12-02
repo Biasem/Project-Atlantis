@@ -34,7 +34,6 @@ public class GestionClienteController {
         return clienteService.getAll();
     }
 
-
     @GetMapping("/borrarcliente")
     public String deleteCliente(Model model,@ModelAttribute Cliente cliente) {
 
@@ -63,6 +62,7 @@ public class GestionClienteController {
             return "redirect:/logout";
         }
         else {
+
             return "redirect:/borrarcliente";
         }
     }
@@ -104,6 +104,7 @@ public class GestionClienteController {
 
             //Introduccion de datos a Service para meter en ddbb
             clienteService.editarCliente(cliente);
+
             return "redirect:/main";
 
         }else{

@@ -130,10 +130,12 @@ public class RegimenService {
     }
 
     public Regimen crearRegimen(Hotel hotel){
+
         Regimen regimen = new Regimen();
         regimen.setCategoria(Arrays.stream(TipoRegimen.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,5)));
         regimen.setPrecio(faker.number().randomDouble(2,10,100));
         regimen.setId_hotel(hotel);
+
         return regimen;
     }
 

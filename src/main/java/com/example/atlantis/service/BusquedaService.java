@@ -35,6 +35,7 @@ public class BusquedaService {
                 }
             }
         }
+
         return coincidencias;
     }
 
@@ -61,6 +62,7 @@ public class BusquedaService {
                 }
             }
         }
+
         return coincidencias;
     }
 
@@ -70,9 +72,7 @@ public class BusquedaService {
         if((hotel.getFecha_apertura().isBefore(LocalDate.parse(busqueda.getFechaInicial()))&&
                 (hotel.getFecha_cierre().isAfter(LocalDate.parse(busqueda.getFechaFinal()))))){
             return true;
-
         }
-
         return false;
     }
 
@@ -90,7 +90,6 @@ public class BusquedaService {
 
             return true;
         }
-
         return false;
     }
 

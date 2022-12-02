@@ -14,7 +14,6 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     @Query(value = "select email, password from login ", nativeQuery = true)
     List<Cliente> obtenerCliente();
 
-
     Login findTopByEmail(String username);
 
 }

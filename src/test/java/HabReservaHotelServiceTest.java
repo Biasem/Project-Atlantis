@@ -44,7 +44,7 @@ public class HabReservaHotelServiceTest {
         reserva = reservaService.crearReserva(cliente,hotel);
         regimen = regimenService.crearRegimen(hotel);
         habitaciones = habitacionesService.crearHabitacion(hotel);
-        habReservaHotel = habitacionReservaHotelService.crearHab_Reserva_Hotel(hotel,habitaciones,reserva,regimen);
+        habReservaHotel = habitacionReservaHotelService.crearHab_Reserva_Hotel(habitaciones,reserva,regimen);
     }
     @Test
     public void guardarHabitacionReservaHotelTest(){

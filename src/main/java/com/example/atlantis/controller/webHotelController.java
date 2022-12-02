@@ -162,7 +162,6 @@ public class webHotelController {
         ModelAndView model = new ModelAndView("comentarioHecho");
 
         return model;
-
     }
 
     @PostMapping("/like")
@@ -179,7 +178,6 @@ public class webHotelController {
         ModelAndView model = new ModelAndView("comentarioHecho");
 
         return model;
-
     }
 
 
@@ -271,6 +269,4 @@ public class webHotelController {
 
         return "redirect:/main";
     }
-
-
 }

@@ -1,6 +1,5 @@
 package com.example.atlantis.controller;
 
-import com.example.atlantis.model.*;
 import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +22,7 @@ public class PruebaController{
 
         @RequestMapping("/equipo")
         public ModelAndView equipo(){
+
             ModelAndView model = new ModelAndView("equipo");
 
             // Gestión sesión
@@ -41,14 +41,4 @@ public class PruebaController{
 
             return model ;
         }
-
-        @GetMapping("/prueba")
-        public ModelAndView prueba(){
-
-            ModelAndView model = new ModelAndView("greeting");
-            model.addObject("texto", new Comentario());
-
-            return model ;
-        }
-
 }
