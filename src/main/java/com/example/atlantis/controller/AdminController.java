@@ -235,14 +235,15 @@ public class AdminController{
             return new ModelAndView("redirect:/admin/habitaciones/editar/item?id="+id);
         }
         ModelAndView model = new ModelAndView("adminHecho");
+        nuevoprecio.setFecha_inicio(LocalDate.parse(fechainicio));
+        nuevoprecio.setFecha_fin(LocalDate.parse(fechafin));
+        Hotel hotel = precio_habitacionService.conseguirIDHotelprecio(idhotel);
+        Habitaciones habitacion = precio_habitacionService.conseguirIDHabitacionprecio(id);
+        nuevoprecio.setId_hotel(hotel);
+        nuevoprecio.setId_hab(habitacion);
 
-        precio_habitacionService.modificarPrecioHab(habitacionesService.getById(id),nuevoprecio);
-//        nuevoprecio.setFecha_inicio(LocalDate.parse(fechainicio));
-//        nuevoprecio.setFecha_fin(LocalDate.parse(fechafin));
-//        Hotel hotel = precio_habitacionService.conseguirIDHotelprecio(idhotel);
-//        Habitaciones habitacion = precio_habitacionService.conseguirIDHabitacionprecio(id);
-//        nuevoprecio.setId_hotel(hotel);
-//        nuevoprecio.setId_hab(habitacion);
+        precio_habitacionService.modificarPrecioHab(habitacionesService.getById(id),nuevoprecio,fechainicio,fechafin);
+
 //        precio_habitacionService.guardarPrecio(nuevoprecio);
         return model;
     }

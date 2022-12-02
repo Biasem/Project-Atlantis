@@ -116,10 +116,24 @@ public class Precio_HabitacionService {
         }
         return true;
     }
-    public void modificarPrecioHab(Habitaciones hab,Precio_Hab nuevoPrecio){
+    public void modificarPrecioHab(Habitaciones hab,Precio_Hab nuevoPrecio,String fechaInicioString,String fechaFinString){
         List<Precio_Hab> listaPrecio_hab =precio_habitacionRepository.obtenerListPreciohab(hab.getId());
+        LocalDate fechaInicio = LocalDate.parse(fechaInicioString);
+        LocalDate fechaFin = LocalDate.parse(fechaFinString);
+        Precio_Hab precio_habAux = nuevoPrecio;
         for(Precio_Hab ph:listaPrecio_hab){
+            //////// si la nueva fecha esta dentro de otra fecha
+            /////guardamos la fecha nueva y la antigua la guardamos en dos trozos y borramos la antigua
+            if(!fechaInicio.isBefore(ph.getFecha_inicio())||!fechaFin.isAfter(ph.getFecha_fin())){
+                precio_habitacionRepository.save(nuevoPrecio);
+                precio_habAux.setFecha_inicio(ph.getFecha_inicio());
+                precio_habAux.setFecha_fin(nuevoPrecio.getFecha_inicio().minusDays(1));
+                precio_habitacionRepository.save(precio_habAux);
+                precio_habAux.setFecha_inicio(nuevoPrecio.getFecha_fin().plusDays(1));
+                precio_habAux.setFecha_fin(ph.getFecha_fin());
+                precio_habitacionRepository.save(precio_habAux);
 
+            }
         }
 
 
