@@ -107,7 +107,7 @@ public class webHotelController {
         model.addObject("texto", new Comentario());
         model.addObject("hotelfinal", hotelfinal);
         model.addObject("regimen", regimen);
-        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().filter(h -> h.getHab_ocupadas()<h.getNum_hab()).collect(Collectors.toList()));
+        model.addObject("listaHabitaciones", habitacionesService.conseguir(id,listaHabitaciones).stream().filter(h -> h.getHab_ocupadas()<h.getNum_hab()).collect(Collectors.toList()).stream().filter(h->!h.getId_hotel().getRegimen().isEmpty()).collect(Collectors.toList()));
         model.addObject("estrellas",estrellas);
         model.addObject("fechamin", LocalDate.now());
         Objeto_Aux_Reserva_html objetoInteger = new Objeto_Aux_Reserva_html();
