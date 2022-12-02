@@ -39,8 +39,8 @@ public class HotelService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-//        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
-//        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
+       LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
+        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
 
         //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
@@ -53,8 +53,8 @@ public class HotelService {
         hotel1.setPais(hotel.getPais());
         hotel1.setLocalidad(hotel.getLocalidad());
         hotel1.setDireccion(hotel.getDireccion());
-//        hotel1.setFecha_apertura(fechap);
-//        hotel1.setFecha_cierre(fechap1);
+        hotel1.setFecha_apertura(fechap);
+        hotel1.setFecha_cierre(fechap1);
         hotel1.setNum_estrellas(hotel.getNum_estrellas());
         hotel1.setTelefono(hotel.getTelefono());
         hotel1.setTipo_hotel(hotel.getTipo_hotel());
@@ -66,7 +66,9 @@ public class HotelService {
         hotel1.setLatitud(hotel.getLatitud());
         hotel1.setLongitud(hotel.getLongitud());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
-        hotel1.setId(hotel.getId());
+        hotel1.getEmail().setRol(Rol.HOTEL);
+        hotel1.setId(0);
+
 
         return hotel1;
     }
@@ -260,4 +262,19 @@ public class HotelService {
 
     return mapa;
     }
+
+    public Hotel copiartodohotel(String hotel){
+
+        List<Hotel> todos = hotelRepository.findAll();
+        Hotel hotel1 = new Hotel();
+
+        for(int i = 0; i < todos.size(); i++ ){
+            if(todos.get(i).getEmail().getEmail().equals(hotel)){
+                hotel1 = todos.get(i);
+            }
+        }
+
+        return hotel1;
+    }
+
 }

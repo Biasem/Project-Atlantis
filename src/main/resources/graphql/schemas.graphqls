@@ -19,13 +19,13 @@ type Query{
     ):[Hotel]
 
 
-    historialVigente(
-        cliente : ClienteInput
-    ):String
+    historialCliente(
+        correo : String
+    ):[Reserva]
 
-    historialVigenteHotel(
-        hotel : HotelInput
-    ):String
+    historialHotel(
+       correo : String
+    ):[Reserva]
 
     resultadoHotel(
         id : ID
@@ -56,12 +56,14 @@ type Mutation{
     ):String
 
     deleteCliente2(
-        input : ClienteInput
+        correo : String
+        contrasena : String
     ):String
 
 
     deleteHotel2(
-        input : HotelInput
+        email : String
+        password : String
     ):String
 
 
@@ -71,12 +73,12 @@ type Mutation{
 
     crearHabitacion(
         habitaciones : HabitacionesInput
-        id : ID
+        idhotel : ID
     ):String
 
     editarHabitacion(
         habitaciones : HabitacionesInput
-        id : ID
+        idhotel : ID
     ):String
 
     borrarHabitacion(

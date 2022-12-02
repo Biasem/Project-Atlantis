@@ -53,13 +53,13 @@ public class ClienteService {
     }
 
 
-    public Cliente copiartodoclienteApi(GraphqlInput.ClienteInput cliente){
+    public Cliente copiartodoclienteApi(String cliente){
 
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
         for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).getEmail().getEmail().equals(cliente.getEmail().getEmail())){
+            if(todos.get(i).getEmail().getEmail().equals(cliente)){
                 cliente1 = todos.get(i);
             }
         }
@@ -81,14 +81,13 @@ public class ClienteService {
         return cliente1;
     }
 
-    public void borrarClienteApi(GraphqlInput.ClienteInput cliente){
+    public void borrarClienteApi(Cliente cliente){
 
         List<Cliente> todos = clienteRepository.findAll();
-        Cliente cliente1 = copiartodoclienteApi(cliente);
 
         for(int i = 0; i < todos.size(); i++ ){
-            if(todos.get(i).getEmail().equals(cliente1.getEmail())){
-                clienteRepository.delete(cliente1);
+            if(todos.get(i).getEmail().equals(cliente.getEmail())){
+                clienteRepository.delete(cliente);
             }
         }
     }
