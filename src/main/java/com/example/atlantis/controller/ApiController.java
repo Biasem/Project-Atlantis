@@ -1,7 +1,5 @@
 package com.example.atlantis.controller;
 
-
-
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.*;
 import com.example.atlantis.service.*;
@@ -13,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,14 +52,6 @@ public class ApiController {
     private BusquedaService busquedaService;
 
     @Autowired
-    private ComentarioLikeRepository comentarioLikeRepository;
-
-    @Autowired
-    private ComentarioHotelRepository comentarioHotelRepository;
-    @Autowired
-    private ComentarioRepository comentarioRepository;
-
-    @Autowired
     private ReservaService reservaService;
 
     @Autowired
@@ -81,13 +70,12 @@ public class ApiController {
 
 
 
-
-
     @PostMapping("/register")
     @MutationMapping
     public String registerForm(@RequestBody @Argument(name = "input") GraphqlInput.ClienteInput input) {
 
         try {
+
             //Selección de Rol Cliente para el nuevo cliente
             input.getEmail().setRol(GraphqlInput.RolInput.CLIENTE);
             input.getEmail().setPassword(bCryptPasswordEncoder.encode(input.getEmail().getPassword()));
@@ -122,16 +110,13 @@ public class ApiController {
     @MutationMapping
     public String registerhotelForm(@RequestBody @Argument(name = "input") GraphqlInput.RegisHotFechInput input) {
 
-
         try {
             //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
             if (input.getNombre() != null && input.getDireccion() != null && input.getPais() != null
                     && input.getLocalidad() != null && input.getFecha_apertura() != null
                     && input.getFecha_cierre() != null && input.getTipo_hotel() != null
-//                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
                     && input.getEmail() != null && input.getEmail().getPassword() != null && input.getLatitud() != null
                     && input.getLongitud() != null) {
-
 
                 //If para mirar si el Hotel es apartamento y tenga las estrellas a 0
                 if (hotelService.siEsApartaHotelApi(input) != true) {
@@ -182,6 +167,7 @@ public class ApiController {
     public String deleteHotel2(@RequestBody @Argument(name = "email") String correo, @Argument(name = "password") String contra) {
 
         Hotel hotel1 = new Hotel();
+
         //Encriptado y recogida de datos de al sesión apra copiar todo el modelo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -243,9 +229,7 @@ public class ApiController {
         //Primer if para que tenga los datos que sean obligatorios y las fechas no sean raras
         if (input.getNombre() != null && input.getDireccion() != null && input.getPais() != null
                 && input.getLocalidad() != null && input.getFecha_apertura() != null
-                && input.getFecha_cierre() != null && input.getTipo_hotel() != null
-//                && LocalDate.parse(input.getFecha_cierre()).isAfter(LocalDate.parse(input.getFecha_apertura()))
-        ) {
+                && input.getFecha_cierre() != null && input.getTipo_hotel() != null) {
 
 
             if (input.getEmail().getEmail() != null) {
@@ -259,7 +243,6 @@ public class ApiController {
 
 
                 input.setId(datos.getId());
-//            input.setEmail(new GraphqlInput.LoginInput());
                 input.getEmail().setPassword(datos.getEmail().getPassword());
                 input.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
                 input.getEmail().setEmail(datos.getEmail().getEmail());
@@ -377,7 +360,6 @@ public class ApiController {
         List<Reserva> reservas = reservaService.todasReservas(cliente1.getId());
 
         return reservas;
-
     }
 
     @RequestMapping(value = "/hoteless/{item}", method = RequestMethod.GET)
@@ -385,7 +367,6 @@ public class ApiController {
     public @ResponseBody Hotel resultadoHotel(@RequestParam(value = "id") @PathVariable @Argument(name = "id") Integer id) {
 
         // Gestión sesión
-
         List<Hotel> listaHoteles = hotelService.getAll();
         List<Hotel> hotelfinal = new ArrayList<>();
 
