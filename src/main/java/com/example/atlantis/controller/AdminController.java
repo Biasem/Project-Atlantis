@@ -187,8 +187,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
@@ -201,9 +199,6 @@ public class AdminController{
             List<Habitaciones> habitacion = new ArrayList<>();
             List<Precio_Hab> precios = precio_habitacionService.filtrarHabitacion(id);
             habitacion.add(habitacionesService.getById(id));
-            List<TipoHab> tipohab = habitacionesService.todoHab();
-
-            model.addObject("tipohab", tipohab);
             model.addObject("habitacion", habitacion);
             model.addObject("habitaciones", new Habitaciones());
             model.addObject("precios",precios);

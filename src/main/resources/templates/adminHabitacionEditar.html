@@ -40,14 +40,6 @@
                     <td><input type="text" th:field="*{num_hab}" class="form-control shadow-none"></td>
                 </tr>
                 <tr>
-                    <td>Tipo habitación</td>
-                    <td>
-                        <select id="tipo" th:field="*{tipo_hab}" class="form-control shadow-none">
-                            <option th:each="x: ${tipohab}" th:value="${x.name()}" th:text="${x.name()}"></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
                     <td>Habitaciones ocupadas</td>
                     <td><input type="number" th:field="*{hab_ocupadas}" class="form-control shadow-none"></td>
                 </tr>

@@ -77,7 +77,6 @@ public class HabitacionesService {
        List<Habitaciones> lista = habitacionesRepository.getHabitacionesById(id);
        for (Habitaciones x: lista){
            x.setNum_hab(habitacion.getNum_hab());
-           x.setTipo_hab(habitacion.getTipo_hab());
            x.setHab_ocupadas(habitacion.getHab_ocupadas());
            x.setMax_cliente(habitacion.getMax_cliente());
            habitacionesRepository.save(x);
