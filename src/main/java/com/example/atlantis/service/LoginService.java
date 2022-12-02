@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,29 +35,9 @@ public class LoginService implements UserDetailsService {
         return loginRepository.findAll();
     }
 
-
-    public boolean Buscar(Login login) {
-        //Lista con todos los registros de login
-        List<Login> todos = getAll();
-        boolean registrado = false;
-
-        //Validación de si existe el email y el password en un determinado registro, devolviendo un boolean
-        for (int i = 0; i < todos.size(); i++) {
-            if (todos.get(i).getEmail().equals(login.getEmail()) && todos.get(i).getPassword().equals(login.getPassword())) {
-                registrado = true;
-                break;
-            } else {
-                registrado = false;
-            }
-        }
-
-        return registrado;
-    }
-
     public void guardarLogin(Login login) {
         loginRepository.save(login);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -75,25 +53,9 @@ public class LoginService implements UserDetailsService {
         return new User(login.getEmail(), login.getPassword(), roles);
     }
 
-    public boolean existe(Login login) {
-        List<Login> todos = getAll();
-        boolean registrado = false;
-        for (int i = 0; i < todos.size(); i++) {
-            if (login.getEmail().equals(todos.get(i).getEmail())) {
-                registrado = false;
-                break;
-            } else {
-                registrado = true;
-
-            }
-
-        }
-        return registrado;
-
-
-    }
 
     public Cliente copiartodoclienteconsession(String email){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
@@ -102,11 +64,13 @@ public class LoginService implements UserDetailsService {
                 cliente1 = todos.get(i);
             }
         }
+
         return cliente1;
     }
 
 
     public RegisHotFech copiartodohotelconsession(String email){
+
         List<Hotel> todos = hotelRepository.findAll();
         RegisHotFech hotel1 = new RegisHotFech();
 
@@ -129,11 +93,13 @@ public class LoginService implements UserDetailsService {
                 hotel1.setId(todos.get(i).getId());
             }
         }
+
         return hotel1;
     }
 
 
     public Hotel cogerid(String email){
+
         List<Hotel> todos = hotelRepository.findAll();
         Hotel hotel = new Hotel();
 
@@ -146,10 +112,12 @@ public class LoginService implements UserDetailsService {
                 hotel.getEmail().setEmail(todos.get(i).getEmail().getEmail());
             }
         }
+
         return hotel;
     }
 
     public Cliente cogeridcliente(String email){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente = new Cliente();
 
@@ -162,6 +130,7 @@ public class LoginService implements UserDetailsService {
                 cliente.getEmail().setEmail(todos.get(i).getEmail().getEmail());
             }
         }
+
         return cliente;
     }
 

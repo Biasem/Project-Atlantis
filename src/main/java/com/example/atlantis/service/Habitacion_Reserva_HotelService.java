@@ -18,23 +18,27 @@ public class Habitacion_Reserva_HotelService {
     }
 
     public void guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
+
         habitacion_reserva_hotelRepository.save(habReservaHotel);
     }
+
     public Integer UltimoIdReservadelCliente(Integer idcliente){
+
         return habitacion_reserva_hotelRepository.UltimoIdReservadelCliente(idcliente);
     }
 
     public Integer checkearReserva(Integer id){
+
         List<Hab_Reserva_Hotel> lista = habitacion_reserva_hotelRepository.findAll();
         Integer comprobar = 0;
+
+        //Busqueda de habitación reservada y comprobación del regimen
         for (Hab_Reserva_Hotel x: lista){
             if (x.getId_regimen().getId().equals(id)){
                 comprobar = 1;
             }
-            else{
-
-            }
         }
+
         return comprobar;
     }
 

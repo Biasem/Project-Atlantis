@@ -54,6 +54,7 @@ public class ClienteService {
 
 
     public Cliente copiartodoclienteApi(GraphqlInput.ClienteInput cliente){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
@@ -62,10 +63,12 @@ public class ClienteService {
                 cliente1 = todos.get(i);
             }
         }
+
         return cliente1;
     }
 
     public Cliente copiartodocliente(Cliente cliente){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();
 
@@ -74,14 +77,16 @@ public class ClienteService {
                 cliente1 = todos.get(i);
             }
         }
+
         return cliente1;
     }
 
     public void borrarClienteApi(GraphqlInput.ClienteInput cliente){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = copiartodoclienteApi(cliente);
-        for(int i = 0; i < todos.size(); i++ ){
 
+        for(int i = 0; i < todos.size(); i++ ){
             if(todos.get(i).getEmail().equals(cliente1.getEmail())){
                 clienteRepository.delete(cliente1);
             }
@@ -89,10 +94,11 @@ public class ClienteService {
     }
 
     public void borrarCliente(Cliente cliente){
+
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = copiartodocliente(cliente);
-        for(int i = 0; i < todos.size(); i++ ){
 
+        for(int i = 0; i < todos.size(); i++ ){
             if(todos.get(i).getEmail().equals(cliente1.getEmail())){
                 clienteRepository.delete(cliente1);
             }
@@ -114,29 +120,16 @@ public class ClienteService {
     }
 
     public Integer conseguirId(String correo){
+
         List<Cliente> clientes = clienteRepository.findAll();
         Integer id = 0;
+
         for (Cliente x: clientes){
             if (x.getEmail().getEmail().equals(correo)){
                 id = x.getId();
             }
-            else {
-
-            }
         }
+
         return id;
     }
-
-    public Cliente obtenerCliDeSesion(Login login){
-        Cliente cliente = clienteRepository.buscarConSession(login.getEmail());
-
-
-        return cliente;
-    }
-
-
-
-    
-
-
 }

@@ -3,11 +3,9 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioRepository;
 import com.example.atlantis.repository.HotelRepository;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -19,7 +17,6 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
-
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -44,11 +41,13 @@ public class HotelService {
 
 //        LocalDate fechap =  LocalDate.parse(hotel.getFecha_apertura(), formatter);
 //        LocalDate fechap1 =  LocalDate.parse(hotel.getFecha_cierre(), formatter);
+
         //Selección de ROL Hotel para el nuevo Hotel
         hotel.getEmail().setRol(GraphqlInput.RolInput.HOTEL);
         Login login = new Login();
         Hotel hotel1 = new Hotel();
         hotel1.setEmail(login);
+
         //Introducción  de datos en el modelo real para insertar en bbdd
         hotel1.setNombre(hotel.getNombre());
         hotel1.setPais(hotel.getPais());
@@ -68,6 +67,7 @@ public class HotelService {
         hotel1.setLongitud(hotel.getLongitud());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
         hotel1.setId(hotel.getId());
+
         return hotel1;
     }
 
@@ -96,6 +96,7 @@ public class HotelService {
         hotel1.setLongitud(hotel.getLongitud());
         hotel1.getEmail().setPassword(bCryptPasswordEncoder.encode(hotel.getEmail().getPassword()));
         hotel1.setId(hotel.getId());
+
         return hotel1;
     }
 
@@ -110,6 +111,7 @@ public class HotelService {
         }else{
             i = true;
         }
+
         return i;
     }
 
@@ -123,6 +125,7 @@ public class HotelService {
         }else{
             i = true;
         }
+
         return i;
     }
 
@@ -131,32 +134,24 @@ public class HotelService {
         hotelRepository.save(hotel);
     }
 
-    public List<TipoRegimen> todoregimen(){
-        List<TipoRegimen> regimen = new ArrayList<>();
-        regimen.add(TipoRegimen.DESAYUNO);
-        regimen.add(TipoRegimen.MEDIA_PENSION);
-        regimen.add(TipoRegimen.SIN_PENSION);
-        regimen.add(TipoRegimen.PENSION_COMPLETA);
-        regimen.add(TipoRegimen.TODO_INCLUIDO);
-        return regimen;
-    }
 
     public Integer conseguirId(String correo){
+
         List<Hotel> hoteles = hotelRepository.findAll();
         Integer id = 0;
+
         for (Hotel x: hoteles){
             if (x.getEmail().getEmail().equals(correo)){
                 id = x.getId();
             }
-            else {
-
-            }
         }
+
         return id;
     }
 
 
     public void borrarHotel(Hotel hotel){
+
        List<Hotel> todos = hotelRepository.findAll();
 
         for(int i = 0; i < todos.size(); i++ ){
@@ -168,6 +163,7 @@ public class HotelService {
     }
 
     public Hotel copiartodohotelApi(GraphqlInput.HotelInput hotel){
+
         List<Hotel> todos = hotelRepository.findAll();
         Hotel hotel1 = new Hotel();
 
@@ -176,10 +172,12 @@ public class HotelService {
                 hotel1 = todos.get(i);
             }
         }
+
         return hotel1;
     }
 
     public Hotel copiartodohotel(Hotel hotel){
+
         List<Hotel> todos = hotelRepository.findAll();
         Hotel hotel1 = new Hotel();
 
@@ -188,6 +186,7 @@ public class HotelService {
                 hotel1 = todos.get(i);
             }
         }
+
         return hotel1;
     }
 
@@ -203,18 +202,22 @@ public class HotelService {
     }
 
     public Map<Hotel, Integer> filtrarmejores (List<Hotel> hoteles){
+
         Map<Hotel, Integer> mapa = new HashMap<>();
+
+        //Busqueda hoteles para obtener puntuación media
         for (Hotel x: hoteles){
             Integer id = x.getId();
             Integer media = comentarioService.mediaPuntuacion(id);
-            if (media.equals(0)){
 
+            if (media.equals(0)){
             }
             else{
                 mapa.put(x, media);
             }
         }
 
+        //Ver si el mapa es menor o mayor que 3
         if (mapa.size()<3){
             return mapa;
         }
@@ -242,18 +245,19 @@ public class HotelService {
     }
 
     public Map<Hotel, Integer> filtrarHotel (List<Hotel> hoteles){
+
         Map<Hotel, Integer> mapa = new HashMap<>();
+
+        //Busqueda de hoteles con su media para introducirlos en el mapa
         for (Hotel x: hoteles){
             Hotel nuevo = x;
             Integer media = comentarioService.mediaPuntuacion(x.getId());
             mapa.put(nuevo, media);
         }
 
+        //Ordenarlo según su puntuación
         mapa.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
     return mapa;
     }
-
-
-
-
 }
