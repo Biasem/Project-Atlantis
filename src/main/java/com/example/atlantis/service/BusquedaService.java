@@ -26,7 +26,7 @@ public class BusquedaService {
                         libres += ((hab.getNum_hab()-hab.getHab_ocupadas()) * hab.getMax_cliente());
                     }
                 }
-                if (libres>=busqueda.getNumHuespedes()){
+                if (libres>= busqueda.getNumHuespedes()){
                     if((hotel.getLocalidad().toLowerCase().contains(strBusqueda))|| //igualamos a minusculas los string
                             (hotel.getNombre().toLowerCase().contains(strBusqueda))){ //y añadimos las coincidencias
                         coincidencias.add(hotel);
