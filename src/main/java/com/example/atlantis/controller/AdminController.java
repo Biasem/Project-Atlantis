@@ -55,8 +55,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
@@ -149,8 +147,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         Integer preciofinal = regimenService.conseguirRegimenIDHotel(id);
@@ -248,8 +244,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         Integer preciofinal = precio_habitacionService.conseguirPrecioHabitacion(id);
