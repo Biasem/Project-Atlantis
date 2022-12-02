@@ -4,14 +4,18 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.HotelRepository;
 import com.example.atlantis.repository.RegimenRepository;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RegimenService {
+    private static Faker faker = new Faker();
 
     @Autowired
     private RegimenRepository regimenRepository;
@@ -67,8 +71,8 @@ public class RegimenService {
         return hotel;
     }
 
-    public void guardarRegimen (Regimen regimen){
-        regimenRepository.save(regimen);
+    public Regimen guardarRegimen (Regimen regimen){
+        return regimenRepository.save(regimen);
     }
 
     public Integer conseguirRegimenIDHotel (Integer id){
@@ -123,6 +127,14 @@ public class RegimenService {
         }
 
         return crear;
+    }
+
+    public Regimen crearRegimen(Hotel hotel){
+        Regimen regimen = new Regimen();
+        regimen.setCategoria(Arrays.stream(TipoRegimen.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,5)));
+        regimen.setPrecio(faker.number().randomDouble(2,10,100));
+        regimen.setId_hotel(hotel);
+        return regimen;
     }
 
 }

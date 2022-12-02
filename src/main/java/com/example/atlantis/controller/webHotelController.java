@@ -210,11 +210,17 @@ public class webHotelController {
         {
             return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
         }
+
+        List<Integer> listaAux = new ArrayList<>();
         for (Integer i:objeto_aux_reservaHtml.getCantidadHabitaciones()){
             if (i==null){
-                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+                listaAux.add(0);
+//                return new ModelAndView("redirect:/hoteles/item?id="+idhotel);
+            }else {
+                listaAux.add(i);
             }
         }
+        objeto_aux_reservaHtml.setCantidadHabitaciones(listaAux);
 
         //objeto Reserva_para_bbdd
         reserva_para_bbdd = reservaService.precioHabReservada(idhotel, objeto_aux_reservaHtml);
@@ -248,17 +254,17 @@ public class webHotelController {
 
         //Guardamos los detalles de la reserva sacando el id de la reserva del cliente creada anteriormente
         for (int i =0;i<reserva_para_bbdd.getListHabitacion().size();i++){
-
-            Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
-            habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
-            habReservaHotel.setId_regimen(reserva_para_bbdd.getListIdRegimen().get(i));
-            habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(reserva_para_bbdd.getIdCliente())));
-            habReservaHotel.setNumhab(reserva_para_bbdd.getNumhab().get(i));
-            habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
-            Habitaciones hab = reserva_para_bbdd.getListHabitacion().get(i);
-            hab.setHab_ocupadas(hab.getHab_ocupadas()+reserva_para_bbdd.getNumhab().get(i));
-            habitacionesRepository.save(hab);
-
+            if(reserva_para_bbdd.getNumhab().get(i)>0) {
+                Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
+                habReservaHotel.setId_hab(reserva_para_bbdd.getListHabitacion().get(i));
+                habReservaHotel.setId_regimen(reserva_para_bbdd.getListIdRegimen().get(i));
+                habReservaHotel.setReserva(reservaService.getById(habitacionReservaHotelService.UltimoIdReservadelCliente(reserva_para_bbdd.getIdCliente())));
+                habReservaHotel.setNumhab(reserva_para_bbdd.getNumhab().get(i));
+                habitacionReservaHotelService.guardarHabReservaHotel(habReservaHotel);
+                Habitaciones hab = reserva_para_bbdd.getListHabitacion().get(i);
+                hab.setHab_ocupadas(hab.getHab_ocupadas() + reserva_para_bbdd.getNumhab().get(i));
+                habitacionesRepository.save(hab);
+            }
         }
 
         reserva_para_bbdd = null;

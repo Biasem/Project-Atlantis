@@ -17,9 +17,9 @@ public class Habitacion_Reserva_HotelService {
         return habitacion_reserva_hotelRepository.findAll();
     }
 
-    public void guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
+    public Hab_Reserva_Hotel guardarHabReservaHotel(Hab_Reserva_Hotel habReservaHotel){
 
-        habitacion_reserva_hotelRepository.save(habReservaHotel);
+        return habitacion_reserva_hotelRepository.save(habReservaHotel);
     }
 
     public Integer UltimoIdReservadelCliente(Integer idcliente){
@@ -41,5 +41,15 @@ public class Habitacion_Reserva_HotelService {
 
         return comprobar;
     }
+
+    public Hab_Reserva_Hotel crearHab_Reserva_Hotel(Hotel hotel, Habitaciones habitaciones, Reserva reserva,Regimen regimen){
+        Hab_Reserva_Hotel habReservaHotel = new Hab_Reserva_Hotel();
+        habReservaHotel.setId_hab(habitaciones);
+        habReservaHotel.setReserva(reserva);
+        habReservaHotel.setNumhab(Long.valueOf(faker.number().randomNumber()).intValue());
+        habReservaHotel.setId_regimen(regimen);
+        return habReservaHotel;
+    }
+
 
 }

@@ -99,9 +99,7 @@ public class MainController{
         // Gestión sesión
         session.setAttribute(busqueda.getFechaInicial(),busqueda.getFechaFinal());
         List<Hotel> listaHoteles = hotelService.getAll();
-        System.out.println(listaHoteles.size());
         List<Hotel> filtro = busquedaService.AccionBuscar(busqueda,listaHoteles);
-        System.out.println(filtro.size());
         Map<Hotel, Integer> lista = hotelService.filtrarHotel(filtro);
 
         if(LocalDate.parse(busqueda.getFechaInicial()).isAfter(LocalDate.parse(busqueda.getFechaFinal())))
@@ -111,7 +109,6 @@ public class MainController{
 
         model.addObject("fechamin", LocalDate.now());
         model.addObject("lista", lista);
-        System.out.println(lista.size());
         session.setAttribute("fecha_final", busqueda.getFechaFinal());
         session.setAttribute("fecha_inicial", busqueda.getFechaInicial());
 

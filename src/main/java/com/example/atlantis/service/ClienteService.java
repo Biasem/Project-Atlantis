@@ -3,16 +3,24 @@ package com.example.atlantis.service;
 import com.example.atlantis.model.Cliente;
 import com.example.atlantis.model.GraphqlInput;
 import com.example.atlantis.model.Login;
+import com.example.atlantis.model.Rol;
 import com.example.atlantis.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
+import com.github.javafaker.Faker;
+
+
 
 @Service
 public class ClienteService {
+    private static Faker faker = new Faker();
+    private Rol rol;
+
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -48,8 +56,8 @@ public class ClienteService {
 
     }
 
-    public void guardarCliente(Cliente cliente){
-        clienteRepository.save(cliente);
+    public Cliente guardarCliente(Cliente cliente){
+        return clienteRepository.save(cliente);
     }
 
 
@@ -131,4 +139,24 @@ public class ClienteService {
 
         return id;
     }
+
+    public Cliente crearCliente(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Login login = new Login();
+        Cliente cliente = new Cliente();
+
+        login.setEmail(faker.internet().emailAddress());
+        login.setPassword(passwordEncoder.encode("1234"));
+        login.setRol(rol.CLIENTE);
+        cliente.setEmail(login);
+
+        cliente.setApellidos(faker.name().lastName());
+        cliente.setNombre(faker.name().name());
+        cliente.setPais(faker.country().name());
+        cliente.setDni(""+faker.phoneNumber().subscriberNumber(8)+
+                faker.letterify("?"));
+        cliente.setTelefono(faker.phoneNumber().subscriberNumber(9));
+        return cliente;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioRepository;
+import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,10 +11,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import com.github.javafaker.Faker;
+
 
 
 @Service
 public class HotelService {
+    private static Faker faker = new Faker();
+    private Rol rol;
+    private TipoHotel tipoHotel;
+
 
     @Autowired
     private HotelRepository hotelRepository;
@@ -132,10 +139,19 @@ public class HotelService {
     }
 
 
-    public void guardarHotel(Hotel hotel){
-        hotelRepository.save(hotel);
+    public Hotel guardarHotel(Hotel hotel){
+        return hotelRepository.save(hotel);
     }
 
+    public List<TipoRegimen> todoregimen(){
+        List<TipoRegimen> regimen = new ArrayList<>();
+        regimen.add(TipoRegimen.DESAYUNO);
+        regimen.add(TipoRegimen.MEDIA_PENSION);
+        regimen.add(TipoRegimen.SIN_PENSION);
+        regimen.add(TipoRegimen.PENSION_COMPLETA);
+        regimen.add(TipoRegimen.TODO_INCLUIDO);
+        return regimen;
+    }
 
     public Integer conseguirId(String correo){
 
@@ -276,5 +292,73 @@ public class HotelService {
 
         return hotel1;
     }
+    public Hotel crearHotel(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Login login = new Login();
+        Hotel hotel = new Hotel();
+
+        login.setEmail(faker.internet().emailAddress());
+        login.setPassword(passwordEncoder.encode("1234"));
+        login.setRol(rol.HOTEL);
+        hotel.setEmail(login);
+        hotel.setTipo_hotel(Arrays.stream(TipoHotel.values()).collect(Collectors.toList()).get(faker.number().numberBetween(0,4)));
+        hotel.setDireccion(faker.address().fullAddress());
+        hotel.setNombre("Hotel "+faker.starTrek().character());
+        hotel.setPais(faker.country().name());
+        hotel.setLocalidad(faker.country().capital());
+        hotel.setLatitud(Double.valueOf(faker.address().latitude().replace(",",".")));
+        hotel.setLongitud(Double.valueOf(faker.address().longitude().replace(",",".")));
+        hotel.setTelefono(faker.phoneNumber().subscriberNumber(9));
+        hotel.setNum_estrellas(faker.number().numberBetween(0,6));
+        hotel.setFecha_apertura(fechaAzar2022());
+        hotel.setFecha_cierre(fechaAzar2022());
+        return hotel;
+    }
+
+    private LocalDate fechaAzar2022(){
+        LocalDate fecha ;
+        int anyo = 2022;
+        int mes = faker.number().numberBetween(1,13);
+        int dia = 1;
+        if (mes ==2) dia = faker.number().numberBetween(1,28);
+        else if (mes ==1||mes==3||mes==5||mes==7||mes==8||mes==10||mes==12) dia = faker.number().numberBetween(1,32);
+        else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
+        fecha = LocalDate.of(anyo,mes,dia);
+        return fecha;
+    }
+
+    public List<TipoHab> todoTipo (){
+        List<TipoHab> tipo = new ArrayList<>();
+        tipo.add(TipoHab.SIMPLE);
+        tipo.add(TipoHab.DOBLE);
+        tipo.add(TipoHab.TRIPLE);
+        tipo.add(TipoHab.SUITE);
+        return tipo;
+    }
+
+    public List<TipoHab> checkTipo (List<Habitaciones> lista){
+        List<TipoHab> crear = todoTipo();
+        for (Habitaciones x: lista){
+            if ( x.getTipo_hab() == TipoHab.SIMPLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.DOBLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.TRIPLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.SUITE){
+                crear.remove(x.getTipo_hab());
+            }
+        }
+        return crear;
+    }
+
+    public List<Habitaciones> pillarHabitaciones (Integer id){
+        List<Habitaciones> lista = habitacionesRepository.findAll().stream().filter(x-> x.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        return lista;
+    }
+
 
 }

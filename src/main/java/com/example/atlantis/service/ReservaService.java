@@ -1,7 +1,7 @@
 package com.example.atlantis.service;
-
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ReservaRepository;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -13,6 +13,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class ReservaService {
+    private static Faker faker = new Faker();
+    private HotelService hotelService;
 
     @Autowired
     private ReservaRepository reservaRepository;
@@ -221,8 +223,8 @@ public class ReservaService {
         return cambiados;
     }
 
-    public void guardarReserva(Reserva reserva){
-         reservaRepository.save(reserva);
+    public Reserva guardarReserva(Reserva reserva){
+        return reservaRepository.save(reserva);
     }
 
     public Reserva obtenerUltima(){
@@ -304,6 +306,45 @@ public class ReservaService {
         return cambiados;
     }
 
+    public Reserva crearReservaSinPrecio(Cliente cliente,Hotel hotel){
+        Reserva reserva = new Reserva();
+        LocalDate fecha1 = fechaAzar2022();
+        LocalDate fecha2 = fechaAzar2022();
+        while (fecha1.equals(fecha2)){
+            fecha1 = fechaAzar2022();
+            fecha2 = fechaAzar2022();
+        }
+        reserva.setId_cliente(cliente);
+        reserva.setId_hotel(hotel);
+        if(fecha1.isBefore(fecha2)){
+            reserva.setFecha_entrada(fecha1);
+            reserva.setFecha_salida(fecha2);
+        }else{
+            reserva.setFecha_entrada(fecha2);
+            reserva.setFecha_salida(fecha1);
+        }
+        return reserva;
+    }
+    public Reserva crearReserva(Cliente cliente,Hotel hotel){
+        Reserva reserva = new Reserva();
+        LocalDate fecha1 = fechaAzar2022();
+        LocalDate fecha2 = fechaAzar2022();
+        while (fecha1.equals(fecha2)){
+            fecha1 = fechaAzar2022();
+            fecha2 = fechaAzar2022();
+        }
+        reserva.setId_cliente(cliente);
+        reserva.setId_hotel(hotel);
+        if(fecha1.isBefore(fecha2)){
+            reserva.setFecha_entrada(fecha1);
+            reserva.setFecha_salida(fecha2);
+        }else{
+            reserva.setFecha_entrada(fecha2);
+            reserva.setFecha_salida(fecha1);
+        }
+        reserva.setPrecio_total(faker.number().randomDouble(2,1,5000));
+        return reserva;
+    }
 
 
 

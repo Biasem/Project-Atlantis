@@ -52,7 +52,7 @@ public class RegisterControllerCon {
 
                 //Guardado del cliente en base de datos
                 clienteService.guardarCliente(cliente);
-                System.out.println(cliente);
+
 
                 return "redirect:/main";
 

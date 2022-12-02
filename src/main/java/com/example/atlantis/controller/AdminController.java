@@ -53,13 +53,14 @@ public class AdminController{
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Obtención de datos necesarios y añadidos al modelo
-        List<TipoHab> tipohab = habitacionesService.todoHab();
         List<Regimen> regimenes = regimenService.regimenHotel(idHotel);
+        List<Habitaciones> habitaciones = hotelService.pillarHabitaciones(idHotel);
+        List<TipoHab> tipoHabs = hotelService.checkTipo(habitaciones);
         List<TipoRegimen> regimen = regimenService.checkRegimen(regimenes);
         model.addObject("regimen", regimen);
         model.addObject("regimenes", regimenes);
-        model.addObject("tipohab",tipohab);
         model.addObject("habitaciones", new Habitaciones());
+        model.addObject("tipoHabs", tipoHabs);
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
         model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
         return model;
@@ -188,7 +189,6 @@ public class AdminController{
             System.out.println(idHotel);
         }
 
-        //Error si datos fallan o edición de hotel
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
         if (puede == 0){
             ModelAndView error = new ModelAndView("error/403");

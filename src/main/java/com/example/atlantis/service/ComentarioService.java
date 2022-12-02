@@ -2,6 +2,8 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.*;
+import com.example.atlantis.service.HotelService;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -9,6 +11,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ComentarioService {
+    private static Faker faker = new Faker();
+
     @Autowired
     ComentarioRepository comentarioRepository;
     @Autowired
@@ -86,8 +90,8 @@ public class ComentarioService {
         }
     }
 
-    public void guardarComentario (Comentario comentario){
-        comentarioRepository.save(comentario);
+    public Comentario guardarComentario (Comentario comentario){
+        return comentarioRepository.save(comentario);
     }
 
     public void guardarComentarioHotel (ComentarioHotel comentario){
@@ -150,6 +154,26 @@ public class ComentarioService {
         return comentario;
     }
 
+    public List<Comentario> conseguirComentariosClienteId(Cliente cliente){
+        List<Comentario> obtenidos = new ArrayList<>();
+        List<Comentario> lista = comentarioRepository.findAll();
+
+        for(int i = 0; i < lista.size(); i++ ){
+         if (lista.get(i).getCliente().getId().equals(cliente.getId())){
+             obtenidos.add(lista.get(i));
+         }
+        }
+
+        return obtenidos;
+    }
+
+
+    public void borrarcomentarios(Cliente cliente, List<Comentario> comentarios){
+
+        for(int i = 0; i < comentarios.size(); i++ ){
+            comentarioRepository.delete(comentarios.get(i));
+        }
+    }
 
     public void likedislike (Integer idcliente, Integer idcomentario, Integer idhotel, Integer like, Integer dislike){
 
@@ -222,6 +246,17 @@ public class ComentarioService {
         for (ComentarioHotel x: comentarioHoteles){
             comentarioHotelRepository.delete(x);
         }
+    }
+
+    public Comentario crearComentario(Hotel hotel,Cliente cliente){
+        Comentario comentario = new Comentario();
+        comentario.setSentencia(faker.hobbit().character()+" Fue mi favorito");
+        comentario.setPuntuacion(faker.number().numberBetween(1,6));
+        comentario.setLikes(0);
+        comentario.setHotel(hotel);
+        comentario.setCliente(cliente);
+        comentario.setFecha(LocalDate.now());
+        return comentario;
     }
 
 }
