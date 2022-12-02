@@ -63,7 +63,7 @@
                         <td><p>Tipo habitación</p></td>
                         <td>
                             <select id="tipo" th:field="*{tipo_hab}">
-                                <option th:each="x: ${tipohab}" th:value="${x.name()}" th:text="${x.name()}"></option>
+                                <option th:each="x: ${tipoHabs}" th:value="${x.name()}" th:text="${x.name()}"></option>
                             </select>
                         </td>
                     </tr>
@@ -84,7 +84,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <input type="submit" class="btn btn-primary form-control text-center">
+                <input th:if="${tipoHabs.size()>0}" type="submit" class="btn btn-primary form-control text-center">
+                <p th:if="${tipoHabs.size()==0}" class="btn btn-primary form-control text-center"> No puedes crear más habitaciones hasta que borres alguna. </p>
             </form>
         </div>
     </div>
