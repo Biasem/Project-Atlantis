@@ -17,15 +17,12 @@ public class ComentarioService {
 
     @Autowired
     ComentarioRepository comentarioRepository;
-
     @Autowired
     ClienteRepository clienteRepository;
-
     @Autowired
     HotelRepository hotelRepository;
     @Autowired
     ComentarioLikeRepository comentarioLikeRepository;
-
     @Autowired
     ComentarioHotelRepository comentarioHotelRepository;
 
@@ -80,8 +77,8 @@ public class ComentarioService {
         }
     }
 
-    public void guardarComentario (Comentario comentario){
-        comentarioRepository.save(comentario);
+    public Comentario guardarComentario (Comentario comentario){
+        return comentarioRepository.save(comentario);
     }
     public void guardarComentarioHotel (ComentarioHotel comentario){
         comentarioHotelRepository.save(comentario);
@@ -228,8 +225,11 @@ public class ComentarioService {
     public Comentario crearComentario(Hotel hotel,Cliente cliente){
         Comentario comentario = new Comentario();
         comentario.setSentencia(faker.hobbit().character()+" Fue mi favorito");
-
-
+        comentario.setPuntuacion(faker.number().numberBetween(1,6));
+        comentario.setLikes(0);
+        comentario.setHotel(hotel);
+        comentario.setCliente(cliente);
+        comentario.setFecha(LocalDate.now());
         return comentario;
     }
 
