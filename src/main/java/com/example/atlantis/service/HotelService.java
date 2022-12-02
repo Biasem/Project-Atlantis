@@ -2,6 +2,7 @@ package com.example.atlantis.service;
 
 import com.example.atlantis.model.*;
 import com.example.atlantis.repository.ComentarioRepository;
+import com.example.atlantis.repository.HabitacionesRepository;
 import com.example.atlantis.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,8 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+    @Autowired
+    private HabitacionesRepository habitacionesRepository;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -182,6 +185,8 @@ public class HotelService {
 
             return mapa2;
         }
+
+
     }
 
     public Map<Hotel, Integer> filtrarHotel (List<Hotel> hoteles){
@@ -229,6 +234,39 @@ public class HotelService {
         else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
         fecha = LocalDate.of(anyo,mes,dia);
         return fecha;
+    }
+
+    public List<TipoHab> todoTipo (){
+        List<TipoHab> tipo = new ArrayList<>();
+        tipo.add(TipoHab.SIMPLE);
+        tipo.add(TipoHab.DOBLE);
+        tipo.add(TipoHab.TRIPLE);
+        tipo.add(TipoHab.SUITE);
+        return tipo;
+    }
+
+    public List<TipoHab> checkTipo (List<Habitaciones> lista){
+        List<TipoHab> crear = todoTipo();
+        for (Habitaciones x: lista){
+            if ( x.getTipo_hab() == TipoHab.SIMPLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.DOBLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.TRIPLE){
+                crear.remove(x.getTipo_hab());
+            }
+            if ( x.getTipo_hab() == TipoHab.SUITE){
+                crear.remove(x.getTipo_hab());
+            }
+        }
+        return crear;
+    }
+
+    public List<Habitaciones> pillarHabitaciones (Integer id){
+        List<Habitaciones> lista = habitacionesRepository.findAll().stream().filter(x-> x.getId_hotel().getId().equals(id)).collect(Collectors.toList());
+        return lista;
     }
 
 

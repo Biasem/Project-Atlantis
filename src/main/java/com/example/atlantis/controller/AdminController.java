@@ -61,13 +61,14 @@ public class AdminController{
         model.addObject("idHotel", idHotel);
         model.addObject("idCliente", idCliente);
         // Gestión sesión
-        List<TipoHab> tipohab = habitacionesService.todoHab();
         List<Regimen> regimenes = regimenService.regimenHotel(idHotel);
+        List<Habitaciones> habitaciones = hotelService.pillarHabitaciones(idHotel);
+        List<TipoHab> tipoHabs = hotelService.checkTipo(habitaciones);
         List<TipoRegimen> regimen = regimenService.checkRegimen(regimenes);
         model.addObject("regimen", regimen);
         model.addObject("regimenes", regimenes);
-        model.addObject("tipohab",tipohab);
         model.addObject("habitaciones", new Habitaciones());
+        model.addObject("tipoHabs", tipoHabs);
         List<Habitaciones> listaHabitaciones = habitacionesService.getAll();
         model.addObject("listaHabitaciones", habitacionesService.conseguir(idHotel,listaHabitaciones));
         return model;
