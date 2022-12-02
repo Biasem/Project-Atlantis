@@ -346,7 +346,17 @@ public class ReservaService {
         return reserva;
     }
 
-
+    private LocalDate fechaAzar2022(){
+        LocalDate fecha ;
+        int anyo = 2022;
+        int mes = faker.number().numberBetween(1,13);
+        int dia = 1;
+        if (mes ==2) dia = faker.number().numberBetween(1,28);
+        else if (mes ==1||mes==3||mes==5||mes==7||mes==8||mes==10||mes==12) dia = faker.number().numberBetween(1,32);
+        else if (mes==4||mes==6||mes==9||mes==11) dia = faker.number().numberBetween(1,31);
+        fecha = LocalDate.of(anyo,mes,dia);
+        return fecha;
+    }
 
 
 }

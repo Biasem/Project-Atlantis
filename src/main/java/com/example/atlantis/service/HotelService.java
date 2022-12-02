@@ -24,6 +24,9 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+
+    @Autowired
+    private HabitacionesRepository habitacionesRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired

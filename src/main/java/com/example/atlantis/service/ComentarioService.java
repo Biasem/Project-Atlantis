@@ -6,6 +6,8 @@ import com.example.atlantis.service.HotelService;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
