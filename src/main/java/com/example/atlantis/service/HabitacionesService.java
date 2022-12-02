@@ -110,6 +110,11 @@ public class HabitacionesService {
         return puede;
     }
 
+    public Integer obtenerIdUltimaHab(Integer id_hotel){
+
+        return habitacionesRepository.ultimoIdHab(id_hotel);
+    }
+
     public Habitaciones crearHabitacion(Hotel hotel){
         Habitaciones habitacion = new Habitaciones();
         habitacion.setId_hotel(hotel);

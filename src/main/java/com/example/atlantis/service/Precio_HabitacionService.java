@@ -78,6 +78,10 @@ public class Precio_HabitacionService {
         precio_habitacionRepository.save(hab);
     }
 
+    public Precio_Hab guardarPrimerPrecio(Precio_Hab precio_hab){
+        return precio_habitacionRepository.save(precio_hab);
+    }
+
     public void borrarLista (List<Precio_Hab> lista, Habitaciones habitacion){
         for (Precio_Hab x: lista){
             if(x.getId_hab().getId().equals(habitacion.getId())){

@@ -53,8 +53,6 @@ public class ClienteService {
         return clienteRepository.save(cliente);
 
     }
-
-
     public Cliente copiartodocliente(Cliente cliente){
         List<Cliente> todos = clienteRepository.findAll();
         Cliente cliente1 = new Cliente();

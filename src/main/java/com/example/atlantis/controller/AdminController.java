@@ -75,10 +75,20 @@ public class AdminController{
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones,
-                                     @RequestParam("idhotel") Integer idhotel) {
+                                     @RequestParam("idhotel") Integer idhotel,
+                                     @RequestParam("precio") Double precio) {
+        Precio_Hab precio_hab = new Precio_Hab();
         habitaciones.setHab_ocupadas(0);
         habitacionesService.conseguirIDHotel(idhotel,habitaciones);
         habitacionesService.guardarHabitacion(habitaciones);
+        System.out.println(habitacionesService.obtenerIdUltimaHab(idhotel));
+        precio_hab.setPrecio(precio);
+        precio_hab.setFecha_fin(hotelService.getById(idhotel).getFecha_cierre());
+        precio_hab.setFecha_inicio(hotelService.getById(idhotel).getFecha_apertura());
+        precio_hab.setId_hab(habitacionesService.getById(habitacionesService.obtenerIdUltimaHab(idhotel)));
+        precio_hab.setId_hotel(hotelService.getById(idhotel));
+        precio_habitacionService.guardarPrimerPrecio(precio_hab);
+
         ModelAndView model = new ModelAndView("adminHecho");
         return model;
     }
