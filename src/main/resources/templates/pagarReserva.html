@@ -18,17 +18,27 @@
   <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
   <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
   <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+  <script type="text/javascript" th:src="@{/js/fecha.js}" ></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<nav th:include="navMenu.html"></nav>
+<nav th:include="navMenuJS.html"></nav>
+<header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
+  <div class="container px-4 text-center">
+    <div class="container px-4 text-center">
+      <h1 class="fw-bolder"><p>Tu viaje a</p> <b th:text="${listareserva.get(1).getHabitaciones().getId_hotel().getNombre()}" id="nombreHotel"></b></h1>
+    </div>
+  </div>
+</header>
+
 <br>
 <br>
 <br>
+
+
 <div class="row">
   <div class="col-md-8 mx-auto">
-
-      <table class="table bg-white rounded border table-striped table-dark">
+      <table class="table table-hover table-dark border-secondary">
         <thead>
         <tr>
           <th scope="col">Habitacion</th>
@@ -47,18 +57,25 @@
           <td th:text="${a.getRegimen().getPrecio()*a.getCantHab()}"></td>
         </tr>
         </tbody>
+        <caption>
+          El precio mostrado es por día
+        </caption>
       </table>
-    <table class="table bg-white rounded border table-striped table-dark">
+    <table class="table table-borderless border-secondary">
       <tr>
         <th scope="col">Días: <a th:text="*{dias}"></a></th>
         <th scope="col">Total: <a th:text="*{total}"></a></th>
       </tr>
     </table>
     <form action="/pago" method="post">
-    <button class="btn btn-primary form-control text-center" type="submit" >Pagar: </button>
+    <button class="btn btn-primary form-control text-center" type="submit" >Reservar </button>
     </form>
   </div>
 </div>
+
+<br>
+<br>
+<br>
 
 <footer th:include="footer.html" class="mt-auto"></footer>
 <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
