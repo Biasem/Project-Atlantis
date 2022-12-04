@@ -20,27 +20,20 @@ public class AdminController{
 
     @Autowired
     private HotelService hotelService;
-
     @Autowired
     private BusquedaService busquedaService;
-
     @Autowired
     private HabitacionesService habitacionesService;
-
     @Autowired
     private ClienteService clienteService;
-
     @Autowired
     private HabitacionesRepository habitacionesRepository;
-
     @Autowired
     private Precio_HabitacionService precio_habitacionService;
-
     @Autowired
     private RegimenService regimenService;
     @Autowired
     private Habitacion_Reserva_HotelService habitacion_reserva_hotelService;
-
     @Autowired
     private LoginService loginService;
 

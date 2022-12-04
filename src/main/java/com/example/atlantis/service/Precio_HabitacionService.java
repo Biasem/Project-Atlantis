@@ -120,19 +120,61 @@ public class Precio_HabitacionService {
         List<Precio_Hab> listaPrecio_hab =precio_habitacionRepository.obtenerListPreciohab(hab.getId());
         LocalDate fechaInicio = LocalDate.parse(fechaInicioString);
         LocalDate fechaFin = LocalDate.parse(fechaFinString);
+        Double precioNuevo = nuevoPrecio.getPrecio();
         Precio_Hab precio_habAux = nuevoPrecio;
         for(Precio_Hab ph:listaPrecio_hab){
-            //////// si la nueva fecha esta dentro de otra fecha
+            ////////CASO 1 si la nueva fecha esta dentro de otra fecha
             /////guardamos la fecha nueva y la antigua la guardamos en dos trozos y borramos la antigua
-            if(!fechaInicio.isBefore(ph.getFecha_inicio())||!fechaFin.isAfter(ph.getFecha_fin())){
+            if(!fechaInicio.isBefore(ph.getFecha_inicio())&&!fechaFin.isAfter(ph.getFecha_fin())){
                 precio_habitacionRepository.save(nuevoPrecio);
                 precio_habAux.setFecha_inicio(ph.getFecha_inicio());
-                precio_habAux.setFecha_fin(nuevoPrecio.getFecha_inicio().minusDays(1));
+                precio_habAux.setFecha_fin(fechaInicio.minusDays(1));
+                fechaInicio.plusDays(1);
+                precio_habAux.setPrecio(ph.getPrecio());
                 precio_habitacionRepository.save(precio_habAux);
-                precio_habAux.setFecha_inicio(nuevoPrecio.getFecha_fin().plusDays(1));
+                precio_habAux.setFecha_inicio(fechaFin.plusDays(1));
+                fechaFin.minusDays(1);
                 precio_habAux.setFecha_fin(ph.getFecha_fin());
                 precio_habitacionRepository.save(precio_habAux);
+                precio_habitacionRepository.deleteById(ph.getId());
+            }
+            /////////CASO 2  La nueva fecha esta en medio de dos fechas
+            ////////CASO 2 A
+            ///creamos y borramos la primera fecha
+            if(fechaInicio.isAfter(ph.getFecha_inicio())&&
+                    fechaInicio.isBefore(ph.getFecha_fin())&&
+                    fechaFin.isAfter(ph.getFecha_fin())){
 
+                precio_habAux.setPrecio(ph.getPrecio());
+                precio_habAux.setFecha_inicio(ph.getFecha_inicio());
+                precio_habAux.setFecha_fin(fechaInicio.minusDays(1));
+                fechaInicio.plusDays(1);
+                precio_habitacionRepository.save(precio_habAux);
+                precio_habitacionRepository.deleteById(ph.getId());
+            }
+            /////////CASO 2 B
+            /////////Creamos la fecha principal y creamos y borramos la ultima fecha
+            if(fechaInicio.isBefore(ph.getFecha_inicio())&&
+                    fechaFin.isAfter(ph.getFecha_inicio())&&
+                    fechaFin.isBefore(ph.getFecha_fin())){
+                precio_habAux.setPrecio(precioNuevo);
+                precio_habAux.setFecha_inicio(fechaInicio);
+                precio_habAux.setFecha_fin(fechaFin);
+                precio_habitacionRepository.save(precio_habAux);
+
+                precio_habAux.setPrecio(ph.getPrecio());
+                precio_habAux.setFecha_inicio(fechaFin.plusDays(1));
+                fechaFin.minusDays(1);
+                precio_habAux.setFecha_fin(ph.getFecha_fin());
+                precio_habitacionRepository.save(precio_habAux);
+                precio_habitacionRepository.deleteById(ph.getId());
+            }
+            ////////CASO 3  se eliminan las fechas intermedias del caso dos
+            if(fechaInicio.isBefore(ph.getFecha_inicio())&&
+                fechaInicio.isBefore(ph.getFecha_fin())&&
+                    fechaFin.isAfter(ph.getFecha_inicio())&&
+                    fechaFin.isAfter(ph.getFecha_fin())){
+                precio_habitacionRepository.deleteById(ph.getId());
             }
         }
 
