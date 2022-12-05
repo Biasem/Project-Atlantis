@@ -49,8 +49,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         model.addObject("idHotel", idHotel);
@@ -73,13 +71,20 @@ public class AdminController{
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     public ModelAndView habitaciones(@ModelAttribute Habitaciones habitaciones,
-                                     @RequestParam("idhotel") Integer idhotel) {
-
+                                     @RequestParam("idhotel") Integer idhotel,
+                                     @RequestParam("precio") Double precio) {
+        Precio_Hab precio_hab = new Precio_Hab();
         habitaciones.setHab_ocupadas(0);
         habitacionesService.conseguirIDHotel(idhotel,habitaciones);
         habitacionesService.guardarHabitacion(habitaciones);
-        ModelAndView model = new ModelAndView("adminHecho");
+        precio_hab.setPrecio(precio);
+        precio_hab.setFecha_fin(hotelService.getById(idhotel).getFecha_cierre());
+        precio_hab.setFecha_inicio(hotelService.getById(idhotel).getFecha_apertura());
+        precio_hab.setId_hab(habitacionesService.getById(habitacionesService.obtenerIdUltimaHab(idhotel)));
+        precio_hab.setId_hotel(hotelService.getById(idhotel));
+        precio_habitacionService.guardarPrimerPrecio(precio_hab);
 
+        ModelAndView model = new ModelAndView("adminHecho");
         return model;
     }
 
@@ -194,8 +199,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         Integer puede = habitacionesService.puedeEntrar(idHotel,id);
@@ -237,7 +240,10 @@ public class AdminController{
                                                         @RequestParam("fechainicio") String fechainicio,
                                                         @RequestParam("fechafin") String fechafin,
                                                         @RequestParam("idhotel") Integer idhotel) {
-
+        if(nuevoprecio.getPrecio()==null||nuevoprecio.getPrecio()<=0||
+                !precio_habitacionService.fechasCorrectas(habitacionesService.getById(id),fechafin,fechainicio)){
+            return new ModelAndView("redirect:/admin/habitaciones/editar/item?id="+id);
+        }
         ModelAndView model = new ModelAndView("adminHecho");
         nuevoprecio.setFecha_inicio(LocalDate.parse(fechainicio));
         nuevoprecio.setFecha_fin(LocalDate.parse(fechafin));
@@ -245,8 +251,10 @@ public class AdminController{
         Habitaciones habitacion = precio_habitacionService.conseguirIDHabitacionprecio(id);
         nuevoprecio.setId_hotel(hotel);
         nuevoprecio.setId_hab(habitacion);
-        precio_habitacionService.guardarPrecio(nuevoprecio);
 
+        precio_habitacionService.modificarPrecioHab(habitacionesService.getById(id),nuevoprecio,fechainicio,fechafin);
+
+//        precio_habitacionService.guardarPrecio(nuevoprecio);
         return model;
     }
 
@@ -263,8 +271,6 @@ public class AdminController{
         if (correo != null){
             idCliente = clienteService.conseguirId(correo);
             idHotel = hotelService.conseguirId(correo);
-            System.out.println(idCliente);
-            System.out.println(idHotel);
         }
 
         //Borrado del precio

@@ -37,7 +37,7 @@
     <div class="carddd-category"><h1 style="margin-top: 100px; margin-left: 30px;" th:text="${a.getNombreHotel().getNombre()}"></h1></div>
     <div class="carddd-description">
       <h2 style="margin-left: 30px;">Del día <b th:text="${a.getFecha_entrada()}"></b> al día <b th:text="${a.getFecha_salida()}"></b> </h2>
-      <p style="margin-left: 30px;">Con un total de <b th:text="${a.getNum_clientes()}"></b> <span th:if="${a.getNum_clientes()==1}"> viajero </span><span th:if="${a.getNum_clientes()>1}"> viajeros </span> y un precio total de <b th:text="${a.getPrecio_total()}"></b> € </p>
+      <p style="margin-left: 30px;">Con un precio total de <b th:text="${a.getPrecio_total()}"></b> € </p>
     </div>
     <img class="carddd-user avatar avatar-large" style="height: 40px; width: 40px;" th:src="${a.getNombreHotel().getUrl_icono()}">
     <a class="carddd-link" th:href="@{/hoteles/item?id={id}(id=${a.getNombreHotel().getId})}" ></a>

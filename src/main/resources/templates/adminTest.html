@@ -77,6 +77,11 @@
                         <td><p>Nº de pernoctadores máximos</p></td>
                         <td><input id="perno" type="number" th:field="*{max_cliente}"></td>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td><p>Precio</p></td>
+                        <td><input name="precio" type="number"  ></td>
+                    </tr>
                     </tbody>
                 </table>
                 <input th:if="${tipoHabs.size()>0}" type="submit" class="btn btn-primary form-control text-center">

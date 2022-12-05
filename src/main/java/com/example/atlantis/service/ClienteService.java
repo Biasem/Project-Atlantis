@@ -1,14 +1,14 @@
 package com.example.atlantis.service;
 
 import com.example.atlantis.model.Cliente;
-import com.example.atlantis.model.GraphqlInput;
+import com.example.atlantis.model.Hotel;
 import com.example.atlantis.model.Login;
 import com.example.atlantis.model.Rol;
 import com.example.atlantis.repository.ClienteRepository;
+import com.example.atlantis.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;

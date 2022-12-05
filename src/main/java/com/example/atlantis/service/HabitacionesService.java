@@ -80,7 +80,6 @@ public class HabitacionesService {
 
        for (Habitaciones x: lista){
            x.setNum_hab(habitacion.getNum_hab());
-           x.setTipo_hab(habitacion.getTipo_hab());
            x.setHab_ocupadas(habitacion.getHab_ocupadas());
            x.setMax_cliente(habitacion.getMax_cliente());
            habitacionesRepository.save(x);
@@ -129,6 +128,11 @@ public class HabitacionesService {
         }
 
         return puede;
+    }
+
+    public Integer obtenerIdUltimaHab(Integer id_hotel){
+
+        return habitacionesRepository.ultimoIdHab(id_hotel);
     }
 
     public Habitaciones crearHabitacion(Hotel hotel){

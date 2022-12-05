@@ -20,14 +20,10 @@ import java.util.List;
 
 @Service
 public class LoginService implements UserDetailsService {
-
     @Autowired
     private LoginRepository loginRepository;
-
     @Autowired
     private ClienteRepository clienteRepository;
-
-
     @Autowired
     private HotelRepository hotelRepository;
 
