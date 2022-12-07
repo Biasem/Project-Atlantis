@@ -82,6 +82,9 @@ public class MainController{
     @PostMapping("/main")
     public ModelAndView listaHoteles(@ModelAttribute Busqueda busqueda, HttpSession session) {
 
+        if(busqueda.getFechaInicial().isEmpty()||busqueda.getFechaFinal().isEmpty()) {
+            return new ModelAndView("redirect:/main");
+        }
         ModelAndView model = new ModelAndView("resultado");
 
         // Gestión sesión
