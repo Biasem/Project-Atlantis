@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Administrador habitaciones</title>
+
+    <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/best-carousel-slide.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Carousel-Hero.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Footer-Dark-icons.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Hero-Carousel-images.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Pretty-Search-Form-.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Search-Input-Responsive-with-Icon.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+    <script type="text/javascript" th:src="@{/js/index.js}" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<nav th:include="navMenuJS"></nav>
+<div>
+    <header class="bg-primary bg-gradient text-white" th:style="'background-image: linear-gradient(0deg, black, transparent); background-size: cover; background-repeat: no-repeat; background-position: center center;'">
+        <div class="container px-4 text-center">
+            <h1 class="fw-bolder"> <p>Administrador habitaciones</p></h1>
+        </div>
+    </header>
+    <br>
+    <br>
+    <div class="row">
+
+        <div class="col-md-8 mx-auto">
+            <form action="#" th:action="@{/admin}" th:object="${habitaciones}" method="post">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Crear habitación</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th><input type="hidden" name="idhotel" th:value="${idHotel}"/></th>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="table">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Atributos</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td><p>Tipo habitación</p></td>
+                        <td>
+                            <select id="tipo" th:field="*{tipo_hab}">
+                                <option th:each="x: ${tipoHabs}" th:value="${x.name()}" th:text="${x.name()}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><p>Nº Habitaciones disponible</p></td>
+                        <td><input id="numero" type="number" th:field="*{num_hab}"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><p>Nº de pernoctadores máximos</p></td>
+                        <td><input id="perno" type="number" th:field="*{max_cliente}"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><p>Precio</p></td>
+                        <td><input name="precio" type="number"  ></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input th:if="${tipoHabs.size()>0}" type="submit" class="btn btn-primary form-control text-center">
+                <p th:if="${tipoHabs.size()==0}" class="btn btn-primary form-control text-center"> No puedes crear más habitaciones hasta que borres alguna. </p>
+            </form>
+        </div>
+    </div>
+</div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Habitaciones disponibles</th>
+                    </tr>
+                    </thead>
+                </table>
+                <br>
+                <table class="table">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Huéspedes</th>
+                        <th scope="col">Disponibles</th>
+                        <th scope="col">Nº Habitaciones</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a:${listaHabitaciones}">
+                        <td th:text="${a.getTipo_hab()}"></td>
+                        <td th:text="${a.getMax_cliente()}"></td>
+                        <td th:with="total=${a.getNum_hab() - a.getHab_ocupadas()}" th:text="${total}"></td>
+                        <td th:text="${a.getNum_hab()}" > </td>
+                        <td> <a th:text="Editar" class="btn btn-primary form-control text-center" style="background-color: #FFBD44; border-color: #FFBD44; width: 100px; height: 27px; padding: 1px 5px" th:href="@{/admin/habitaciones/editar/item?id={id}(id=${a.getId()})}"></a></td>
+                        <td> <a th:text="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px" th:href="@{/admin/habitaciones/borrar/item?id={id}(id=${a.getId()})}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Regimenes disponibles</th>
+                    </tr>
+                    </thead>
+                </table>
+                <br>
+                <table class="table">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="r:${regimenes}">
+                        <td th:text="${r.getCategoria()}"></td>
+                        <td th:text="${r.getPrecio()}"></td>
+                        <td> <a th:text="Borrar" class="btn btn-primary form-control text-center" style="background-color: #B33F40; border-color: #B33F40; width: 100px; height: 27px; padding: 1px 5px" th:href="@{/admin/habitaciones/regimen/borrar/item?id={id}(id=${r.getId()})}"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <br>
+    <br>
+    <div class="col-md-8 mx-auto">
+        <form action="#" th:action="@{/admin/habitaciones/crear/regimen/hecho/}" method="post" >
+            <table>
+                <thead>
+                <tr>
+                    <th>Crear régimen</th>
+                </tr>
+                </thead>
+            </table>
+            <br>
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${regimen.size()>0}">
+                    <td><select name="categoria">
+                    <option th:each="x: ${regimen}" th:text="${x.name()}" th:value="${x.name()}"></option>
+                </select></td>
+                    <td><input class="inputbox textmuted" type="number" step="0.01" min="0" name="precio">
+                        <input type="hidden" name="idhotel" th:value="${idHotel}"/></td>
+                    <td><input type="submit" class="btn btn-primary form-control text-center" style="width: 100px; height: 27px; padding: 1px 5px"></td>
+                </tr>
+                <tr th:if="${regimen.size()==0}">
+                    <td><p> No puedes crear más regimenes hasta que borres alguno.</p></td>
+            </table>
+        </form>
+    </div>
+    <br>
+    <br>
+
+<footer th:include="footer.html" class="mt-auto"></footer>
+<script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

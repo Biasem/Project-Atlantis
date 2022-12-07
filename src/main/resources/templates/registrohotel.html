@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title> Registro Hotel</title>
+
+  <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/best-carousel-slide.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Carousel-Hero.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Footer-Dark-icons.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Hero-Carousel-images.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Pretty-Search-Form-.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-Responsive-with-Icon.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script type="text/javascript" th:src="@{/js/index.js}" ></script>
+</head>
+
+<body>
+<button onclick="location.href = '/main';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
+<form action="#" th:action="@{/registrohotel}" method="post" th:object="${hotel}">
+
+  <section class="h-50 h-custom gradient-custom-2" style="padding-top: 30px; padding-bottom: 30px;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-6">
+                  <div class="p-5">
+                    <h3 class="fw-normal mb-5" style="color: #212529; font-weight:bold;">Registro</h3>
+
+
+                    <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+
+                        <div class="form-outline">
+                          <label class="form-label" for="nombre">Nombre</label>
+                          <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control form-control-lg">
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-6 mb-4 pb-2" style="margin-top: 25px;">
+                        <div class="form-outline">
+                          <label class="form-label" for="pais">País</label>
+                          <select th:field="*{pais}" id="pais">
+                            <option th:each="p : ${listpais}" th:value="${p}" th:text="${p}" />
+                          </select>
+                        </div>
+                        <div class="form-outline">
+                          <label class="form-label" for="localidad">Localidad:</label>
+                          <select th:field="*{localidad}" id="localidad">
+                            <option th:each="p : ${listlocalidad}" th:value="${p}" th:text="${p}"  />
+                          </select>
+                        </div>
+                      </div>
+                      </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="direccion">Dirección:</label>
+                        <input id="direccion" name="direccion" placeholder="Dirección" type="text" th:field="*{direccion}" class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="fechaapertura">Fecha Apertura</label>
+                        <label class="form-label" for="fechacierre" style="margin-left: 60px;">Fecha Cierre</label>
+
+                      </div>
+                      <div class="form-outline">
+                        <input id="fechaapertura" class="inputbox textmuted" type="date" th:field="*{fecha_apertura}" th:min="${fechamin}">
+                        <input id="fechacierre" class="inputbox textmuted" type="date" th:field="*{fecha_cierre}" th:min="${fechamin}" style="margin-left: 20px;">
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="email">Email</label>
+                        <input id="email" name="email" placeholder="Email" type="text" th:field="*{email.email}" class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                        <div class="form-outline">
+                          <label class="form-label" for="telefono">Telefono</label>
+                          <input id="telefono" name="telefono" placeholder="Teléfono" type="text" th:field="*{telefono}" class="form-control form-control-lg">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-lg-6 text-white" style="background-color: #212529;">
+                  <div class="p-5">
+
+                    <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+
+                        <div class="form-outline">
+                          <label class="form-label" for="password">Contraseña</label>
+                          <input id="password" name="password" placeholder="password" type="password" th:field="*{email.password}" class="form-control form-control-lg">
+                        </div>
+
+                      </div>
+                      <div class="col-md-6 mb-4 pb-2" style="margin-top: 25px;">
+                        <div class="form-outline">
+                          <label class="form-label" for="estrellas">Estrellas</label>
+                          <select id="estrellas" th:field="*{num_estrellas}">
+                            <option th:each="p : ${listestrellas}" th:value="${p}" th:text="${p}" />
+                          </select>
+                        </div>
+                        <div class="form-outline">
+                          <label class="form-label" for="tipo">Tipo Hotel</label>
+                          <select id="tipo" th:field="*{tipo_hotel}" style="width: 100px;">
+                            <option th:each="p : ${listtiphotel}" th:value="${p}" th:text="${p}" />
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="icono">URL Icono</label>
+                      </div>
+                      <div class="form-outline">
+                        <input id="icono" name="icono" placeholder="URL Icono" type="text" th:field="*{url_icono}"class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="banner">URL Banner</label>
+                      </div>
+                      <div class="form-outline">
+                        <input id="banner" name="banner" placeholder="URL Banner" type="text" th:field="*{url_imagen_general}" class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="latitud">Latitud</label>
+                      </div>
+                      <div class="form-outline">
+                        <input id="latitud" name="latitud" placeholder="Latitud hotel" type="text" th:field="*{latitud}" class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <div class="mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="longitud">Longitud</label>
+                      </div>
+                      <div class="form-outline">
+                        <input id="longitud" name="longitud" placeholder="Longitud hotel" type="text" th:field="*{longitud}" class="form-control form-control-lg">
+                      </div>
+                    </div>
+
+                    <button name="submit" type="submit" class="btn btn-primary" style="margin-top: 30px;">Confirmar</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+
+<footer th:include="footer.html" class="mt-auto"></footer>
+<script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -4,6 +4,8 @@ package com.example.atlantis.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "cliente")
@@ -35,7 +37,24 @@ public class Cliente {
     private String telefono;
 
     @JoinColumn(name = "email")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Login email;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<Comentario> comentarios;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id_cliente")
+    private List<ComentarioLike> comentarioslike;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<ComentarioHotel> comentarioHotel;
+
+    public Cliente(String nombre, String apellidos, String dni, String pais, String telefono, Login email) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.pais = pais;
+        this.telefono = telefono;
+        this.email = email;
+    }
 }

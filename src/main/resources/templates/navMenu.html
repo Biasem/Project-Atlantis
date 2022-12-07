@@ -1,0 +1,22 @@
+<nav xmlns:sec="http://www.thymeleaf.org/extras/spring-security"  class="navbar navbar-expand-lg navbar-dark bg-darkk fixed-top" id="navegador">
+    <div class="container px-4">
+        <a class="navbar-brand" href="/main"> <img src="https://i.imgur.com/PVbcO0w.png" style="width: 120px; height: auto;"> </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/login">Inicio sesión</a></li>
+                <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/register">Registro Cliente</a></li>
+                <li  sec:authorize="isAnonymous()" class="nav-item"><a class="nav-link" href="/registrohotel">Registro Hotel</a></li>
+
+                <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a class="nav-link" href="/historialReservaClienteVigentes">Tus reservas</a></li>
+                <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a class="nav-link" href="/perfilcliente">Perfil</a></li>
+                <li sec:authorize="hasAuthority('CLIENTE')" class="nav-item"><a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}"> <i class="    fas fa-door-open"></i></a></li>
+
+                <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a class="nav-link" href="/admin">Administrador</a></li>
+                <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a class="nav-link" href="/perfilhotel">Perfil</a></li>
+                <li sec:authorize="hasAuthority('HOTEL')" class="nav-item"><a sec:authorize="isAuthenticated()" class="nav-link" th:href="@{/logout}"> <i class="  fas fa-door-open"></i></a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

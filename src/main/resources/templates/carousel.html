@@ -1,0 +1,24 @@
+<link rel="stylesheet" th:href="@{/assets/css/carrusel.css}">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<div id="carouselExampleIndicators" class="carousel slide" style="height: 200px; backgroundImage: linear-gradient(.25turn, black, black);" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" style="height: 450px; background-color: #1c1f23;">
+        <div class="carousel-item active" style="height: 450px;">
+            <img class="d-block w-100" style="background-color: #1c1f23; z-index: 0;" src="https://image.lexica.art/md/c2007a0e-f056-4e6e-8735-4d88e924e417" alt="First slide">
+        </div>
+        <div class="carousel-item" style="height: 450px;">
+            <img class="d-block w-100" style="background-color: #1c1f23;" src="https://image.lexica.art/md/047c0733-0c9b-49b8-9f67-bd70307065e8" alt="second slide">
+        </div>
+        <div class="carousel-item" style="height: 450px;">
+            <img class="d-block w-100" style="background-color: #1c1f23;" src="https://image.lexica.art/md/477c61da-f4ad-4649-9401-3ec271dc2b4e" alt="third slide">
+        </div>
+    </div>
+</div>

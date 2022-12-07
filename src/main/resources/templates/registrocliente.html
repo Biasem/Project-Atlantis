@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es-us" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title> Registro Usuario</title>
+
+  <link rel="stylesheet" th:href="@{/assets/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/best-carousel-slide.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Carousel-Hero.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Footer-Dark-icons.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Hero-Carousel-images.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Pretty-Search-Form-.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-Responsive-with-Icon.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/Search-Input-responsive.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+  <link rel="stylesheet" th:href="@{/assets/css/barra.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  <script type="text/javascript" th:src="@{/js/index.js}" ></script>
+</head>
+
+<body>
+<button onclick="location.href = '/main';" class="btn btn-dark border rounded-pill d-flex d-xl-flex justify-content-xl-start" type="button"  style="margin-top: 17px;margin-left: 22px;"><i class="fas fa-arrow-left"></i></button>
+<form action="#" th:action="@{/registrocliente}" method="post" th:object="${cliente}">
+
+<section class="h-50 h-custom gradient-custom-2" style="padding-top: 30px; padding-bottom: 30px;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <h3 class="fw-normal mb-5" style="color: #212529; font-weight:bold;">Registro</h3>
+
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+
+                      <div class="form-outline">
+                        <label class="form-label" for="nombre">Nombre</label>
+                        <input id="nombre" name="nombre" placeholder="Nombre" type="text" th:field="*{nombre}" class="form-control form-control-lg">
+                      </div>
+
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+
+                      <div class="form-outline">
+                        <label class="form-label" for="apellidos">Apellidos</label>
+                        <input id="apellidos" name="apellidos" placeholder="Apellidos" type="text" th:field="*{apellidos}" class="form-control form-control-lg">
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label" for="dni">DNI</label>
+                      <input id="dni" name="dni" placeholder="DNI" type="text" th:field="*{dni}" class="form-control form-control-lg">
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label" for="email">Email</label>
+                      <input id="email" name="email" placeholder="Email" type="text" th:field="*{email.email}" class="form-control form-control-lg">
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <select th:field="*{pais}">
+                      <option th:each="p : ${listpais}" th:value="${p}" th:text="${p}" />
+                    </select>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label" for="password">Contraseña</label>
+                      <input id="password" name="password" placeholder="password" type="password" th:field="*{email.password}" class="form-control form-control-lg">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+
+                      <div class="form-outline">
+                        <label class="form-label" for="telefono">Telefono</label>
+                        <input id="telefono" name="telefono" placeholder="Teléfono" type="text" th:field="*{telefono}" class="form-control form-control-lg">
+
+                      </div>
+                    </div>
+                  </div>
+                  <button name="submit" type="submit" class="btn btn-primary" style="margin-top: 30px;">Confirmar</button>
+
+                </div>
+              </div>
+              <div class="col-lg-6 bg-indigo text-white">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</form>
+
+<footer th:include="footer.html" class="mt-auto"></footer>
+<script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

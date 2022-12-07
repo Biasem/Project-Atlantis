@@ -1,40 +1,44 @@
 package com.example.atlantis.controller;
+
+import com.example.atlantis.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.atlantis.model.Cliente;
 import com.example.atlantis.service.ClienteService;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class PruebaController{
 
-    @RestController
-    public class HamburguesaController {
         @Autowired
         private ClienteService clienteService;
 
-        @RequestMapping("/clientes")
-        public List<Cliente> getCliente(){
-            return clienteService.getAll() ;
-        }
-        @RequestMapping("/listaClientes")
-        public ModelAndView listClientes(){
-            List<Cliente> listClientes= clienteService.getAll();
-            ModelAndView model = new ModelAndView("listClientes");
-            model.addObject("listClientes", listClientes);
+        @Autowired
+        private HotelService hotelService;
+
+
+        @RequestMapping("/equipo")
+        public ModelAndView equipo(){
+
+            ModelAndView model = new ModelAndView("equipo");
+
+            // Gestión sesión
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String correo = auth.getName();
+            Integer idCliente = 0;
+            Integer idHotel = 0;
+
+            if (correo != null){
+                idCliente = clienteService.conseguirId(correo);
+                idHotel = hotelService.conseguirId(correo);
+            }
+
+            model.addObject("idHotel", idHotel);
+            model.addObject("idCliente", idCliente);
+
             return model ;
         }
-
-        @PostMapping("/clientes/save")
-        public void guardarCliente(@RequestBody Cliente humano){
-            Cliente clientefinal = clienteService.getById(humano.getId());
-
-        }
-    }
-
 }
