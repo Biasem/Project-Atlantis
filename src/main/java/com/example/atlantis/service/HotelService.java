@@ -221,11 +221,9 @@ public class HotelService {
             //Ordenamos la lista de hoteles
             List<Hotel> topPuntacion = mapa.keySet().stream().sorted(Comparator.comparing(mapa::get)).collect(Collectors.toList());
 
-            System.out.println(topPuntacion);
 
             // Sublista con el top 3
             List<Hotel> trePrimeros = topPuntacion.subList(topPuntacion.size()-3, topPuntacion.size());
-            topPuntacion.forEach(x-> System.out.println(x.getNombre()));
 
             //Mapa nuevo vacio
             Map<Hotel, Integer> mapa2 = new HashMap<>();
